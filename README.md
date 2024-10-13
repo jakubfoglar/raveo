@@ -1,2 +1,3 @@
-# raveo
-Raveo is a warmer version of the Inter typeface.
+# Raveo
+Raveo typeface is a warmer version of the open-source Inter typeface.
+ 
