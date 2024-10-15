@@ -1,6 +1,7 @@
 # Raveo
 Raveo is a warmer version of the open-source typeface [Inter](https://github.com/rsms/inter). Inter is one of the highest quality typefaces around. It is almost the default for digital products nowadays. This project builds on top of Inter with a fork that shifts it slightly towards imperfection and human touch, while doubling down on the sturdiness.
 
+![A slightly warmer, sturdier Inter. Free typeface on GitHub.](/documentation/images/raveo_07.png?raw=true "Title")
 ![Raveo is a warmer take on Inter](/documentation/images/raveo_01.png?raw=true "Title")
 
 ![Updated characters](/documentation/images/raveo_03.png?raw=true "Title")
