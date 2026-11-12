@@ -88,7 +88,7 @@
     "normal": 0.6,
     "wide": 0.75
   },
-  "logo_r_over": 1,
+  "logo_r_over": 0.55,
   "logo_a": {
     "condensed": 0.8,
     "normal": 0.8,

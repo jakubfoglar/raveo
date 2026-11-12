@@ -188,14 +188,16 @@ def build(inter_path=None):
         p.put(italic, text, size, M - size * 0.02, top + 208, **location)
     panels["05-italic"] = p
 
-    # 6. In use: a statement, a table of figures, a narrow headline and a chart.
+    # 6. In use: a statement, a table of trains, a narrow headline, one word set large and a list of stops.
     p = Panel("dark")
-    left, right, gutter = M, 860, 70
+    left, right = M, 860
     for k, line in enumerate(("Every morning a train leaves", "Prague for Vienna. Four hours,", "one dining car, one river.")):
         p.put(roman, line, 44, left, 128 + k * 54, wght=520, wdth=125)
-    poster = roman.size_for("PRAHA HLAVNÍ NÁDRAŽÍ", right - gutter - left, wght=760, wdth=60)
-    for k, line in enumerate(("PRAHA HLAVNÍ NÁDRAŽÍ", "WIEN HAUPTBAHNHOF")):
-        p.put(roman, line, poster, left - poster * 0.02, 668 + k * poster * 0.9, wght=760, wdth=60)
+    word = min(200, roman.size_for("Praha", W - M - right - 40, wght=520, wdth=125))
+    foot, cap, pitch = 830, 0.7275, 0.9           # the headline stands on the last line of the stops and is as tall as the word
+    poster = (foot - 618 + cap * word) / (2 * pitch + cap)
+    for k, line in enumerate(("NIGHT TRAINS", "ARE BACK,", "AND FULL")):
+        p.put(roman, line, poster, left - poster * 0.02, foot - (2 - k) * pitch * poster, wght=760, wdth=60)
     rows = (("07:42", "RJ 71", "Wien Hbf", "3"), ("07:55", "EC 172", "Berlin Hbf", "1"), ("08:04", "R 941", "Kolín", "6"),
             ("08:12", "EC 111", "Kraków Główny", "2"), ("08:31", "Ex 143", "Ostrava hl. n.", "5"))
     columns = (right, right + 130, right + 290, W - M)
@@ -207,7 +209,6 @@ def build(inter_path=None):
         for x, cell in zip(columns, row):
             p.put(roman, cell, 27, x, y, align="right" if x == columns[-1] else "left", features={"tnum": True}, wght=520, wdth=125)
     p.rule(right, 150 + len(rows) * 52 - 38, W - M - right)
-    word = min(200, roman.size_for("Praha", W - M - right - 40, wght=520, wdth=125))
     p.put(roman, "Praha", word, right - word * 0.05, 618, wght=520, wdth=125)
     p.put(roman, "The Railjet to Vienna calls at", 22, right, 668, "quiet", **small)
     for k, (place, time) in enumerate((("Pardubice hl. n.", "08:41"), ("Brno hl. n.", "10:16"), ("Břeclav", "10:49"), ("Wien Hbf", "11:49"))):

@@ -15,7 +15,7 @@ and sharper stroke endings.
 
 ![The line "Window seat, facing forward" in Narrow Bold Italic, Italic and Wide Medium Italic](docs/images/05-italic.svg)
 
-![A station's departures: three lines in the wide Medium, a table of trains with tabular figures, two station names in narrow capitals, the word Praha set large and the stops of one train](docs/images/06-in-use.svg)
+![A station's departures: three lines in the wide Medium, a table of trains with tabular figures, a headline in narrow capitals, the word Praha set large and the stops of one train](docs/images/06-in-use.svg)
 
 ![The opening of an article: a headline, a paragraph with one line in italic, and the names of the four stops of the journey](docs/images/08-text.svg)
 
