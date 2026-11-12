@@ -1,0 +1,170 @@
+{
+  "family": "Raveo",
+  "weights": [
+    300,
+    400,
+    900
+  ],
+  "widths": [
+    60,
+    100,
+    125
+  ],
+  "optical_sizes": [
+    14,
+    32
+  ],
+  "text": {
+    "spacing": {
+      "condensed": 0,
+      "normal": 0,
+      "wide": 0
+    },
+    "logo_r_over": 0.5
+  },
+  "stem_adapt": {
+    "condensed": 0.3,
+    "normal": 0.3,
+    "wide": 0.3
+  },
+  "contrast": {
+    "condensed": 0,
+    "normal": 5,
+    "wide": 5
+  },
+  "contrast_follow": {
+    "condensed": 1,
+    "normal": 0,
+    "wide": 0
+  },
+  "weight_spread": true,
+  "terminal_angle": {
+    "condensed": 17,
+    "normal": 17,
+    "wide": 18
+  },
+  "aperture": {
+    "condensed": 34,
+    "normal": 34,
+    "wide": 58
+  },
+  "terminal_soften": {
+    "condensed": 0.6,
+    "normal": 0.85,
+    "wide": 0.85
+  },
+  "squareness": {
+    "condensed": 0,
+    "normal": 0,
+    "wide": 0
+  },
+  "smoothing": {
+    "condensed": 1,
+    "normal": 1,
+    "wide": 1
+  },
+  "spacing": {
+    "condensed": 0,
+    "normal": 0,
+    "wide": -14
+  },
+  "light_spacing": 1,
+  "spacing_by_side": true,
+  "punctuation_spacing": 0.4,
+  "kerning_floor": {
+    "letters": 0.1,
+    "punctuation": 0.24
+  },
+  "max_source_weight": 930,
+  "caron_gap": 0.56,
+  "caron_tuck": 0.6,
+  "caron_floor": 0.5,
+  "diagonals": 1,
+  "diagonal_taper": 0.05,
+  "logo_r": {
+    "condensed": 0.8,
+    "normal": 0.6,
+    "wide": 0.75
+  },
+  "logo_r_over": 1,
+  "logo_a": {
+    "condensed": 0.8,
+    "normal": 0.8,
+    "wide": 0.8
+  },
+  "leg": true,
+  "round_commas": true,
+  "square_dots": false,
+  "terminal_glyphs": [
+    "a",
+    "c",
+    "e",
+    "g",
+    "r",
+    "s",
+    "C",
+    "G",
+    "S",
+    "two",
+    "three",
+    "five",
+    "six",
+    "nine",
+    "question",
+    "ae"
+  ],
+  "terminal_skip": {
+    "a": [
+      0
+    ]
+  },
+  "glyphs": {
+    "R": {
+      "middle": 20
+    },
+    "a": {
+      "bowl_slant": {
+        "condensed": 0,
+        "normal": 4,
+        "wide": 0
+      },
+      "tension": 0,
+      "smoothing": 1,
+      "bowl_height": 0,
+      "bowl_arch": 0,
+      "bowl_weight": {
+        "condensed": -6,
+        "normal": -3,
+        "wide": 3
+      },
+      "join_thin": 0,
+      "join_notch": 0,
+      "bowl_corner": {
+        "condensed": -0.05,
+        "normal": 0.2,
+        "wide": -0.1
+      },
+      "bowl_width": {
+        "condensed": 0,
+        "normal": -10,
+        "wide": 0
+      },
+      "bowl_round": 0,
+      "angle": {
+        "condensed": 16,
+        "normal": 16,
+        "wide": 18
+      },
+      "arm": {
+        "condensed": -55,
+        "normal": -20,
+        "wide": -50
+      },
+      "corners": 0.85
+    }
+  },
+  "subset": "full",
+  "version": "2.0",
+  "copyright": "Copyright 2024-2026 Jakub Foglar (https://jakubfoglar.com). Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)",
+  "designer": ""
+}

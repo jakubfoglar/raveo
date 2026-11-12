@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raveo — an open-source sans with weight, width, optical size and italics</title>
+<meta name="description" content="Raveo is a free, open-source variable typeface for interfaces and headlines: weight, width and optical size, upright and italic.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Raveo — an open-source sans with weight, width, optical size and italics">
+<meta property="og:description" content="A free variable typeface for interfaces and headlines, from narrow to wide, upright and italic. SIL Open Font License.">
+<meta property="og:url" content="https://raveo.jakubfoglar.com/">
+<meta property="og:image" content="https://raveo.jakubfoglar.com/og.png">
+<link rel="canonical" href="https://raveo.jakubfoglar.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>try { document.documentElement.dataset.theme = (JSON.parse(localStorage.getItem("raveo-site") || "{}").state || {}).theme || "light"; } catch (e) { /* first visit */ }</script>
+<style>
+  :root {
+    --font: "Raveo", system-ui, sans-serif;
+    --wght: 520; --wdth: 125; --pad: 28px; --bar: 52px; --dock: 54px;
+  }
+  [data-theme="light"] { --bg: #ffffff; --fg: #0c0c0c; --mute: #76767a; --line: rgba(12, 12, 12, .14); --soft: #f4f4f2; --inv-bg: #0c0c0c; --inv-fg: #f6f6f4; --inv-mute: #8e8e90; --inv-line: rgba(255, 255, 255, .17); }
+  [data-theme="dark"] { --bg: #0b0b0b; --fg: #f4f4f2; --mute: #8b8b8d; --line: rgba(255, 255, 255, .16); --soft: #171717; --inv-bg: #f4f4f2; --inv-fg: #0b0b0b; --inv-mute: #6f6f72; --inv-line: rgba(12, 12, 12, .15); }
+  [data-theme="paper"] { --bg: #e9e6df; --fg: #151513; --mute: #6e6b64; --line: rgba(21, 21, 19, .17); --soft: #dfdcd4; --inv-bg: #151513; --inv-fg: #e9e6df; --inv-mute: #8d897f; --inv-line: rgba(233, 230, 223, .18); }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar) + 12px); }
+  body { margin: 0; overflow-x: clip; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font); font-weight: 400; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  html.ready body { transition: background-color .25s, color .25s; }
+  html:not(.ready) main, html:not(.ready) #dock { visibility: hidden; }
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+  button, select, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  [contenteditable] { outline: none; }
+  ::selection { background: var(--fg); color: var(--bg); }
+  .mute { color: var(--mute); }
+  .num { font-variant-numeric: tabular-nums; }
+  .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+
+  /* A sample: set in the page's current weight and width unless it carries its own. */
+  .s { font-family: var(--font); font-variation-settings: var(--fvs); font-style: var(--fst, normal); font-kerning: normal; }
+
+  /* --- top bar --- */
+  #bar { position: sticky; top: 0; z-index: 20; height: var(--bar); padding: 0 var(--pad); display: flex; align-items: center; gap: 28px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  #bar .name { font-weight: 630; font-size: 15px; text-decoration: none; white-space: nowrap; }
+  #bar .name span { font-weight: 400; color: var(--mute); margin-left: 6px; }
+  #bar nav { display: flex; gap: 20px; flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; }
+  #bar nav a { text-decoration: none; color: var(--mute); }
+  #bar nav a:hover, #bar nav a.on { color: var(--fg); }
+  #bar .side { display: flex; align-items: center; gap: 18px; white-space: nowrap; }
+  .themes { display: flex; gap: 6px; }
+  .themes button { width: 18px; height: 18px; padding: 0; border-radius: 50%; border: 1px solid var(--mute); }
+  @media (max-width: 620px) { .themes { gap: 10px; } .themes button { width: 24px; height: 24px; } }
+  .themes button[aria-pressed="true"] { outline: 1px solid var(--fg); outline-offset: 2px; }
+  .btn { display: inline-block; padding: 7px 14px; background: var(--fg); color: var(--bg); text-decoration: none; font-weight: 520; border: 1px solid var(--fg); border-radius: 0; white-space: nowrap; }
+  .btn:hover { background: var(--bg); color: var(--fg); }
+  .btn.ghost { background: none; color: var(--fg); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--fg); }
+  @media (max-width: 1000px) { #bar nav { display: none; } #bar { justify-content: space-between; } }
+  @media (max-width: 520px) { :root { --pad: 18px; } #bar { gap: 12px; } #bar .side { gap: 12px; } #gh { display: none; } }
+
+  /* --- hero --- */
+  .hero { padding: 0 var(--pad); }
+  .hero-stage { position: relative; height: min(clamp(260px, 46vh, 620px), calc(36vw + 60px)); display: flex; align-items: flex-end; overflow: hidden; cursor: crosshair; touch-action: pan-y; }
+  #hero { white-space: nowrap; line-height: .82; padding-bottom: .12em; font-variation-settings: "opsz" 32, "wght" var(--hw, 520), "wdth" var(--hd, 125); will-change: font-variation-settings; }
+  .hero-read { position: absolute; top: 18px; right: 0; text-align: right; color: var(--mute); pointer-events: none; }
+  .hero-read b { color: var(--fg); font-weight: 400; }
+  .hero-meta { padding: 26px 0 0; border-top: 1px solid var(--line); row-gap: 36px; }
+  .lede { grid-column: 1 / span 6; margin: 0; font-size: clamp(22px, 2.35vw, 34px); line-height: 1.16; font-variation-settings: "opsz" 32, "wght" 480, "wdth" 108; letter-spacing: -.005em; text-wrap: pretty; }
+  .facts { grid-column: 8 / span 5; margin: 0; }
+  .facts div { display: grid; grid-template-columns: 124px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .facts div:first-child { border-top: 1px solid var(--line); }
+  .facts dt { color: var(--mute); }
+  .facts dd { margin: 0; }
+  .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .actions .btn { padding: 12px 20px; font-size: 15px; }
+  .actions .note { margin-left: 8px; color: var(--mute); }
+  @media (max-width: 900px) { .lede, .facts { grid-column: 1 / -1; } }
+
+  /* --- sections --- */
+  section.block { padding: 0 var(--pad); margin-top: clamp(96px, 13vw, 190px); }
+  .sh { border-top: 1px solid var(--fg); padding: 12px 0 40px; align-items: baseline; }
+  .sh h2 { grid-column: 1 / span 3; margin: 0; font-size: 14px; font-weight: 630; }
+  .sh p { grid-column: 4 / span 6; margin: 0; color: var(--mute); max-width: 62ch; text-wrap: pretty; }
+  .sh .tools { grid-column: 10 / span 3; justify-self: end; display: flex; gap: 10px; align-items: center; }
+  @media (max-width: 900px) { .sh h2, .sh p, .sh .tools { grid-column: 1 / -1; justify-self: start; } .sh p { margin-top: 4px; } .sh .tools { margin-top: 12px; } }
+  .seg { display: inline-flex; border: 1px solid var(--line); }
+  .seg button { border: 0; background: none; padding: 5px 11px; color: var(--mute); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+
+  /* range inputs: a hairline with a small square handle */
+  input[type="range"] { -webkit-appearance: none; appearance: none; background: none; height: 20px; margin: 0; width: 100%; cursor: ew-resize; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: currentColor; opacity: .45; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 11px; height: 11px; margin-top: -5px; background: currentColor; border-radius: 50%; }
+  input[type="range"]::-moz-range-track { height: 1px; background: currentColor; opacity: .45; }
+  input[type="range"]::-moz-range-thumb { width: 11px; height: 11px; border: 0; background: currentColor; border-radius: 50%; }
+  select { background: none; border: 1px solid var(--line); border-radius: 0; padding: 5px 8px; }
+
+  /* --- design space --- */
+  .space { align-items: start; row-gap: 32px; }
+  .space .pad { grid-column: 1 / span 5; }
+  .space .show { grid-column: 6 / span 7; min-width: 0; }
+  @media (max-width: 1000px) { .space .pad, .space .show { grid-column: 1 / -1; } }
+  #pad { width: 100%; display: block; touch-action: none; user-select: none; cursor: crosshair; }
+  #pad text { font-size: 11px; fill: var(--mute); font-variant-numeric: tabular-nums; }
+  #pad .frame { fill: none; stroke: var(--fg); stroke-width: 1; }
+  #pad .rule { stroke: var(--line); stroke-width: 1; }
+  #pad .dot { fill: var(--fg); }
+  #pad .hit { fill: transparent; cursor: pointer; }
+  #pad .handle { fill: var(--bg); stroke: var(--fg); stroke-width: 1.5; }
+  #pad .cross { stroke: var(--fg); stroke-width: 1; opacity: .35; }
+  #spaceword { font-size: clamp(120px, 22vw, 390px); line-height: .9; white-space: nowrap; overflow: hidden; padding-bottom: .26em; margin: -.06em 0 -.14em; }
+  #spaceline { font-size: clamp(30px, 4.3vw, 72px); line-height: 1.1; white-space: nowrap; overflow: hidden; margin: .1em 0 .5em; }
+  .readout { display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: baseline; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 10px; }
+  .readout b { font-weight: 630; }
+  code, .code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; }
+  .copy { border: 0; background: none; padding: 0; color: var(--mute); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+  .copy:hover { color: var(--fg); }
+
+  /* --- styles --- */
+  .styles { row-gap: 40px; }
+  .styles .col { min-width: 0; }
+  @media (max-width: 800px) { .styles .col { grid-column: 1 / -1 !important; } }
+  .styles h3 { margin: 0 0 10px; font-size: 14px; font-weight: 400; color: var(--mute); display: flex; justify-content: space-between; }
+  .styles .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; width: 100%; padding: 5px 0 6px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; }
+  .styles .row:last-child { border-bottom: 1px solid var(--line); }
+  .styles .row span:first-child { font-size: clamp(20px, 2.2vw, 34px); line-height: 1.12; white-space: nowrap; overflow: hidden; }
+  .styles .row span:last-child { color: var(--mute); font-size: 12px; }
+  .styles .row:hover span:last-child, .styles .row.on span:last-child { color: var(--fg); }
+  .styles .row.on { border-top-color: var(--fg); }
+
+  /* --- testers --- */
+  .tester { border-top: 1px solid var(--line); padding: 10px 0 44px; }
+  .tester .ctl { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; color: var(--mute); margin-bottom: 18px; }
+  .tester .ctl label { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .tester .ctl input[type="range"] { width: 68px; }
+  .tester .ctl output { color: var(--fg); min-width: 30px; font-variant-numeric: tabular-nums; }
+  .tester .ctl .push { margin-left: auto; }
+  .tester .text { overflow-wrap: break-word; text-wrap: balance; }
+  @media (max-width: 620px) { .tester .ctl label:nth-of-type(n + 4), .tester .ctl [data-k="align"], .tester .ctl [data-k="caps"] { display: none; } }
+  @media (max-width: 1000px) { .tester { --shrink: .62; } }      /* large sizes are set for a wide window; a small one shows them smaller */
+  @media (max-width: 620px) { .tester { --shrink: .34; } }
+
+  /* --- optical size --- */
+  .optical { row-gap: 28px; }
+  .optical .half { grid-column: span 6; min-width: 0; }
+  @media (max-width: 900px) { .optical .half { grid-column: 1 / -1; } }
+  .optical .word { font-family: var(--font); font-size: clamp(60px, 10.2vw, 190px); line-height: 1; white-space: nowrap; overflow: hidden; padding-bottom: .08em; }
+  .optical h3 { margin: 4px 0 10px; font-size: 14px; font-weight: 400; color: var(--mute); }
+  .optical .small p { margin: 0; font-family: var(--font); font-size: 12px; line-height: 1.5; max-width: 44ch; }
+  .optical .small h3 { margin-top: 10px; }
+  .optical ul { list-style: none; margin: 14px 0 0; padding: 0; }
+  .optical li { display: grid; grid-template-columns: 190px 1fr; gap: 12px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .optical li span:first-child { color: var(--mute); }
+  .optical .stack { grid-column: 1 / -1; min-width: 0; }
+  .optical .stack .line { font-family: var(--font); font-style: italic; font-size: clamp(44px, 8.4vw, 150px); line-height: 1.04; white-space: nowrap; overflow: hidden; padding-bottom: .1em; }
+  .optical .stack p { margin: 0 0 16px; color: var(--mute); }
+  .optical .run { grid-column: 1 / span 6; margin: 0; font-size: clamp(16px, 1.25vw, 18px); line-height: 1.5; text-wrap: pretty; border-top: 1px solid var(--line); padding-top: 18px; }
+  .optical .run strong { font-weight: 730; }
+  .optical .run em { font-style: italic; }
+  .optical .pairs { grid-column: 9 / span 4; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); margin: 0; padding: 0; list-style: none; align-self: start; }
+  .optical .pairs li { display: block; padding: 10px 0 12px; border-bottom: 1px solid var(--line); font-family: var(--font); font-size: clamp(34px, 3.9vw, 62px); line-height: 1.05; white-space: nowrap; }
+  .optical .pairs i { font-style: italic; margin-left: .12em; }
+  @media (max-width: 900px) { .optical .pairs { grid-column: 1 / -1; } }
+  @media (max-width: 900px) { .optical .run { grid-column: 1 / -1; } }
+  .sweep { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 18px; }
+  .sweep .line { font-size: clamp(40px, 6.4vw, 108px); line-height: 1.04; white-space: nowrap; overflow: hidden; padding-bottom: .1em; }
+  .sweep .ctl { display: flex; gap: 14px; align-items: center; color: var(--mute); max-width: 520px; margin-top: 10px; }
+  .sweep .ctl output { color: var(--fg); min-width: 24px; }
+
+  /* --- details --- */
+  .details { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  @media (max-width: 1000px) { .details { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .details figure { margin: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0 0 16px; min-width: 0; }
+  .details .glyph { position: relative; height: clamp(190px, 22vw, 340px); display: grid; place-items: center; overflow: hidden; font-size: clamp(120px, 15.5vw, 250px); line-height: 1; }
+  .details .glyph .pair { display: grid; }
+  .details .glyph span { grid-area: 1 / 1; justify-self: start; white-space: nowrap; }
+  .details .glyph .old { font-family: "Raveo 1.1", var(--font); opacity: 0; transition: opacity .2s; }
+  .details .glyph .new { transition: opacity .2s; }
+  .details.compare .glyph .old { opacity: .3; }                  /* where the two agree the ink is darkest */
+  .details.compare .glyph .new { opacity: .62; }
+  .details figcaption { padding: 0 16px; }
+  .details figcaption b { display: block; font-weight: 630; }
+  .details figcaption span { color: var(--mute); }
+
+  /* --- in use: the band that always reads the other way round --- */
+  .band { background: var(--inv-bg); color: var(--inv-fg); --line: var(--inv-line); --mute: var(--inv-mute); padding: 1px var(--pad) clamp(70px, 9vw, 130px); margin-top: clamp(96px, 13vw, 190px); }
+  .band .sh { border-top-color: var(--inv-fg); margin-top: clamp(60px, 8vw, 110px); }
+  .band ::selection { background: var(--inv-fg); color: var(--inv-bg); }
+  .use { row-gap: clamp(60px, 8vw, 110px); }
+  .use .short { grid-column: span 6; font-size: clamp(22px, 2.6vw, 38px); line-height: 1.16; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; text-wrap: pretty; margin: 0; }
+  .use .figures { grid-column: 1 / span 7; overflow-x: auto; }
+  .use .poster { grid-column: 9 / span 4; }
+  .use .chart { grid-column: 1 / span 5; }
+  .use .app { grid-column: 7 / span 6; }
+  @media (max-width: 1000px) { .use .short, .use .figures, .use .poster, .use .chart, .use .app { grid-column: 1 / -1; } }
+  .use h3 { margin: 0 0 14px; font-size: 14px; font-weight: 400; color: var(--mute); }
+  .use .article { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 22px; border-top: 1px solid var(--line); padding-top: 22px; }
+  .article h3 { grid-column: 1 / span 5; margin: 0; color: inherit; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 108; font-size: clamp(30px, 3.6vw, 56px); line-height: 1.02; text-wrap: balance; }
+  .article .body { grid-column: 7 / span 6; columns: 2; column-gap: 24px; font-size: 15px; line-height: 1.52; hyphens: auto; }
+  .article .body p { margin: 0 0 .9em; }
+  .article .body p:first-child::first-line { font-weight: 630; }
+  @media (max-width: 1000px) { .article h3, .article .body { grid-column: 1 / -1; } }
+  @media (max-width: 620px) { .article .body { columns: 1; } }
+  table.fig { border-collapse: collapse; width: 100%; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-variant-numeric: tabular-nums; }
+  table.fig th { font: 400 13px/1.3 var(--font); font-variation-settings: normal; color: var(--mute); text-align: right; padding: 0 0 10px 24px; border-bottom: 1px solid var(--line); }
+  table.fig td { font-size: clamp(19px, 2.1vw, 31px); line-height: 1.1; text-align: right; padding: 13px 0 14px 24px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  table.fig th:first-child, table.fig td:first-child { text-align: left; padding-left: 0; }
+  .poster .p { font-variation-settings: "opsz" 32, "wght" 760, "wdth" 60; font-size: clamp(56px, 8.3vw, 150px); line-height: .86; text-transform: uppercase; letter-spacing: .004em; overflow-wrap: normal; }
+  .card { border: 1px solid var(--line); padding: clamp(18px, 2vw, 30px); aspect-ratio: 4 / 5; display: flex; flex-direction: column; }
+  .card .h { font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(24px, 2.7vw, 40px); line-height: 1.04; margin: 0 0 6px; text-wrap: balance; }
+  .card .d { color: var(--mute); margin: 0; }
+  .card .big { margin: auto 0; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(64px, 8.6vw, 148px); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+  .bars { display: grid; gap: 14px; margin: 28px 0 22px; }
+  .bars div { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; }
+  .bars span { font-size: 14px; }
+  .bars b { font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-weight: 400; font-size: 20px; font-variant-numeric: tabular-nums; }
+  .bars i { grid-column: 1 / -1; height: 10px; background: currentColor; opacity: .28; width: var(--v); }
+  .bars div:first-child i { opacity: 1; }
+  .card .src { color: var(--mute); font-size: 12px; margin: 0; }
+  .ui { border: 1px solid var(--line); display: grid; grid-template-columns: 150px 1fr; font-size: 14px; }
+  .ui nav { border-right: 1px solid var(--line); padding: 14px 12px; display: grid; gap: 2px; align-content: start; }
+  .ui nav b { font-weight: 630; padding: 4px 8px 12px; }
+  .ui nav a { padding: 6px 8px; font-weight: 520; color: var(--mute); text-decoration: none; }
+  .ui nav a.on { color: inherit; background: color-mix(in srgb, currentColor 10%, transparent); }
+  .ui .main { padding: 16px 18px; min-width: 0; }
+  .ui h4 { margin: 0; font-size: 18px; font-weight: 630; }
+  .ui .sub { margin: 2px 0 14px; color: var(--mute); }
+  .ui table { border-collapse: collapse; width: 100%; }
+  .ui th { font-size: 12px; font-weight: 520; color: var(--mute); text-align: left; padding: 6px 8px 6px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .ui td { padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .ui td small { display: block; font-size: 12px; color: var(--mute); }
+  @media (max-width: 620px) { .ui { grid-template-columns: 1fr; } .ui nav { display: none; } .ui th:nth-child(2), .ui td:nth-child(2) { display: none; } .ui .n { padding-left: 12px; } }
+  .ui .n { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .ui .cap { font-size: 12px; color: var(--mute); margin: 12px 0 0; }
+  @media (max-width: 620px) { .ui { grid-template-columns: 1fr; } .ui nav { display: none; } }
+
+  /* --- languages --- */
+  .langs { columns: 2; column-gap: 24px; border-top: 1px solid var(--line); }
+  .langs .row { break-inside: avoid; border-bottom: 1px solid var(--line); padding: 9px 0 11px; }
+  .langs .row span:first-child { display: block; color: var(--mute); font-size: 13px; }
+  .langs .row span:last-child { font-size: clamp(17px, 1.55vw, 22px); line-height: 1.24; text-wrap: pretty; }
+  @media (max-width: 800px) { .langs { columns: 1; } }
+
+  /* --- characters --- */
+  .chars { align-items: start; }
+  .chars .big { grid-column: 1 / span 4; position: sticky; top: calc(var(--bar) + 20px); }
+  .chars .sets { grid-column: 5 / span 8; min-width: 0; }
+  @media (max-width: 900px) { .chars .big, .chars .sets { grid-column: 1 / -1; position: static; } }
+  #glyph { height: clamp(220px, 27vw, 400px); border: 1px solid var(--line); display: grid; place-items: center; font-size: clamp(140px, 18vw, 280px); line-height: 1; overflow: hidden; }
+  #glyph-info { margin: 12px 0 0; }
+  #glyph-info div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  #glyph-info dt { color: var(--mute); }
+  #glyph-info dd { margin: 0; }
+  .set { margin-bottom: 34px; }
+  .set h3 { margin: 0 0 8px; font-size: 14px; font-weight: 400; color: var(--mute); display: flex; justify-content: space-between; }
+  .cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .cells button { height: 50px; padding: 0; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: none; font-size: 24px; line-height: 1; }
+  .cells button:hover, .cells button.on { background: var(--fg); color: var(--bg); }
+
+  /* --- features --- */
+  .feat { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; border-top: 1px solid var(--line); padding: 14px 0 16px; }
+  .feat:last-child { border-bottom: 1px solid var(--line); }
+  .feat .what { grid-column: 1 / span 3; }
+  .feat .what b { display: block; font-weight: 630; }
+  .feat .what span { color: var(--mute); }
+  .feat .sample { grid-column: 4 / span 7; font-size: clamp(26px, 3.6vw, 56px); line-height: 1.1; white-space: pre-line; min-width: 0; overflow: hidden; }
+  .feat .sw { grid-column: 11 / span 2; justify-self: end; }
+  @media (max-width: 800px) { .feat .what, .feat .sample, .feat .sw { grid-column: 1 / -1; justify-self: start; } .feat { row-gap: 10px; } }
+
+  /* --- download --- */
+  .get { row-gap: 48px; align-items: start; }
+  .get .lead { grid-column: 1 / span 7; }
+  .get .lead a.big { display: inline-block; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(44px, 7vw, 124px); line-height: .96; text-decoration-thickness: .045em; text-underline-offset: .12em; }
+  .get .lead a.big:hover { text-decoration: none; }
+  .get .lead p { margin: 22px 0 0; max-width: 56ch; color: var(--mute); text-wrap: pretty; }
+  .get .side { grid-column: 9 / span 4; }
+  .get .wide { grid-column: 1 / span 7; min-width: 0; }
+  @media (max-width: 1000px) { .get .lead, .get .side, .get .wide { grid-column: 1 / -1; } }
+  .list { margin: 0; padding: 0; list-style: none; }
+  .list li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .list li:first-child { border-top: 1px solid var(--line); }
+  .list li span:last-child { color: var(--mute); white-space: nowrap; }
+  #versions li span:last-child, #news li span:last-child { white-space: normal; text-align: right; text-wrap: balance; }
+  #news li { display: block; } #news li span:last-child { display: block; text-align: left; }
+  .get h3 { margin: 0 0 10px; font-size: 14px; font-weight: 630; }
+  pre { margin: 0; padding: 16px 18px; background: var(--soft); overflow: auto; line-height: 1.55; }
+  .pre-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+
+  /* --- about, footer --- */
+  .about { row-gap: 32px; }
+  .about .say { grid-column: 1 / span 7; font-size: clamp(20px, 2.1vw, 30px); line-height: 1.22; font-variation-settings: "opsz" 32, "wght" 430, "wdth" 104; margin: 0; text-wrap: pretty; }
+  .about .say + .say { margin-top: -8px; }
+  .about .line { grid-column: 9 / span 4; }
+  @media (max-width: 1000px) { .about .say, .about .line { grid-column: 1 / -1; } }
+  footer { margin-top: clamp(96px, 13vw, 190px); padding: 16px var(--pad) calc(var(--dock) + 28px); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; color: var(--mute); }
+
+  /* --- dock: the page's weight, width and optical size --- */
+  #dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; height: var(--dock); padding: 0 var(--pad); display: flex; align-items: center; gap: 26px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); }
+  #dock label { display: flex; align-items: center; gap: 10px; color: var(--mute); white-space: nowrap; flex: 1 1 0; min-width: 0; max-width: 300px; }
+  #dock label input { flex: 1 1 0; width: auto; min-width: 36px; }
+  #dock output { color: var(--fg); min-width: 28px; font-variant-numeric: tabular-nums; }
+  #dock select { max-width: 190px; }
+  #dock .push { margin-left: auto; color: var(--mute); }
+  @media (max-width: 900px) { #dock { gap: 14px; } #dock .opt, #dock .push, #dock select { display: none; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+<noscript><style>html:not(.ready) main { visibility: visible; }</style></noscript>
+</head>
+<body>
+<div id="bar">
+  <a class="name" href="#top">Raveo<span id="ver"></span></a>
+  <nav>
+    <a href="#space">Axes</a><a href="#styles">Styles</a><a href="#details">Details</a><a href="#optical">Optical size</a><a href="#italic">Italic</a><a href="#use">In use</a>
+    <a href="#tester">Tester</a><a href="#features">Features</a><a href="#languages">Languages</a><a href="#characters">Characters</a><a href="#about">About</a>
+  </nav>
+  <div class="side">
+    <div class="themes" role="group" aria-label="Colours">
+      <button data-theme="light" style="background:#fff" title="White" aria-label="White"></button><button data-theme="paper" style="background:#e9e6df" title="Paper" aria-label="Paper"></button><button data-theme="dark" style="background:#0b0b0b" title="Black" aria-label="Black"></button>
+    </div>
+    <a id="gh" href="#">GitHub</a>
+    <a class="btn" href="#download">Download</a>
+  </div>
+</div>
+
+<main>
+  <section class="hero" id="top">
+    <div class="hero-stage" id="stage">
+      <div class="s" id="hero" contenteditable spellcheck="false">Raveo</div>
+      <div class="hero-read num" id="hero-read"></div>
+    </div>
+    <div class="hero-meta grid">
+      <p class="lede">Raveo is a free, open-source sans for interfaces and headlines. It began as a warmer cut of Inter, drawn once for text and once for large sizes. Version 2.0 adds a width axis from narrow to wide, an italic for every style, and sharper stroke endings.</p>
+      <dl class="facts" id="facts"></dl>
+      <div class="actions"><a class="btn" id="zip" href="#download">Download</a><a class="btn ghost" id="gh2" href="#">Source on GitHub</a><span class="note" id="zip-note"></span></div>
+    </div>
+  </section>
+
+  <section class="block" id="space">
+    <header class="sh grid"><h2>Axes</h2><p>Weight and width are continuous. Drag anywhere in the square; the dots are the named styles, the ones font menus list and the ones that come as separate files.</p></header>
+    <div class="grid space">
+      <div class="pad"><svg id="pad" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Weight and width"></svg></div>
+      <div class="show">
+        <div class="s" id="spaceword" contenteditable spellcheck="false">Rag</div>
+        <div class="s" id="spaceline" contenteditable spellcheck="false">Hamburgefonstiv 0123456789</div>
+        <div class="readout"><b id="space-name"></b><span class="num mute" id="space-pos"></span><code id="space-css"></code><button class="copy" data-copy="space-css">Copy</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="styles">
+    <header class="sh grid"><h2>Styles</h2><p id="styles-note"></p><div class="tools"><div class="seg" id="styles-slant"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div> <div class="seg" id="styles-size"><button data-opsz="14">Text</button><button data-opsz="32" aria-pressed="true">Display</button></div></div></header>
+    <div class="grid styles" id="styles-list"></div>
+  </section>
+
+  <section class="block" id="details">
+    <header class="sh grid"><h2>Details</h2><p>What sets Raveo apart from Inter. The first six are new in 2.0; switch to the comparison to see what moved.</p><div class="tools"><div class="seg" id="details-cmp"><button data-cmp="0" aria-pressed="true">Raveo 2.0</button><button data-cmp="1" title="Raveo 1.1 underneath in a lighter tone: where the two agree the ink is darkest">Compare with 1.1</button></div></div></header>
+    <div class="details" id="details-grid"></div>
+  </section>
+
+  <section class="block" id="optical">
+    <header class="sh grid"><h2>Optical size</h2><p>Every letter is drawn twice. The text drawing has taller small letters and more room around them, so it stays clear at 12 or 14 pixels. The display drawing is tighter and finer. Browsers and design apps choose by type size on their own.</p></header>
+    <div class="grid optical">
+      <div class="half"><div class="word" id="opt-text" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-text-h"></h3><ul id="opt-text-f"></ul></div>
+      <div class="half"><div class="word" id="opt-disp" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-disp-h"></h3><ul id="opt-disp-f"></ul></div>
+      <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">At twelve pixels the text drawing keeps its openings clear and its letters apart, so a table of 1 284 950 Kč and +12,4 % stays readable in a narrow column.</p><h3>The text drawing at 12 pixels, where it belongs</h3></div>
+      <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">At twelve pixels the text drawing keeps its openings clear and its letters apart, so a table of 1 284 950 Kč and +12,4 % stays readable in a narrow column.</p><h3>The display drawing at 12 pixels: tighter, smaller, harder to read</h3></div>
+      <div class="sweep">
+        <div class="line s" id="sweep" contenteditable spellcheck="false">From a caption to a headline</div>
+        <div class="ctl"><span>Text</span><input id="sweep-in" type="range" step="0.5" aria-label="Optical size"><span>Display</span><output class="num" id="sweep-out"></output></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="italic">
+    <header class="sh grid"><h2>Italic</h2><p id="italic-says"></p></header>
+    <div class="grid optical">
+      <div class="stack" id="ital-stack"></div>
+      <p class="run" id="ital-run" contenteditable spellcheck="false">An italic is for the word that has to stand apart inside a sentence: a title such as <em>The Elements of Typographic Style</em>, a term on its first use, a voice that is not the writer’s own. It should read as the same typeface <em>leaning into the line</em>, as dark and as wide as the roman around it. <strong><em>A bold italic</em></strong> is there for the rare word that needs both, and figures lean with the text: <em>1 284 950 Kč, +12,4 %, 2026</em>.</p>
+      <ul class="pairs" id="ital-pairs" aria-label="Letters upright and italic"></ul>
+    </div>
+  </section>
+
+  <div class="band" id="use">
+    <header class="sh grid"><h2>In use</h2><p>Wide for statements and figures, narrow where a headline has to fit, the text drawing for everything small.</p></header>
+    <div class="grid use">
+      <p class="short" contenteditable spellcheck="false">A typeface for interfaces has two jobs. It has to stay quiet in a table of figures and speak up in a headline, and it should be the same voice both times.</p>
+      <p class="short" lang="cs" contenteditable spellcheck="false">Příliš žluťoučký kůň úpěl ďábelské ódy. Jedno písmo na tabulku, popisek i titulek: úzké tam, kde je málo místa, široké tam, kde má věta zaznít.</p>
+      <div class="figures">
+        <table class="fig">
+          <thead><tr><th>Shop</th><th>Sales, Kč</th><th>Share</th><th>Change</th></tr></thead>
+          <tbody contenteditable spellcheck="false">
+            <tr><td>Northwind</td><td>4 218 500</td><td>34,1 %</td><td>+12,4 %</td></tr>
+            <tr><td>Alder</td><td>3 377 120</td><td>27,3 %</td><td>+8,0 %</td></tr>
+            <tr><td>Kestrel</td><td>2 611 900</td><td>21,1 %</td><td>−3,6 %</td></tr>
+            <tr><td>Marlow</td><td>1 358 047</td><td>11,0 %</td><td>+0,7 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="poster"><div class="p" contenteditable spellcheck="false">Narrow where the headline has to fit</div></div>
+      <div class="chart">
+        <div class="card">
+          <p class="h">Northwind took a third of the market</p>
+          <p class="d">Share of sales, fourth quarter of 2026</p>
+          <p class="big">34,1 %</p>
+          <div class="bars">
+            <div><span>Northwind</span><b>34,1 %</b><i style="--v:100%"></i></div>
+            <div><span>Alder</span><b>27,3 %</b><i style="--v:80%"></i></div>
+            <div><span>Kestrel</span><b>21,1 %</b><i style="--v:62%"></i></div>
+            <div><span>Marlow</span><b>11,0 %</b><i style="--v:32%"></i></div>
+          </div>
+          <p class="src">Sample data. Headline and figures in the wide Medium, labels in the text drawing.</p>
+        </div>
+      </div>
+      <div class="app">
+        <div class="ui">
+          <nav><b>Northwind</b><a class="on">Products</a><a>Orders</a><a>Customers</a><a>Reports</a><a>Settings</a></nav>
+          <div class="main">
+            <h4>Products</h4><p class="sub">248 in stock across 6 shops, updated 4 minutes ago</p>
+            <table>
+              <tr><th>Product</th><th>Status</th><th class="n">Sales, Kč</th><th class="n">Margin</th></tr>
+              <tr><td><b style="font-weight:520">Oak desk, 160 cm</b><small>Furniture · since 1 Oct 2026</small></td><td>On sale</td><td class="n">1 284 950</td><td class="n">2,41 %</td></tr>
+              <tr><td><b style="font-weight:520">Židle Lístek</b><small>Seating · since 14 Oct 2026</small></td><td>On sale</td><td class="n">611 070</td><td class="n">1,97 %</td></tr>
+              <tr><td><b style="font-weight:520">Wool rug, grey</b><small>Textiles · until 30 Nov 2026</small></td><td>Sold out</td><td class="n">2 038 114</td><td class="n">3,06 %</td></tr>
+              <tr><td><b style="font-weight:730">Total</b></td><td></td><td class="n" style="font-weight:730">3 934 134</td><td class="n" style="font-weight:730">2,48 %</td></tr>
+            </table>
+            <p class="cap">An interface at 14 and 12 pixels, in the text drawing: Regular, Medium, SemiBold and Bold with tabular figures.</p>
+          </div>
+        </div>
+      </div>
+      <div class="article">
+        <h3 contenteditable spellcheck="false">Small type asks for a different drawing than large type</h3>
+        <div class="body" contenteditable spellcheck="false">
+          <p>Set a headline face at twelve pixels and it closes up: the letters crowd each other, the openings of a, e and s fill in, and the thin joins disappear into the pixel grid. Punchcutters knew this and cut every size of a typeface separately, with wider letters, more space and sturdier details as the type got smaller.</p>
+          <p>Raveo keeps that idea in one file. Below 14 pixels it uses its text drawing; from 32 pixels up, the display drawing; in between, a blend of the two. Nothing has to be configured. A paragraph like this one is set in the text drawing, the headline beside it in the display drawing, and both come from the same font.</p>
+          <p>The width axis works the same way for horizontal room. A narrow style fits a long title into a chart or a table header; a wide one gives a short statement more presence without setting it larger. Stems keep their weight while the letters stretch, so a wide Medium still looks like a Medium next to the regular one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="tester">
+    <header class="sh grid"><h2>Tester</h2><p>Click any line and type. Each block has its own settings.</p></header>
+    <div id="testers"></div>
+  </section>
+
+  <section class="block" id="features">
+    <header class="sh grid"><h2>Features</h2><p>OpenType features, switched per line.</p></header>
+    <div id="feats"></div>
+  </section>
+
+  <section class="block" id="languages">
+    <header class="sh grid"><h2>Languages</h2><p id="lang-note"></p></header>
+    <div class="langs" id="langs"></div>
+  </section>
+
+  <section class="block" id="characters">
+    <header class="sh grid"><h2>Characters</h2><p id="chars-note"></p></header>
+    <div class="grid chars">
+      <div class="big"><div class="s" id="glyph">R</div><dl id="glyph-info"></dl></div>
+      <div class="sets"><div id="sets"></div><button class="btn ghost" id="chars-all"></button></div>
+    </div>
+  </section>
+
+  <section class="block" id="download">
+    <header class="sh grid"><h2>Download</h2><p>Free for personal and commercial work under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>.</p></header>
+    <div class="grid get">
+      <div class="lead"><a class="big" id="zip-big" href="#">Download Raveo</a><p id="zip-says"></p></div>
+      <div class="side"><h3>In the folder</h3><ul class="list" id="files"></ul></div>
+      <div class="wide">
+        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet">Copy</button></div>
+        <pre><code id="css-snippet"></code></pre>
+      </div>
+      <div class="side"><h3>On a computer</h3><p class="mute" id="install-note"></p><h3 style="margin-top:28px">Versions</h3><ul class="list" id="versions"></ul></div>
+      <div class="wide"><h3>New in 2.0</h3><ul class="list" id="news"></ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="about">
+    <header class="sh grid"><h2>About</h2><p>Where it comes from and how it is made.</p></header>
+    <div class="grid about">
+      <p class="say">Raveo is a fork of Inter by Rasmus Andersson. The first version made Inter a little warmer and sturdier: an a with a tail, an R with a curled leg, darker named weights.</p>
+      <ul class="list line" id="lineage"></ul>
+      <p class="say">Version 2.0 is not drawn by hand. A script takes Raveo’s masters and reshapes them: it stretches and squeezes letters while holding their stems, re-cuts the curved stroke endings at an angle, and gives the r a longer arm and the a a more open bowl. Every step is a setting that can be changed and rebuilt.</p>
+    </div>
+  </section>
+</main>
+
+<footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
+
+<div id="dock">
+  <select id="d-style" aria-label="Named style"></select>
+  <label>Weight <input id="d-wght" type="range" step="1"><output id="o-wght"></output></label>
+  <label>Width <input id="d-wdth" type="range" step="1"><output id="o-wdth"></output></label>
+  <div class="seg opt" id="d-ital" title="Upright or italic"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div>
+  <div class="seg opt" id="d-opsz" title="Which drawing is used. Automatic picks by type size, as browsers do."><button data-opsz="auto" aria-pressed="true">Auto</button><button data-opsz="14">Text</button><button data-opsz="32">Display</button></div>
+  <span class="push" id="d-note">Page style</span>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id), root = document.documentElement;
+const store = JSON.parse(localStorage.getItem("raveo-site") || "{}");
+const save = () => localStorage.setItem("raveo-site", JSON.stringify(store));
+const state = Object.assign({ wght: 520, wdth: 125, opsz: "auto", theme: "light", italic: false }, store.state || {});
+let D = null, picked = 0x52;
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const fmt = (n) => n.toLocaleString("en-US");
+const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+// Variation settings for one style. The optical size is left to the browser unless it is given or fixed in the dock.
+const fvs = (wght, wdth, opsz = state.opsz) => (D.axes.opsz && opsz && opsz !== "auto" ? `"opsz" ${opsz}, ` : "") + `"wght" ${Math.round(wght)}, "wdth" ${Math.round(wdth)}`;
+const textStyles = () => D.styles.filter((s) => s.opsz === undefined || s.opsz === D.axes.opsz[0]);
+const named = (wght, wdth) => textStyles().find((s) => s.wght === wght && s.wdth === wdth);
+// A style's name as the italic has it: "Regular" gives way to "Italic", every other name gains it.
+const slanted = (name) => (name.replace(/ ?Regular$/, "") + " Italic").trim();
+const styleName = (s) => (state.italic && D.italic ? slanted(s.name) : s.name);
+
+// Shrink a one-line sample until it shows whole.
+function fit(el) {
+  el.style.fontSize = "";
+  const base = parseFloat(getComputedStyle(el).fontSize);
+  if (el.scrollWidth > el.clientWidth) { el.style.fontSize = Math.floor(base * el.clientWidth / el.scrollWidth * 9.85) / 10 + "px"; }
+}
+
+function apply() {
+  const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  state.wght = clamp(Math.round(state.wght), gl, gh);
+  state.wdth = clamp(Math.round(state.wdth), wl, wh);
+  root.dataset.theme = state.theme;
+  state.italic = !!(state.italic && D.italic);
+  root.style.setProperty("--fvs", fvs(state.wght, state.wdth));
+  root.style.setProperty("--fst", state.italic ? "italic" : "normal");
+  document.querySelectorAll("#d-ital button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === state.italic));
+  document.querySelectorAll("#styles-slant button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === state.italic));
+  document.querySelectorAll("#styles-list .row > span:first-child").forEach((n) => { n.textContent = state.italic ? slanted(n.dataset.name) : n.dataset.name; n.style.fontStyle = state.italic ? "italic" : "normal"; });
+  [...$("d-style").options].forEach((o) => { if (o.value) { o.textContent = state.italic ? slanted(o.value) : o.value; } });
+  document.querySelectorAll(".themes button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.theme === state.theme));
+  $("d-wght").value = state.wght; $("d-wdth").value = state.wdth;
+  $("o-wght").textContent = state.wght; $("o-wdth").textContent = state.wdth;
+  document.querySelectorAll("#d-opsz button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.opsz === String(state.opsz)));
+  const hit = named(state.wght, state.wdth);
+  $("d-style").value = hit ? hit.name : "";
+  $("space-name").textContent = hit ? styleName(hit) : "Between named styles";
+  $("space-pos").textContent = `weight ${state.wght} · width ${state.wdth}`;
+  $("space-css").textContent = `font-variation-settings: ${fvs(state.wght, state.wdth)};` + (state.italic ? "\nfont-style: italic;" : "");
+  document.querySelectorAll("#styles-list .row").forEach((r) => r.classList.toggle("on", Number(r.dataset.wght) === state.wght && Number(r.dataset.wdth) === state.wdth));
+  drawPad();
+  fit($("spaceword")); fit($("spaceline"));
+  paintOptical();
+  paintItalic();
+  store.state = state; save();
+}
+
+// --- hero: the word breathes along weight and width until the pointer takes over ---
+const hero = { auto: !matchMedia("(prefers-reduced-motion: reduce)").matches, seen: true, t0: performance.now(), hold: 0 };
+function heroSet(wght, wdth) {
+  $("hero").style.setProperty("--hw", wght.toFixed(1));
+  $("hero").style.setProperty("--hd", wdth.toFixed(2));
+  $("hero-read").innerHTML = `weight <b>${Math.round(wght)}</b><br>width <b>${Math.round(wdth)}</b>`;
+}
+function heroFit() {
+  const el = $("hero"), { wght: [, , gh], wdth: [, , wh] } = D.axes;
+  el.style.fontSize = "200px";
+  el.style.fontVariationSettings = `"opsz" 32, "wght" ${gh}, "wdth" ${wh}`;
+  const size = 200 * ($("stage").clientWidth - 4) / el.scrollWidth;
+  el.style.fontVariationSettings = "";
+  el.style.fontSize = Math.min(size, $("stage").clientHeight * 1.06) + "px";
+}
+function heroTick(now) {
+  if (hero.auto && hero.seen && now > hero.hold) {
+    const t = (now - hero.t0) / 1000, { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+    heroSet(gl + (gh - gl) * (0.5 + 0.46 * Math.sin(t * 0.43 + 0.6)), wl + (wh - wl) * (0.5 + 0.5 * Math.sin(t * 0.29 + 1.9)));
+  }
+  requestAnimationFrame(heroTick);
+}
+function heroPoint(e) {
+  const box = $("stage").getBoundingClientRect(), { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  hero.hold = performance.now() + 2600;
+  heroSet(gh - (gh - gl) * clamp((e.clientY - box.top) / box.height, 0, 1), wl + (wh - wl) * clamp((e.clientX - box.left) / box.width, 0, 1));
+}
+
+// --- the square: width across, weight up ---
+const PAD = { size: 520, left: 78, right: 14, top: 34, bottom: 30 };
+const padX = (v) => PAD.left + (v - D.axes.wdth[0]) / (D.axes.wdth[2] - D.axes.wdth[0]) * (PAD.size - PAD.left - PAD.right);
+const padY = (v) => PAD.size - PAD.bottom - (v - D.axes.wght[0]) / (D.axes.wght[2] - D.axes.wght[0]) * (PAD.size - PAD.top - PAD.bottom);
+function drawPad() {
+  const styles = textStyles(), widths = [...new Set(styles.map((s) => s.wdth))].sort((a, b) => a - b), weights = [...new Set(styles.map((s) => s.wght))].sort((a, b) => a - b);
+  const x0 = padX(D.axes.wdth[0]), x1 = padX(D.axes.wdth[2]), y0 = padY(D.axes.wght[2]), y1 = padY(D.axes.wght[0]);
+  const label = (s, w) => s.name.replace(/Narrow |Wide /, "") || "Regular";
+  let html = "";
+  for (const g of weights) {
+    const s = styles.find((x) => x.wght === g && x.wdth === 100) || styles.find((x) => x.wght === g);
+    html += `<line class="rule" x1="${x0}" x2="${x1}" y1="${padY(g)}" y2="${padY(g)}"/><text x="${PAD.left - 12}" y="${padY(g) + 4}" text-anchor="end">${label(s)}</text>`;
+  }
+  for (const w of widths) {
+    const s = styles.find((x) => x.wdth === w && x.wght === 400) || styles.find((x) => x.wdth === w);
+    const name = w === 100 ? "Regular" : s.name.replace(/ ?Regular$/, "") || `${w}`;
+    html += `<line class="rule" x1="${padX(w)}" x2="${padX(w)}" y1="${y0}" y2="${y1}"/><text x="${padX(w)}" y="${PAD.top - 14}" text-anchor="${w === widths[0] ? "start" : w === widths.at(-1) ? "end" : "middle"}">${name} ${w}</text>`;
+  }
+  html += `<rect class="frame" x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}"/>`;
+  html += `<line class="cross" x1="${padX(state.wdth)}" x2="${padX(state.wdth)}" y1="${y0}" y2="${y1}"/><line class="cross" x1="${x0}" x2="${x1}" y1="${padY(state.wght)}" y2="${padY(state.wght)}"/>`;
+  for (const s of styles) { html += `<circle class="dot" cx="${padX(s.wdth)}" cy="${padY(s.wght)}" r="3.5"/><circle class="hit" data-wght="${s.wght}" data-wdth="${s.wdth}" cx="${padX(s.wdth)}" cy="${padY(s.wght)}" r="11"><title>${s.name}</title></circle>`; }
+  html += `<circle class="handle" cx="${padX(state.wdth)}" cy="${padY(state.wght)}" r="8"/>`;
+  html += `<text x="${x0}" y="${PAD.size - 8}">narrow</text><text x="${x1}" y="${PAD.size - 8}" text-anchor="end">wide</text>`;
+  $("pad").innerHTML = html;
+}
+function padPoint(e) {
+  const dot = e.target.closest && e.target.closest(".hit");
+  if (dot && e.type === "pointerdown") { state.wght = Number(dot.dataset.wght); state.wdth = Number(dot.dataset.wdth); apply(); return; }
+  const box = $("pad").getBoundingClientRect(), k = PAD.size / box.width;
+  const x = (e.clientX - box.left) * k, y = (e.clientY - box.top) * k, { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  state.wdth = wl + (x - PAD.left) / (PAD.size - PAD.left - PAD.right) * (wh - wl);
+  state.wght = gl + (PAD.size - PAD.bottom - y) / (PAD.size - PAD.top - PAD.bottom) * (gh - gl);
+  apply();
+}
+
+// --- sections built from the font's own data ---
+function buildFacts() {
+  const a = D.axes, sizes = a.opsz ? 2 : 1, widths = new Set(D.styles.map((s) => s.wdth)).size, weights = new Set(D.styles.map((s) => s.wght)).size;
+  const rows = [["Version", `${D.version}, ${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}`],
+    ["Weight", `${a.wght[0]} to ${a.wght[2]}`], ["Width", `${a.wdth[0]} to ${a.wdth[2]}, where 100 is the regular width`],
+    ...(a.opsz ? [["Optical size", `${a.opsz[0]} to ${a.opsz[2]}`]] : []),
+    ["Named styles", `${D.styles.length * (D.italic ? 2 : 1)}: ${weights} weights at ${widths} widths${sizes > 1 ? ", for text and display" : ""}${D.italic ? ", upright and italic" : ""}`],
+    ["Characters", `${fmt(D.character_count)}, Latin script, ${D.italic ? "roman and italic" : "upright only"}`],
+    ["Licence", "SIL Open Font License 1.1"], ["Lineage", "Inter by Rasmus Andersson"]];
+  $("facts").innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+  $("ver").textContent = D.version + (D.working ? " working build" : "");
+}
+
+function buildStyles() {
+  const opsz = store.stylesOpsz || 32, list = textStyles(), widths = [...new Set(list.map((s) => s.wdth))].sort((a, b) => a - b);
+  const span = Math.floor(12 / Math.min(widths.length, 4));
+  $("styles-list").innerHTML = widths.map((w) => {
+    const rows = list.filter((s) => s.wdth === w).sort((a, b) => a.wght - b.wght);
+    const title = w === 100 ? "Regular width" : rows.find((s) => s.wght === 400)?.name.replace(/ ?Regular$/, "") || `Width ${w}`;
+    return `<div class="col" style="grid-column: span ${span}"><h3><span>${title}</span><span class="num">${w}</span></h3>` + rows.map((s) =>
+      `<button class="row" data-wght="${s.wght}" data-wdth="${s.wdth}"><span data-name="${s.name}" style='font-variation-settings:${fvs(s.wght, s.wdth, D.axes.opsz ? opsz : null)}'>${s.name}</span><span class="num">${s.wght}</span></button>`).join("") + `</div>`;
+  }).join("");
+  document.querySelectorAll("#styles-size button").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.opsz) === opsz));
+  $("styles-size").hidden = !D.axes.opsz;
+  $("styles-slant").hidden = !D.italic;
+  $("styles-note").textContent = `${D.styles.length * (D.italic ? 2 : 1)} named styles: ${new Set(list.map((s) => s.wght)).size} weights at ${widths.length} widths` + (D.axes.opsz ? ", each as a text and a display drawing" : "") + (D.italic ? ", upright and italic. " : ". ") + "Click one to set the page in it.";
+  $("d-style").innerHTML = `<option value="">Custom</option>` + list.map((s) => `<option value="${s.name}">${s.name}</option>`).join("");
+}
+
+const TESTERS = [
+  { text: "One family from narrow to wide", wght: 520, wdth: "max", size: 132, track: 0, lead: 0.98 },
+  { text: "Úzký řez unese i hodně dlouhý titulek", wght: 730, wdth: "min", size: 168, track: 0, lead: 0.92 },
+  { text: "Every weight and width leans the same way", wght: 400, wdth: 100, size: 112, track: 0, lead: 1, italic: true },
+  { text: "A good text face gets out of the way. You notice the words, the figures and the pauses between them, and only later, if at all, the letters: 1 284 950 Kč, 2,41 %, +12,4 %. The text drawing is made for that kind of reading.", wght: 400, wdth: 100, size: 30, track: 0, lead: 1.32 },
+];
+function buildTesters() {
+  const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  const fresh = (t) => ({ italic: false, ...t, align: "left", caps: false, wdth: t.wdth === "max" ? wh : t.wdth === "min" ? wl : t.wdth });
+  const shipped = TESTERS.map((t) => t.text).join("|");        // new sample texts replace the ones a visitor's browser kept
+  store.testers = store.testers && store.testersFor === shipped ? store.testers : TESTERS.map(fresh);
+  store.testersFor = shipped;
+  $("testers").innerHTML = store.testers.map((t, i) => `<div class="tester" data-i="${i}"><div class="ctl">
+      <label>Size <input data-k="size" type="range" min="12" max="320" step="1"><output></output></label>
+      <label>Weight <input data-k="wght" type="range" min="${gl}" max="${gh}" step="1"><output></output></label>
+      <label>Width <input data-k="wdth" type="range" min="${wl}" max="${wh}" step="1"><output></output></label>
+      <label>Tracking <input data-k="track" type="range" min="-60" max="120" step="1"><output></output></label>
+      <label>Leading <input data-k="lead" type="range" min="0.8" max="1.8" step="0.02"><output></output></label>
+      <span class="seg" data-k="align"><button data-v="left">Left</button><button data-v="center">Centre</button><button data-v="right">Right</button></span>
+      <span class="seg" data-k="caps"><button data-v="0">Aa</button><button data-v="1">AA</button></span>
+      <span class="seg" data-k="italic"${D.italic ? "" : " hidden"}><button data-v="0">Roman</button><button data-v="1">Italic</button></span>
+      <button class="copy push" data-k="reset">Reset</button></div>
+    <div class="text" contenteditable spellcheck="false"></div></div>`).join("");
+  document.querySelectorAll(".tester").forEach((el) => {
+    const i = Number(el.dataset.i), text = el.querySelector(".text");
+    let t = store.testers[i];
+    text.textContent = t.text;
+    const paint = () => {
+      t.wght = clamp(t.wght, gl, gh); t.wdth = clamp(t.wdth, wl, wh);
+      text.style.cssText = `font-family:var(--font);font-size:max(15px, calc(${t.size}px * ${t.size > 40 ? "var(--shrink, 1)" : "1"}));line-height:${t.lead};letter-spacing:${t.track / 1000}em;font-variation-settings:${fvs(t.wght, t.wdth)};font-style:${t.italic && D.italic ? "italic" : "normal"};text-align:${t.align};text-transform:${t.caps ? "uppercase" : "none"}`;
+      el.querySelectorAll("input[type=range]").forEach((inp) => { inp.value = t[inp.dataset.k]; inp.nextElementSibling.textContent = t[inp.dataset.k]; });
+      el.querySelectorAll("[data-k=align] button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.v === t.align));
+      el.querySelectorAll("[data-k=caps] button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.v === "1") === !!t.caps));
+      el.querySelectorAll("[data-k=italic] button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.v === "1") === !!t.italic));
+      save();
+    };
+    el.querySelectorAll("input[type=range]").forEach((inp) => inp.addEventListener("input", () => { t[inp.dataset.k] = Number(inp.value); paint(); }));
+    el.querySelector("[data-k=align]").addEventListener("click", (e) => { if (e.target.dataset.v) { t.align = e.target.dataset.v; paint(); } });
+    el.querySelector("[data-k=caps]").addEventListener("click", (e) => { if (e.target.dataset.v) { t.caps = e.target.dataset.v === "1"; paint(); } });
+    el.querySelector("[data-k=italic]").addEventListener("click", (e) => { if (e.target.dataset.v) { t.italic = e.target.dataset.v === "1"; paint(); } });
+    el.querySelector("[data-k=reset]").addEventListener("click", () => { t = store.testers[i] = fresh(TESTERS[i]); text.textContent = t.text; paint(); });
+    text.addEventListener("input", () => { t.text = text.textContent; save(); });
+    paint();
+  });
+}
+
+function buildOptical() {
+  if (!D.axes.opsz) { $("optical").hidden = true; document.querySelector('#bar nav a[href="#optical"]').hidden = true; return; }
+  const [lo, , hi] = D.axes.opsz, t = D.sizes.text, d = D.sizes.display, pct = (a, b) => `${Math.round(a / b * 100)} %`;
+  $("opt-text-h").textContent = `Text drawing, optical size ${lo}`;
+  $("opt-disp-h").textContent = `Display drawing, optical size ${hi}`;
+  const rows = (m) => [["Height of small letters", `${pct(m.x_height, m.cap_height)} of the capitals`], ["Stem, Regular", `${m.stem} of ${fmt(2048)} units`], ["Average letter width, Regular", `${fmt(m.advance)} units on average`]]
+    .map(([k, v]) => `<li><span>${k}</span><span class="num">${v}</span></li>`).join("");
+  $("opt-text-f").innerHTML = rows(t);
+  $("opt-disp-f").innerHTML = rows(d);
+  const input = $("sweep-in");
+  input.min = lo; input.max = hi; input.value = store.sweep ?? (lo + hi) / 2;
+  for (const id of ["opt-text", "opt-disp"]) { $(id).addEventListener("input", paintOptical); }
+  input.addEventListener("input", () => { store.sweep = Number(input.value); save(); paintOptical(); });
+  paintOptical();
+}
+// The three optical-size samples take the page's weight and width; the two words are fitted so the widest style still shows whole.
+function paintOptical() {
+  if (!D.axes.opsz) { return; }
+  const [lo, , hi] = D.axes.opsz, input = $("sweep-in");
+  for (const [id, opsz] of [["opt-text", lo], ["opt-disp", hi]]) {
+    const el = $(id);
+    el.style.fontVariationSettings = fvs(state.wght, state.wdth, opsz);
+    el.style.fontSize = "";
+    const room = el.parentElement.clientWidth * 0.93, base = parseFloat(getComputedStyle(el).fontSize);     // air between the two words
+    el.style.overflow = "visible";
+    if (el.scrollWidth > room) { el.style.fontSize = Math.floor(base * room / el.scrollWidth) + "px"; }
+  }
+  const same = Math.min(parseFloat(getComputedStyle($("opt-text")).fontSize), parseFloat(getComputedStyle($("opt-disp")).fontSize));
+  $("opt-text").style.fontSize = $("opt-disp").style.fontSize = same + "px";      // same size, so the two drawings can be compared
+  $("opt-small-text").style.fontVariationSettings = fvs(400, 100, lo);
+  $("opt-small-disp").style.fontVariationSettings = fvs(400, 100, hi);
+  $("sweep").style.fontVariationSettings = fvs(state.wght, state.wdth, input.value);
+  fit($("sweep"));
+  $("sweep-out").textContent = Number(input.value).toFixed(input.value % 1 ? 1 : 0);
+}
+
+// The italic section: the same word upright and italic at the page's weight and width, fitted to one size.
+function buildItalic() {
+  if (!D.italic) { $("italic").hidden = true; document.querySelector('#bar nav a[href="#italic"]').hidden = true; $("d-ital").hidden = true; return; }
+  const angle = String(D.italic.angle).replace(/\.0$/, "");
+  $("italic-says").textContent = `Every style has an italic, leaned ${angle} degrees: Inter’s italic with Raveo’s own letters carried into it, the a with both storeys and its tail, the R with its curled leg. It is a second font file, so font-style: italic in CSS and the Italic button in apps both find it.`;
+  const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  $("ital-stack").innerHTML = [[730, wl], [400, 100], [520, wh]].map(([wght, wdth]) => {
+    const style = named(clamp(wght, gl, gh), wdth);
+    return `<div class="line" data-wght="${wght}" data-wdth="${wdth}" contenteditable spellcheck="false">Raveo leans at every width</div><p>${style ? slanted(style.name) : `Italic, weight ${wght}, width ${wdth}`}</p>`;
+  }).join("");
+  $("ital-stack").addEventListener("input", paintItalic);
+  $("ital-pairs").innerHTML = [..."aefgkyRQ&"].map((ch) => `<li>${esc(ch)}<i>${esc(ch)}</i></li>`).join("");
+  paintItalic();
+}
+// The three lines are set at one size, the largest at which the widest still shows whole.
+function paintItalic() {
+  if (!D.italic) { return; }
+  const display = D.axes.opsz ? D.axes.opsz[2] : null, lines = [...document.querySelectorAll("#ital-stack .line")];
+  let scale = 1;
+  for (const el of lines) {
+    el.style.fontVariationSettings = fvs(Number(el.dataset.wght), Number(el.dataset.wdth), display);
+    el.style.fontSize = "";
+    scale = Math.min(scale, el.clientWidth * 0.985 / el.scrollWidth);
+  }
+  if (scale < 1) { const base = parseFloat(getComputedStyle(lines[0]).fontSize); for (const el of lines) { el.style.fontSize = Math.floor(base * scale * 10) / 10 + "px"; } }
+  $("ital-run").style.fontVariationSettings = fvs(400, 100, D.axes.opsz ? D.axes.opsz[0] : null);
+  $("ital-pairs").style.fontVariationSettings = fvs(state.wght, 100, display);
+}
+
+const DETAILS = [
+  ["r", "The r", "A longer, flatter arm that reaches toward the next letter.", 520, 100],
+  ["a", "The a, wide", "At the wide and narrow ends the bowl is redrawn: more open, its stroke meeting the stem at an angle.", 520, "max"],
+  ["ces", "Stroke endings", "Curved strokes are cut at an angle and the openings are wider.", 520, 100],
+  ["ij;", "Round dots", "Dots, commas and quotes are round.", 520, 100],
+  ["„a“", "Quotes", "Round quotes, set as close as Raveo sets its own.", 520, 100],
+  ["ďť", "The tick", "The tick of ď ť ľ sits near the stem and the next letter tucks under it.", 520, 100],
+  ["R", "The R", "A curled leg, since the first Raveo.", 520, 100],
+  ["G1", "Alternates as defaults", "The G with a spur and the 1 with a flag are Inter’s alternates, made the default.", 520, 100],
+];
+function buildDetails() {
+  const wide = D.axes.wdth[2];
+  $("details-grid").innerHTML = DETAILS.map(([chars, title, note, wght, wdth]) => {
+    const w = wdth === "max" ? wide : wdth;
+    return `<figure><div class="glyph"><div class="pair" style="font-size:${[...chars].length > 2 ? ".74em" : "1em"}"><span class="old" style='font-variation-settings:"opsz" 32, "wght" ${wght}'>${chars}</span><span class="new" style='font-variation-settings:${fvs(wght, w, 32)}'>${chars}</span></div></div>
+      <figcaption><b>${title}</b><span>${note}</span></figcaption></figure>`;
+  }).join("");
+}
+
+function buildLanguages() {
+  $("langs").innerHTML = D.languages.map((l) => `<div class="row"><span>${l.name}</span><span class="s" lang="${l.lang}" contenteditable spellcheck="false">${esc(l.text)}</span></div>`).join("");
+  $("lang-note").textContent = `Latin script for Western, Central and Northern Europe, the Baltics, Romanian and Turkish.` +
+    ` Not covered: ${D.unsupported.length ? D.unsupported.join(", ") + ", " : ""}Cyrillic and Greek${D.italic ? "" : ". There are no italics"}. For those, use Inter.`;
+}
+
+const SETS = [["Capitals", (c) => c === "Lu"], ["Small letters", (c) => c === "Ll"], ["Figures", (c) => c === "Nd" || c === "No"], ["Punctuation", (c) => c[0] === "P"],
+  ["Symbols and arrows", (c) => c[0] === "S" && c !== "Sk"], ["Accents and modifier letters", (c) => c === "Lm" || c === "Sk"], ["Other letters and numerals", () => true]];
+const EVERYDAY = (cp) => cp < 0x180 || (cp >= 0x2010 && cp <= 0x203A) || [0x20AC, 0x2116, 0x2122, 0x2190, 0x2191, 0x2192, 0x2193, 0x2212, 0x2248, 0x2260, 0x2264, 0x2265].includes(cp);
+const UNSEEN = (c) => c[0] === "Z" || c[0] === "C" || c[0] === "M";      // spaces, joiners, combining accents: nothing to show in a cell
+function pick(cp) {
+  picked = cp;
+  const row = D.characters.find((c) => c[0] === cp) || [cp, "", ""], ch = String.fromCodePoint(cp);
+  $("glyph").textContent = ch;
+  const name = row[1] ? row[1][0] + row[1].slice(1).toLowerCase().replace(/ ([a-z])$/, (m, letter) => " " + (ch === ch.toUpperCase() ? letter.toUpperCase() : letter)) : "Unnamed";
+  $("glyph-info").innerHTML = [["Name", name], ["Unicode", `U+${cp.toString(16).toUpperCase().padStart(4, "0")}`], ["HTML", `&amp;#${cp};`]].map(([k, v]) => `<div><dt>${k}</dt><dd class="num">${v}</dd></div>`).join("");
+  document.querySelectorAll(".cells button").forEach((b) => b.classList.toggle("on", Number(b.dataset.cp) === cp));
+}
+function buildCharacters() {
+  const seen = D.characters.filter((c) => !UNSEEN(c[2])), unseen = D.characters.length - seen.length, groups = [];
+  const left = store.allChars ? seen.slice() : seen.filter((c) => EVERYDAY(c[0]));
+  for (const [title, test] of SETS) {
+    const mine = left.filter((c) => test(c[2]));
+    mine.forEach((c) => left.splice(left.indexOf(c), 1));
+    if (mine.length) { groups.push([title, mine]); }
+  }
+  $("sets").innerHTML = groups.map(([title, list]) => `<div class="set"><h3><span>${title}</span><span class="num">${list.length}</span></h3><div class="cells s">` +
+    list.map(([cp]) => `<button data-cp="${cp}">${esc(String.fromCodePoint(cp))}</button>`).join("") + `</div></div>`).join("");
+  $("chars-note").textContent = `${fmt(D.character_count)} characters, drawn with ${fmt(D.glyphs)} glyphs. Click one to enlarge it.` + (unseen ? ` Not shown: ${unseen} spaces and combining accents.` : "");
+  $("chars-all").hidden = left.length === seen.length && !store.allChars;
+  $("chars-all").textContent = store.allChars ? "Show the everyday characters only" : `Show all ${fmt(seen.length)}`;
+  pick(picked);
+}
+
+const FEATURES = [
+  ["tnum", "Tabular figures", "Every digit takes the same width, so columns line up.", "1 117 410,10\n9 008 944,98"],
+  ["case", "Capital forms", "Punctuation moves up to sit with capitals.", "(H-H) [A:B] «¿QUÉ?»"],
+  ["calt", "Contextual alternates", "A times sign between figures, arrows from hyphens, a raised colon in times.", "1920x1080 -> 12:30"],
+  ["ordn", "Ordinals", "Letters after a figure rise, and No. becomes the numero sign.", "1a 2o, No. 7"],
+  ["kern", "Kerning", "On by default.", "Toyota, Vary, LAVA. „Ty“"],
+];
+function buildFeatures() {
+  const on = store.features || { kern: true, calt: true };
+  const list = FEATURES.filter(([tag]) => D.features.includes(tag));
+  $("feats").innerHTML = list.map(([tag, name, note, sample]) => `<div class="feat" data-tag="${tag}"><div class="what"><b>${name}</b><span>${note}</span></div>
+    <div class="sample s" contenteditable spellcheck="false">${esc(sample)}</div><div class="sw seg"><button data-v="0">Off</button><button data-v="1">On</button></div></div>`).join("");
+  document.querySelectorAll(".feat").forEach((el) => {
+    const tag = el.dataset.tag, sample = el.querySelector(".sample");
+    const paint = () => {
+      sample.style.fontFeatureSettings = `"${tag}" ${on[tag] ? 1 : 0}`;
+      if (tag === "tnum") { sample.style.cssText += ";width:max-content;max-width:100%;text-align:right"; }      // right-aligned, so the columns can be seen to line up
+      if (tag === "kern") { sample.style.fontKerning = on[tag] ? "normal" : "none"; }
+      el.querySelectorAll(".sw button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.v === "1") === !!on[tag]));
+    };
+    el.querySelector(".sw").addEventListener("click", (e) => { if (e.target.dataset.v) { on[tag] = e.target.dataset.v === "1"; store.features = on; save(); paint(); } });
+    paint();
+  });
+}
+
+function buildDownload() {
+  const f = D.files || {}, zip = f.zip, a = D.axes;
+  const href = zip ? zip.url : D.github;
+  for (const id of ["zip", "zip-big"]) { $(id).href = href; if (zip) { $(id).setAttribute("download", zip.name); } }
+  $("zip").textContent = `Download Raveo ${D.version}`;
+  $("zip-big").textContent = `Download Raveo ${D.version}`;
+  $("zip-note").textContent = zip ? `Zip, ${(zip.kb / 1024).toFixed(1)} MB` : D.working ? "A working build: export a version to get a download." : "";
+  $("zip-says").textContent = `One zip${zip ? ` of ${(zip.kb / 1024).toFixed(1)} MB` : ""} with the variable font${D.italic ? " and its italic" : ""}, a file for each named style, web fonts with a stylesheet, and the licence. Use it for anything, also commercially; it may not be sold on its own.`;
+  for (const id of ["gh", "gh2", "gh3"]) { $(id).href = D.github; }
+  const kb = (x) => (x ? `${fmt(x.kb)} KB` : "");
+  $("files").innerHTML = [["Variable font, desktop", kb(f.variable)], ...(f.italic ? [["Variable font, italic", kb(f.italic)]] : []), [`Static fonts, one per style`, f.statics ? `${f.statics} files` : ""], ["Variable font, web", kb(f.web)],
+    ...(f.regular_width ? [["Web font without the width axis", kb(f.regular_width)]] : []), ["Stylesheet, licence, read-me", ""]]
+    .map(([k, v]) => `<li><span>${k}</span><span class="num">${v}</span></li>`).join("");
+  $("css-snippet").textContent = `<link rel="stylesheet" href="fonts/raveo.css">\n\nbody { font-family: "Raveo", sans-serif; }\nh1   { font-weight: 520; font-stretch: ${a.wdth[2]}%; }\n.tag { font-weight: 730; font-stretch: ${a.wdth[0]}%; }` + (D.italic ? `\nem   { font-style: italic; }` : "") +
+    (a.opsz ? `\n\n/* the display drawing at any size */\n.figure { font-variation-settings: "opsz" ${a.opsz[2]}; }` : "");
+  $("install-note").textContent = `Install the variable font${D.italic ? "s, upright and italic," : ""} or the static files; one set is enough. Programs list the variable font as “Raveo Variable” and the static files as “Raveo”. Remove Raveo 1.1 first.`;
+  const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  $("news").innerHTML = [["Width", `An axis from ${wl} to ${wh}, with Narrow and Wide as named styles at every weight.`],
+    ...(D.italic ? [["Italic", "An italic for every style, as a second variable font and as static files."]] : []),
+    ["Weights", `The axis now runs from ${gl} to ${gh}; Light and Black join the named weights. Styles lighter than ${gl} are gone.`],
+    ["Stroke endings", "Curved strokes end in an angled cut and the openings of a, c, e and s are wider."],
+    ["Dots and commas", "Round dots, commas and quotes; the tick of ď ť ľ sits closer to its letter."],
+    ["Letters", "A longer arm on the r, and a redrawn bowl on the a at the narrow and wide ends."]]
+    .map(([k, v]) => `<li><b>${k}</b><span>${v}</span></li>`).join("");
+  $("versions").innerHTML = [[D.version, `${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}: width axis, ${D.italic ? "italics, " : ""}angled stroke endings, round dots`], ["1.1", "October 2024: the first public release"]]
+    .map(([k, v]) => `<li><span class="num">${k}</span><span>${v}</span></li>`).join("");
+  $("lineage").innerHTML = [["Inter", "Rasmus Andersson"], ["Raveo 1.1", "Jakub Foglar, 2024"], [`Raveo ${D.version}`, `Jakub Foglar, ${new Date(D.date).getFullYear()}`], ["Source", `<a href="${D.github}">GitHub</a>`]]
+    .map(([k, v]) => `<li><span>${k}</span><span>${v}</span></li>`).join("");
+}
+
+async function loadFonts() {
+  if (D.font.css) {
+    await new Promise((done) => { const link = document.createElement("link"); link.rel = "stylesheet"; link.href = D.font.css; link.onload = link.onerror = done; document.head.append(link); });
+    root.style.setProperty("--font", `"${D.font.family}", system-ui, sans-serif`);
+  } else {
+    const a = D.axes, face = new FontFace(D.font.family, `url(${D.font.url})`, { weight: `${a.wght[0]} ${a.wght[2]}`, stretch: `${a.wdth[0]}% ${a.wdth[2]}%` });
+    document.fonts.add(await face.load());
+    if (D.font.italic) {
+      const lean = new FontFace(D.font.family, `url(${D.font.italic})`, { style: "italic", weight: `${a.wght[0]} ${a.wght[2]}`, stretch: `${a.wdth[0]}% ${a.wdth[2]}%` });
+      lean.load().then((f) => document.fonts.add(f)).catch(() => {});
+    }
+    root.style.setProperty("--font", `"${D.font.family}", system-ui, sans-serif`);
+  }
+  if (D.compare) { new FontFace(D.compare.family, `url(${D.compare.url})`, { weight: "100 900" }).load().then((f) => document.fonts.add(f)).catch(() => {}); }
+  await Promise.race([document.fonts.load(`400 40px "${D.font.family}"`, "Raveo ďť"), new Promise((r) => setTimeout(r, 4000))]);
+}
+
+async function start() {
+  const working = new URLSearchParams(location.search).has("build");
+  D = await (await fetch(working ? "/api/site" : "data.json")).json();
+  await loadFonts();
+  const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
+  $("d-wght").min = gl; $("d-wght").max = gh; $("d-wdth").min = wl; $("d-wdth").max = wh;
+  $("d-opsz").hidden = !D.axes.opsz;
+  buildFacts(); buildStyles(); buildTesters(); buildOptical(); buildItalic(); buildDetails(); buildLanguages(); buildCharacters(); buildFeatures(); buildDownload();
+  apply();
+  root.classList.add("ready");
+  heroFit(); heroSet(520, wh);
+  requestAnimationFrame(heroTick);
+
+  // events
+  for (const k of ["wght", "wdth"]) { $("d-" + k).addEventListener("input", (e) => { state[k] = Number(e.target.value); apply(); }); }
+  $("d-style").addEventListener("change", (e) => { const s = textStyles().find((x) => x.name === e.target.value); if (s) { state.wght = s.wght; state.wdth = s.wdth; apply(); } });
+  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); } });
+  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); } });
+  $("d-opsz").addEventListener("click", (e) => { if (e.target.dataset.opsz) { state.opsz = e.target.dataset.opsz; apply(); buildTesters(); } });
+  document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); } });
+  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); } });
+  $("styles-size").addEventListener("click", (e) => { if (e.target.dataset.opsz) { store.stylesOpsz = Number(e.target.dataset.opsz); save(); buildStyles(); apply(); } });
+  $("details-cmp").addEventListener("click", (e) => {
+    if (!e.target.dataset.cmp) { return; }
+    $("details-grid").classList.toggle("compare", e.target.dataset.cmp === "1");
+    document.querySelectorAll("#details-cmp button").forEach((b) => b.setAttribute("aria-pressed", b === e.target));
+  });
+  $("sets").addEventListener("click", (e) => { if (e.target.dataset.cp) { pick(Number(e.target.dataset.cp)); } });
+  $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); });
+  let down = false;
+  $("pad").addEventListener("pointerdown", (e) => { down = true; try { $("pad").setPointerCapture(e.pointerId); } catch (err) { /* nothing to capture */ } padPoint(e); });
+  $("pad").addEventListener("pointermove", (e) => { if (down) { padPoint(e); } });
+  for (const type of ["pointerup", "pointercancel"]) { $("pad").addEventListener(type, () => { down = false; }); }
+  $("stage").addEventListener("pointermove", heroPoint);
+  $("hero").addEventListener("input", heroFit);
+  for (const id of ["spaceword", "spaceline", "sweep"]) { $(id).addEventListener("input", () => fit($(id))); }
+  addEventListener("resize", () => { heroFit(); fit($("spaceword")); fit($("spaceline")); paintOptical(); paintItalic(); });
+  new IntersectionObserver(([entry]) => { hero.seen = entry.isIntersecting; }).observe($("stage"));
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-copy]");
+    if (!b) { return; }
+    await navigator.clipboard.writeText($(b.dataset.copy).textContent);
+    const was = b.textContent; b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1200);
+  });
+  const links = [...document.querySelectorAll("#bar nav a")];
+  const spy = new IntersectionObserver((entries) => {
+    for (const entry of entries) { if (entry.isIntersecting) { links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id)); } }
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  links.forEach((a) => { const target = document.querySelector(a.getAttribute("href")); if (target) { spy.observe(target); } });
+}
+start();
+</script>
+</body>
+</html>

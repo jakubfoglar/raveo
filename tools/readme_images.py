@@ -1,0 +1,242 @@
+"""The pictures in README.md: eight panels drawn from the released fonts.
+
+    python tools/readme_images.py [path to InterVariable.ttf]    # writes docs/images/*.svg
+
+Each panel is an SVG of outlines on its own ground (near-black or paper), so it looks the same on a
+light and on a dark page and needs no font to show. Text is shaped with HarfBuzz, so it is kerned as
+the font is. The two panels that set Raveo against Inter need Inter's variable font; without it they
+are left as they are.
+"""
+import sys
+from pathlib import Path
+
+import uharfbuzz as hb
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipeline import ROOT  # noqa: E402
+import release  # noqa: E402
+
+OUT = ROOT / "docs" / "images"
+W, H, M = 1600, 900, 72                           # panel size and margin
+GROUND = {"dark": ("#0c0c0c", "#f4f4f2", "#8b8b8d", "#3a3a3c"),     # ground, ink, quiet, rule
+          "paper": ("#f1f0ec", "#0c0c0c", "#77777a", "#cfcdc6")}
+
+
+class Pen:
+    """Collects one glyph as SVG path data, scaled and placed."""
+
+    def __init__(self, scale, x, y):
+        self.scale, self.x, self.y, self.d = scale, x, y, []
+
+    def _p(self, px, py):
+        return f"{self.x + px * self.scale:.1f} {self.y - py * self.scale:.1f}"
+
+    def moveTo(self, p):
+        self.d.append("M" + self._p(*p))
+
+    def lineTo(self, p):
+        self.d.append("L" + self._p(*p))
+
+    def qCurveTo(self, *points):
+        self.d.append("Q" + " ".join(self._p(*p) for p in points))
+
+    def curveTo(self, *points):
+        self.d.append("C" + " ".join(self._p(*p) for p in points))
+
+    def closePath(self):
+        self.d.append("Z")
+
+    def endPath(self):
+        pass
+
+
+class Face:
+    def __init__(self, path, **base):
+        self.face, self.base = hb.Face(Path(path).read_bytes()), base
+        self.axes = {a.tag for a in self.face.axis_infos}
+
+    def line(self, text, size, x, y, features=None, **location):
+        """(path data, width) of one line with its baseline starting at (x, y)."""
+        font = hb.Font(self.face)
+        font.set_variations({k: v for k, v in {"opsz": 32, "wght": 400, "wdth": 100, **self.base, **location}.items() if k in self.axes})
+        buf = hb.Buffer()
+        buf.add_str(text)
+        buf.guess_segment_properties()
+        hb.shape(font, buf, features or {})
+        scale, pen_x, parts = size / self.face.upem, x, []
+        for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+            pen = Pen(scale, pen_x + pos.x_offset * scale, y - pos.y_offset * scale)
+            font.draw_glyph_with_pen(info.codepoint, pen)
+            parts.append("".join(pen.d))
+            pen_x += pos.x_advance * scale
+        return "".join(parts), pen_x - x
+
+    def width(self, text, size, **location):
+        return self.line(text, size, 0, 0, **location)[1]
+
+    def size_for(self, text, width, **location):
+        """The type size at which `text` is `width` wide."""
+        return 100 * width / self.width(text, 100, **location)
+
+
+class Panel:
+    def __init__(self, ground):
+        self.bg, self.ink, self.quiet, self.rule_colour = GROUND[ground]
+        self.layers = []
+
+    def put(self, face, text, size, x, y, tone="ink", align="left", features=None, **location):
+        d, width = face.line(text, size, 0, 0, features, **location)
+        x = x - width if align == "right" else x - width / 2 if align == "centre" else x
+        self.layers.append((face.line(text, size, x, y, features, **location)[0], getattr(self, tone)))
+        return width
+
+    def run(self, parts, size, x, y, **location):
+        """Several faces on one line: `parts` is [(face, text)]."""
+        for face, text in parts:
+            x += self.put(face, text, size, x, y, **location)
+
+    def rule(self, x, y, width, height=1.5, tone="rule_colour"):
+        self.layers.append((f"M{x:.1f} {y:.1f}h{width:.1f}v{height:.1f}h{-width:.1f}Z", getattr(self, tone)))
+
+    def svg(self):
+        body = "".join(f'<path fill="{colour}" d="{d}"/>' for d, colour in self.layers)
+        return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}"><rect width="{W}" height="{H}" fill="{self.bg}"/>{body}</svg>\n'
+
+
+def build(inter_path=None):
+    newest = release.releases()[0]
+    folder = release.RELEASES / newest["folder"] / "desktop" / "variable"
+    slug = newest["family"].replace(" ", "")
+    roman, italic = Face(folder / f"{slug}-VF.ttf"), Face(folder / f"{slug}-Italic-VF.ttf")
+    small = dict(opsz=14, wght=400)
+    inner = W - 2 * M
+    panels = {}
+
+    # 1. The name.
+    p = Panel("dark")
+    size = roman.size_for("Raveo", inner * 1.035, wght=520, wdth=125)
+    p.put(roman, "Raveo", size, M - size * 0.045, 560, wght=520, wdth=125)
+    p.rule(M, 716, inner)
+    p.put(roman, "A free, open-source sans for interfaces and headlines", 30, M, 772, **small)
+    p.put(roman, "from narrow to wide, upright and italic", 30, M, 814, "quiet", **small)
+    p.put(roman, f"Version {newest['version']}", 30, W - M, 772, align="right", **small)
+    p.put(roman, "SIL Open Font License", 30, W - M, 814, "quiet", align="right", **small)
+    panels["01-raveo"] = p
+
+    # 2 and 7. Against Inter: the letters, then punctuation and stroke endings.
+    if inter_path and Path(inter_path).exists():
+        inter = Face(inter_path)
+
+        def against(name, cells, size, rows):
+            """Cells of Inter (quiet) and Raveo (ink), three to a row. With two rows the pair stands side by
+            side; with one row, for groups of letters, Inter stands above and Raveo below."""
+            p = Panel("paper")
+            cell, pitch = inner / 3, (H - 150) / rows
+            for k, (chars, note) in enumerate(cells):
+                x, top = M + (k % 3) * cell, 70 + (k // 3) * pitch
+                p.rule(x, top, cell - 36)
+                if rows == 1:
+                    p.put(inter, chars, size, x - size * 0.03, top + 290, "quiet", wght=520)
+                    p.put(roman, chars, size, x - size * 0.03, top + 590, wght=520)
+                else:
+                    old = p.put(inter, chars, size, x - size * 0.03, top + pitch - 112, "quiet", wght=520)
+                    p.put(roman, chars, size, x + max(old + size * 0.14, (cell - 36) / 2), top + pitch - 112, wght=520)
+                p.put(roman, note, 24, x, top + pitch - 44, "quiet", **small)
+            p.put(roman, "Inter", 24, W - M - 96, H - 40, "quiet", align="right", **small)
+            p.put(roman, "Raveo", 24, W - M, H - 40, align="right", **small)
+            panels[name] = p
+
+        against("02-letters", (("a", "An a with a tail"), ("R", "An R with a curled leg"), ("r", "A longer arm on the r"),
+                               ("G", "The G with a spur"), ("1", "The 1 with a flag"), ("s", "Strokes end in an angled cut")), 250, 2)
+        against("07-details", (("j;,", "Commas as round as the dots"), ("„a“", "Round quotes"), ("ďť", "A tick that sits by its letter")), 264, 1)
+
+    # 3. The width axis.
+    p = Panel("dark")
+    text, steps = "From narrow to wide", (60, 75, 90, 100, 112, 125)
+    size = roman.size_for(text, inner - 130, wght=630, wdth=125)
+    for k, width in enumerate(steps):
+        y = 168 + k * 126
+        p.rule(M, y - 98, inner)
+        p.put(roman, str(width), 24, M, y, "quiet", features={"tnum": True}, **small)
+        p.put(roman, text, size, M + 130, y, wght=630, wdth=width)
+    p.rule(M, 168 + len(steps) * 126 - 98, inner)
+    panels["03-width"] = p
+
+    # 4. The named weights, upright and italic.
+    p = Panel("paper")
+    weights = [(300, "Light"), (400, "Regular"), (520, "Medium"), (630, "SemiBold"), (730, "Bold"), (850, "ExtraBold"), (900, "Black")]
+    for k, (weight, name) in enumerate(weights):
+        y = 158 + k * 108
+        p.rule(M, y - 84, inner)
+        p.put(roman, str(weight), 24, M, y, "quiet", features={"tnum": True}, **small)
+        p.put(roman, name, 82, M + 130, y, wght=weight)
+        p.put(italic, "Italic" if name == "Regular" else f"{name} Italic", 82, M + 130 + (inner - 130) / 2, y, wght=weight)
+    p.rule(M, 158 + len(weights) * 108 - 84, inner)
+    panels["04-weight"] = p
+
+    # 5. The italic at three widths.
+    p = Panel("dark")
+    for k, (location, name) in enumerate(((dict(wght=730, wdth=60), "Narrow Bold Italic"), (dict(wght=400, wdth=100), "Italic"),
+                                          (dict(wght=520, wdth=125), "Wide Medium Italic"))):
+        text, top = "Leaning at every width", 62 + k * 270
+        size = min(190, italic.size_for(text, inner, **location))
+        p.rule(M, top, inner)
+        p.put(roman, name, 24, M, top + 42, "quiet", **small)
+        p.put(italic, text, size, M - size * 0.02, top + 208, **location)
+    panels["05-italic"] = p
+
+    # 6. In use: a statement, a table of figures, a narrow headline and a chart.
+    p = Panel("dark")
+    left, right, gutter = M, 880, 80
+    for k, line in enumerate(("A typeface for interfaces", "has two jobs: stay quiet in a", "table, speak up in a headline.")):
+        p.put(roman, line, 44, left, 128 + k * 54, wght=520, wdth=125)
+    poster = roman.size_for("HEADLINE HAS TO FIT", right - gutter - left, wght=760, wdth=60)
+    for k, line in enumerate(("NARROW WHERE THE", "HEADLINE HAS TO FIT")):
+        p.put(roman, line, poster, left - poster * 0.02, 628 + k * poster * 0.88, wght=760, wdth=60)
+    rows = (("Northwind", "4 218 500", "34,1 %", "+12,4 %"), ("Alder", "3 377 120", "27,3 %", "+8,0 %"),
+            ("Kestrel", "2 611 900", "21,1 %", "−3,6 %"), ("Marlow", "1 358 047", "11,0 %", "+0,7 %"))
+    columns = (1230, 1380, W - M)
+    for x, head in zip((right, *columns), ("Shop", "Sales, Kč", "Share", "Change")):
+        p.put(roman, head, 20, x, 92, "quiet", align="left" if x == right else "right", **small)
+    for k, row in enumerate(rows):
+        y = 150 + k * 52
+        p.rule(right, y - 38, W - M - right)
+        p.put(roman, row[0], 27, right, y, wght=520, wdth=125)
+        for x, cell in zip(columns, row[1:]):
+            p.put(roman, cell, 27, x, y, align="right", features={"tnum": True}, wght=520, wdth=125)
+    p.rule(right, 150 + 4 * 52 - 38, W - M - right)
+    p.put(roman, "34,1 %", 150, right - 6, 600, wght=520, wdth=125)
+    p.put(roman, "Share of sales, fourth quarter", 20, right, 646, "quiet", **small)
+    for k, (name, share) in enumerate((("Northwind", 1.0), ("Alder", 0.8), ("Kestrel", 0.62), ("Marlow", 0.32))):
+        y = 706 + k * 36
+        p.put(roman, name, 20, right, y, "quiet", **small)
+        p.rule(right + 130, y - 14, (W - M - right - 130) * share, 13, "ink" if k == 0 else "rule_colour")
+    panels["06-in-use"] = p
+
+    # 8. Text: the display drawing for the headline, the text drawing for the paragraph.
+    p = Panel("paper")
+    for k, line in enumerate(("Small type asks for", "a different drawing", "than large type")):
+        p.put(roman, line, 78, M, 170 + k * 84, wght=520, wdth=108)
+    lines = ([(roman, "Set a headline face at twelve pixels and it closes up:")],
+             [(roman, "the letters crowd each other and the openings of a, e")],
+             [(roman, "and s fill in. Raveo keeps two drawings in one file. The")],
+             [(italic, "text drawing"), (roman, " has taller small letters and more room")],
+             [(roman, "around them; the "), (italic, "display drawing"), (roman, " is tighter and finer.")],
+             [(roman, "Browsers pick between them by type size on their own.")])
+    for k, parts in enumerate(lines):
+        p.run(parts, 25, 880, 122 + k * 40, **small)
+    p.rule(M, 480, inner)
+    for k, (label, size, location) in enumerate((("Text drawing, optical size 14", 150, dict(opsz=14)), ("Display drawing, optical size 32", 150, dict(opsz=32)))):
+        x = M + k * (inner / 2)
+        p.put(roman, "Hamburg", size, x - 6, 690, wght=520, **location)
+        p.put(roman, label, 24, x, 756, "quiet", **small)
+    panels["08-text"] = p
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    for name, panel in panels.items():
+        (OUT / f"{name}.svg").write_text(panel.svg())
+    return sorted(panels)
+
+
+if __name__ == "__main__":
+    print("docs/images:", ", ".join(build(sys.argv[1] if len(sys.argv) > 1 else None)))

@@ -1,0 +1,366 @@
+{
+category = Letter;
+export = 0;
+glyphname = i.sc;
+layers = (
+{
+anchors = (
+{
+name = bottom;
+pos = (351,0);
+},
+{
+name = cross;
+pos = (350,580);
+},
+{
+name = ogonek;
+pos = (638,0);
+},
+{
+name = right;
+pos = (652,0);
+},
+{
+name = tonos;
+pos = (72,1118);
+},
+{
+name = top;
+pos = (351,1118);
+}
+);
+layerId = "C698F293-3EC0-4A5A-A3A0-0FDB1F5CF265";
+shapes = (
+{
+closed = 1;
+nodes = (
+(638,0,l),
+(638,154,l),
+(441,154,l),
+(441,964,l),
+(638,964,l),
+(638,1118,l),
+(63,1118,l),
+(63,964,l),
+(261,964,l),
+(261,154,l),
+(63,154,l),
+(63,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 75;
+weight = -12;
+width = 74.95;
+};
+};
+width = 701;
+},
+{
+anchors = (
+{
+name = bottom;
+pos = (423,0);
+},
+{
+name = cross;
+pos = (421,598);
+},
+{
+name = ogonek;
+pos = (818,0);
+},
+{
+name = right;
+pos = (840,0);
+},
+{
+name = tonos;
+pos = (18,1118);
+},
+{
+name = top;
+pos = (423,1118);
+}
+);
+layerId = "5C20EF92-B63D-42A8-8878-93C2863E0093";
+shapes = (
+{
+closed = 1;
+nodes = (
+(818,0,l),
+(818,319,l),
+(623,319,l),
+(623,799,l),
+(818,799,l),
+(818,1118,l),
+(27,1118,l),
+(27,799,l),
+(222,799,l),
+(222,319,l),
+(27,319,l),
+(27,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 75;
+weight = -2;
+width = 74.95;
+};
+};
+width = 845;
+},
+{
+anchors = (
+{
+name = bottom;
+pos = (294,0);
+},
+{
+name = cross;
+pos = (293,576);
+},
+{
+name = ogonek;
+pos = (500,0);
+},
+{
+name = right;
+pos = (518,0);
+},
+{
+name = tonos;
+pos = (116,1117);
+},
+{
+name = top;
+pos = (294,1117);
+}
+);
+layerId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+shapes = (
+{
+closed = 1;
+nodes = (
+(500,0,l),
+(500,44,l),
+(316,44,l),
+(316,1073,l),
+(500,1073,l),
+(500,1117,l),
+(88,1117,l),
+(88,1073,l),
+(270,1073,l),
+(270,44,l),
+(88,44,l),
+(88,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 75;
+weight = -1;
+width = 75.1;
+};
+};
+width = 588;
+},
+{
+anchors = (
+{
+name = bottom;
+pos = (265,0);
+},
+{
+name = cross;
+pos = (265,548);
+},
+{
+name = ogonek;
+pos = (478,0);
+},
+{
+name = right;
+pos = (491,0);
+},
+{
+name = tonos;
+pos = (61,1056);
+},
+{
+name = top;
+pos = (265,1056);
+}
+);
+layerId = m007;
+shapes = (
+{
+closed = 1;
+nodes = (
+(478,0,l),
+(478,143,l),
+(350,143,l),
+(350,914,l),
+(478,914,l),
+(478,1056,l),
+(52,1056,l),
+(52,914,l),
+(180,914,l),
+(180,143,l),
+(52,143,l),
+(52,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 70.9;
+weight = -28;
+width = 71.35;
+};
+};
+width = 530;
+},
+{
+anchors = (
+{
+name = bottom;
+pos = (367,0);
+},
+{
+name = cross;
+pos = (367,566);
+},
+{
+name = ogonek;
+pos = (708,0);
+},
+{
+name = right;
+pos = (731,0);
+},
+{
+name = tonos;
+pos = (16,1056);
+},
+{
+name = top;
+pos = (367,1056);
+}
+);
+layerId = m009;
+shapes = (
+{
+closed = 1;
+nodes = (
+(708,0,l),
+(708,307,l),
+(567,307,l),
+(567,749,l),
+(708,749,l),
+(708,1056,l),
+(26,1056,l),
+(26,749,l),
+(167,749,l),
+(167,307,l),
+(26,307,l),
+(26,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 70.9;
+weight = -38;
+width = 71.3;
+};
+};
+width = 734;
+},
+{
+anchors = (
+{
+name = bottom;
+pos = (199,0);
+},
+{
+name = cross;
+pos = (198,545);
+},
+{
+name = ogonek;
+pos = (344,0);
+},
+{
+name = right;
+pos = (352,0);
+},
+{
+name = tonos;
+pos = (86,1056);
+},
+{
+name = top;
+pos = (199,1056);
+}
+);
+layerId = m011;
+shapes = (
+{
+closed = 1;
+nodes = (
+(344,0,l),
+(344,44,l),
+(221,44,l),
+(221,1012,l),
+(344,1012,l),
+(344,1056,l),
+(53,1056,l),
+(53,1012,l),
+(175,1012,l),
+(175,44,l),
+(53,44,l),
+(53,0,l)
+);
+}
+);
+userData = {
+RMXScaler = {
+height = 70.9;
+weight = 2;
+width = 75.1;
+};
+};
+width = 397;
+},
+{
+associatedMasterId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+layerId = "799C5225-4B9E-4B2F-9498-E030C78216AD";
+width = 600;
+},
+{
+associatedMasterId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+layerId = "9D684A71-1E90-46ED-B6DF-15917822A44E";
+width = 600;
+}
+);
+metricRight = "=|i.sc";
+script = latin;
+subCategory = Small;
+unicode = 618;
+userData = {
+RMXScaler = {
+source = I.1;
+};
+interface.gridadjust.original = "{'width': 958, 'leftMargin': 138, 'rightMargin': 137}";
+"interface.width-adjustments" = (
+-16
+);
+};
+}

@@ -1,0 +1,8 @@
+fonttools[woff,ufo]==4.68.0
+glyphsLib==6.17.2
+fontc==2.0.1
+numpy
+uharfbuzz==0.57.0
+pillow==13.0.0
+fontbakery==1.1.0
+skia-pathops==0.9.2
