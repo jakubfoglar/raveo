@@ -191,11 +191,11 @@ def build(inter_path=None):
     # 6. In use: a statement, a table of figures, a narrow headline and a chart.
     p = Panel("dark")
     left, right, gutter = M, 860, 70
-    p.put(roman, "Praha hlavní nádraží", 58, left, 132, wght=520, wdth=125)
-    p.put(roman, "Departures, Thursday 12 November", 24, left, 180, "quiet", **small)
-    poster = roman.size_for("PLATFORM 3 · 07:42", right - gutter - left, wght=760, wdth=60)
-    for k, line in enumerate(("WIEN HBF", "PLATFORM 3 · 07:42")):
-        p.put(roman, line, poster, left - poster * 0.02, 650 + k * poster * 0.88, wght=760, wdth=60)
+    for k, line in enumerate(("Every morning a train leaves", "Prague for Vienna. Four hours,", "one dining car, one river.")):
+        p.put(roman, line, 44, left, 128 + k * 54, wght=520, wdth=125)
+    poster = roman.size_for("PRAHA HLAVNÍ NÁDRAŽÍ", right - gutter - left, wght=760, wdth=60)
+    for k, line in enumerate(("PRAHA HLAVNÍ NÁDRAŽÍ", "WIEN HAUPTBAHNHOF")):
+        p.put(roman, line, poster, left - poster * 0.02, 668 + k * poster * 0.9, wght=760, wdth=60)
     rows = (("07:42", "RJ 71", "Wien Hbf", "3"), ("07:55", "EC 172", "Berlin Hbf", "1"), ("08:04", "R 941", "Kolín", "6"),
             ("08:12", "EC 111", "Kraków Główny", "2"), ("08:31", "Ex 143", "Ostrava hl. n.", "5"))
     columns = (right, right + 130, right + 290, W - M)
@@ -207,8 +207,14 @@ def build(inter_path=None):
         for x, cell in zip(columns, row):
             p.put(roman, cell, 27, x, y, align="right" if x == columns[-1] else "left", features={"tnum": True}, wght=520, wdth=125)
     p.rule(right, 150 + len(rows) * 52 - 38, W - M - right)
-    p.put(roman, "07:42", 210, right - 10, 740, wght=520, wdth=125)
-    p.put(roman, "Next departure. Calls at Pardubice, Brno and Břeclav.", 24, right, 796, "quiet", **small)
+    word = min(200, roman.size_for("Praha", W - M - right - 40, wght=520, wdth=125))
+    p.put(roman, "Praha", word, right - word * 0.05, 618, wght=520, wdth=125)
+    p.put(roman, "The Railjet to Vienna calls at", 22, right, 668, "quiet", **small)
+    for k, (place, time) in enumerate((("Pardubice hl. n.", "08:41"), ("Brno hl. n.", "10:16"), ("Břeclav", "10:49"), ("Wien Hbf", "11:49"))):
+        y = 716 + k * 38
+        p.rule(right, y - 27, W - M - right)
+        p.put(roman, place, 22, right, y, **small)
+        p.put(roman, time, 22, W - M, y, "quiet", align="right", features={"tnum": True}, **small)
     panels["06-in-use"] = p
 
     # 8. Text: the opening of an article and the stops of the journey. The first line of the text stands
@@ -229,10 +235,10 @@ def build(inter_path=None):
     for k, parts in enumerate(lines):
         p.run(parts, body, 880, top + k * 40, **small)
     p.rule(M, 560, inner)
-    for k, (time, place) in enumerate((("07:42", "Praha hl. n."), ("10:16", "Brno hl. n."), ("10:49", "Břeclav"), ("11:49", "Wien Hbf"))):
+    for k, (place, note) in enumerate((("Praha", "hlavní nádraží, 07:42"), ("Brno", "hlavní nádraží, 10:16"), ("Břeclav", "10:49"), ("Wien", "Hauptbahnhof, 11:49"))):
         x = M + k * inner / 4
-        p.put(roman, time, 100, x - 4, 716, features={"tnum": True}, wght=520)
-        p.put(roman, place, 24, x, 770, "quiet", **small)
+        p.put(roman, place, 92, x - 5, 712, wght=520)
+        p.put(roman, note, 24, x, 768, "quiet", features={"tnum": True}, **small)
     panels["08-text"] = p
 
     OUT.mkdir(parents=True, exist_ok=True)

@@ -207,11 +207,11 @@
   table.fig th { font: 400 13px/1.3 var(--font); font-variation-settings: normal; color: var(--mute); text-align: right; padding: 0 0 10px 24px; border-bottom: 1px solid var(--line); }
   table.fig td { font-size: clamp(19px, 2.1vw, 31px); line-height: 1.1; text-align: right; padding: 13px 0 14px 24px; border-bottom: 1px solid var(--line); white-space: nowrap; }
   table.fig th:first-child, table.fig td:first-child { text-align: left; padding-left: 0; }
-  .poster .p { font-variation-settings: "opsz" 32, "wght" 760, "wdth" 60; font-size: clamp(56px, 8.3vw, 150px); line-height: .86; text-transform: uppercase; letter-spacing: .004em; overflow-wrap: normal; }
+  .poster .p { font-variation-settings: "opsz" 32, "wght" 760, "wdth" 60; font-size: clamp(56px, 8.3vw, 150px); line-height: 1.02; text-transform: uppercase; letter-spacing: .004em; overflow-wrap: normal; }
   .card { border: 1px solid var(--line); padding: clamp(18px, 2vw, 30px); aspect-ratio: 4 / 5; display: flex; flex-direction: column; }
   .card .h { font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(24px, 2.7vw, 40px); line-height: 1.04; margin: 0 0 6px; text-wrap: balance; }
   .card .d { color: var(--mute); margin: 0; }
-  .card .big { margin: auto 0; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(64px, 8.6vw, 148px); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+  .card .big { margin: auto 0; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(48px, 6.6vw, 112px); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
   .bars { display: grid; gap: 14px; margin: 28px 0 22px; }
   .bars div { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; }
   .bars span { font-size: 14px; }
@@ -307,8 +307,6 @@
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 <noscript><style>html:not(.ready) main { visibility: visible; }</style></noscript>
-<!-- Visits and clicks, counted without cookies by Umami; only on the published page, not on a local copy. -->
-<script defer src="https://cloud.umami.is/script.js" data-website-id="bb5f0eb4-68cf-4111-a13b-cb2359ea2033" data-domains="raveo.jakubfoglar.com,jakubfoglar.github.io"></script>
 </head>
 <body>
 <div id="bar">
@@ -321,8 +319,8 @@
     <div class="themes" role="group" aria-label="Colours">
       <button data-theme="light" style="background:#fff" title="White" aria-label="White"></button><button data-theme="paper" style="background:#e9e6df" title="Paper" aria-label="Paper"></button><button data-theme="dark" style="background:#0b0b0b" title="Black" aria-label="Black"></button>
     </div>
-    <a id="gh" href="#" data-umami-event="GitHub" data-umami-event-place="top bar">GitHub</a>
-    <a class="btn" href="#download" data-umami-event="Go to download" data-umami-event-place="top bar">Download</a>
+    <a id="gh" href="#" data-track="github_clicked" data-track-place="top bar">GitHub</a>
+    <a class="btn" href="#download" data-track="download_section_opened" data-track-place="top bar">Download</a>
   </div>
 </div>
 
@@ -335,7 +333,7 @@
     <div class="hero-meta grid">
       <p class="lede">Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic, free and open source. It began as a fork of Inter. Version 2.0 adds the width axis, the italics and sharper stroke endings.</p>
       <dl class="facts" id="facts"></dl>
-      <div class="actions"><a class="btn" id="zip" href="#download" data-umami-event="Download zip" data-umami-event-place="hero">Download</a><a class="btn ghost" id="gh2" href="#" data-umami-event="GitHub" data-umami-event-place="hero">Source on GitHub</a><span class="note" id="zip-note"></span></div>
+      <div class="actions"><a class="btn" id="zip" href="#download" data-track="download_clicked" data-track-place="hero">Download</a><a class="btn ghost" id="gh2" href="#" data-track="github_clicked" data-track-place="hero">Source on GitHub</a><span class="note" id="zip-note"></span></div>
     </div>
   </section>
 
@@ -346,7 +344,7 @@
       <div class="show">
         <div class="s" id="spaceword" contenteditable spellcheck="false">Rag</div>
         <div class="s" id="spaceline" contenteditable spellcheck="false">Hamburgefonstiv 0123456789</div>
-        <div class="readout"><b id="space-name"></b><span class="num mute" id="space-pos"></span><code id="space-css"></code><button class="copy" data-copy="space-css" data-umami-event="Copy" data-umami-event-what="axis settings">Copy</button></div>
+        <div class="readout"><b id="space-name"></b><span class="num mute" id="space-pos"></span><code id="space-css"></code><button class="copy" data-copy="space-css" data-track="copied" data-track-what="axis settings">Copy</button></div>
       </div>
     </div>
   </section>
@@ -400,12 +398,12 @@
           </tbody>
         </table>
       </div>
-      <div class="poster"><div class="p" contenteditable spellcheck="false">Next departure Vienna 07:42</div></div>
+      <div class="poster"><div class="p" contenteditable spellcheck="false">Praha hlavní nádraží</div></div>
       <div class="chart">
         <div class="card">
           <p class="h">Nine trains in ten arrived on time</p>
           <p class="d">Arrivals within five minutes, fourth quarter of 2026</p>
-          <p class="big">91,4 %</p>
+          <p class="big">On time</p>
           <div class="bars">
             <div><span>Praha – Wien</span><b>94,8 %</b><i style="--v:100%"></i></div>
             <div><span>Praha – Berlin</span><b>91,2 %</b><i style="--v:96%"></i></div>
@@ -468,10 +466,10 @@
   <section class="block" id="download">
     <header class="sh grid"><h2>Download</h2><p>Free for personal and commercial work under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>.</p></header>
     <div class="grid get">
-      <div class="lead"><a class="big" id="zip-big" href="#" data-umami-event="Download zip" data-umami-event-place="download section">Download Raveo</a><p id="zip-says"></p></div>
+      <div class="lead"><a class="big" id="zip-big" href="#" data-track="download_clicked" data-track-place="download section">Download Raveo</a><p id="zip-says"></p></div>
       <div class="side"><h3>In the folder</h3><ul class="list" id="files"></ul></div>
       <div class="wide">
-        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet" data-umami-event="Copy" data-umami-event-what="css">Copy</button></div>
+        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet" data-track="copied" data-track-what="css">Copy</button></div>
         <pre><code id="css-snippet"></code></pre>
       </div>
       <div class="side"><h3>On a computer</h3><p class="mute" id="install-note"></p><h3 style="margin-top:28px">Versions</h3><ul class="list" id="versions"></ul></div>
@@ -489,7 +487,7 @@
   </section>
 </main>
 
-<footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#" data-umami-event="GitHub" data-umami-event-place="footer">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
+<footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#" data-track="github_clicked" data-track-place="footer">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
 
 <div id="dock">
   <select id="d-style" aria-label="Named style"></select>
@@ -508,7 +506,27 @@ const state = Object.assign({ wght: 520, wdth: 125, opsz: "auto", theme: "light"
 let D = null, picked = 0x52;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const fmt = (n) => n.toLocaleString("en-US");
-const track = (name, data) => { try { if (window.umami) { window.umami.track(name, data); } } catch (e) { /* counting is optional */ } };
+// Statistics: visits and what visitors try, sent to PostHog in its cookieless mode. No script is loaded, nothing
+// is stored in the browser and no identity is sent: PostHog counts visitors by a hash it rotates daily and
+// keeps on its side. Sent only from the published page, and not when the browser asks not to be tracked.
+// The project must have "Enable cookieless tracking" switched on, or PostHog drops these events.
+const POSTHOG = { key: "", host: "https://eu.i.posthog.com", hosts: ["raveo.jakubfoglar.com", "jakubfoglar.github.io"] };
+function track(event, props) {
+  try {
+    if (!POSTHOG.key || !POSTHOG.hosts.includes(location.hostname) || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true) { return; }
+    const agent = navigator.userAgent;
+    const device = /iPad|Tablet/i.test(agent) || (/Android/i.test(agent) && !/Mobile/i.test(agent)) ? "Tablet" : /Mobile|iPhone|iPod/i.test(agent) ? "Mobile" : "Desktop";
+    let from = "";
+    try { from = document.referrer ? new URL(document.referrer).hostname : ""; } catch (e) { /* no referrer */ }
+    fetch(POSTHOG.host + "/i/v0/e/", {
+      method: "POST", headers: { "Content-Type": "application/json" }, credentials: "omit", referrerPolicy: "no-referrer", keepalive: true,
+      body: JSON.stringify({ api_key: POSTHOG.key, event, distinct_id: "$posthog_cookieless", properties: {
+        ...props, $cookieless_mode: true, $process_person_profile: false, $host: location.hostname, $pathname: location.pathname,
+        $current_url: location.origin + location.pathname, $raw_user_agent: agent, $device_type: device,
+        ...(from && from !== location.hostname ? { $referring_domain: from } : {}) } }),
+    }).catch(() => { /* counting must never get in the page's way */ });
+  } catch (e) { /* the same */ }
+}
 const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // Variation settings for one style. The optical size is left to the browser unless it is given or fixed in the dock.
@@ -899,11 +917,11 @@ async function start() {
   // events
   for (const k of ["wght", "wdth"]) { $("d-" + k).addEventListener("input", (e) => { state[k] = Number(e.target.value); apply(); }); }
   $("d-style").addEventListener("change", (e) => { const s = textStyles().find((x) => x.name === e.target.value); if (s) { state.wght = s.wght; state.wdth = s.wdth; apply(); } });
-  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("Italic", { on: state.italic, place: "dock" }); } });
-  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("Italic", { on: state.italic, place: "styles" }); } });
+  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("italic_toggled", { on: state.italic, place: "dock" }); } });
+  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("italic_toggled", { on: state.italic, place: "styles" }); } });
   $("d-opsz").addEventListener("click", (e) => { if (e.target.dataset.opsz) { state.opsz = e.target.dataset.opsz; apply(); buildTesters(); } });
-  document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); track("Theme", { theme: state.theme }); } });
-  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); track("Style", { style: $("space-name").textContent }); } });
+  document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); track("theme_changed", { theme: state.theme }); } });
+  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); track("style_picked", { style: $("space-name").textContent }); } });
   $("styles-size").addEventListener("click", (e) => { if (e.target.dataset.opsz) { store.stylesOpsz = Number(e.target.dataset.opsz); save(); buildStyles(); apply(); } });
   $("details-cmp").addEventListener("click", (e) => {
     if (!e.target.dataset.cmp) { return; }
@@ -911,7 +929,7 @@ async function start() {
     document.querySelectorAll("#details-cmp button").forEach((b) => b.setAttribute("aria-pressed", b === e.target));
   });
   $("sets").addEventListener("click", (e) => { if (e.target.dataset.cp) { pick(Number(e.target.dataset.cp)); } });
-  $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); track("Characters", { all: !!store.allChars }); });
+  $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); track("characters_expanded", { all: !!store.allChars }); });
   let down = false;
   $("pad").addEventListener("pointerdown", (e) => { down = true; try { $("pad").setPointerCapture(e.pointerId); } catch (err) { /* nothing to capture */ } padPoint(e); });
   $("pad").addEventListener("pointermove", (e) => { if (down) { padPoint(e); } });
@@ -927,14 +945,19 @@ async function start() {
     await navigator.clipboard.writeText($(b.dataset.copy).textContent);
     const was = b.textContent; b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1200);
   });
+  track("$pageview", { theme: state.theme });
+  document.addEventListener("click", (e) => {                 // links and buttons marked data-track
+    const el = e.target.closest("[data-track]");
+    if (el) { track(el.dataset.track, { ...(el.dataset.trackPlace ? { place: el.dataset.trackPlace } : {}), ...(el.dataset.trackWhat ? { what: el.dataset.trackWhat } : {}) }); }
+  });
   // Which sections a visitor reached, once each, and the first time each tool on the page is touched.
   const reached = new Set();
   const reach = new IntersectionObserver((entries) => {
-    for (const entry of entries) { if (entry.isIntersecting && !reached.has(entry.target.id)) { reached.add(entry.target.id); track("Section", { section: entry.target.id }); } }
+    for (const entry of entries) { if (entry.isIntersecting && !reached.has(entry.target.id)) { reached.add(entry.target.id); track("section_viewed", { section: entry.target.id }); } }
   }, { rootMargin: "-40% 0px -40% 0px" });
   document.querySelectorAll("main section[id], main .band[id]").forEach((el) => { if (el.id !== "top") { reach.observe(el); } });
   for (const [selector, what] of [["#pad", "axes square"], ["#testers", "tester"], ["#d-wght, #d-wdth", "dock sliders"], ["#feats", "features"], ["#details-cmp", "compare with 1.1"], ["#sets", "characters"]]) {
-    const once = () => { track("Tried", { what }); document.querySelectorAll(selector).forEach((n) => { n.removeEventListener("pointerdown", once); n.removeEventListener("input", once); }); };
+    const once = () => { track("tool_tried", { what }); document.querySelectorAll(selector).forEach((n) => { n.removeEventListener("pointerdown", once); n.removeEventListener("input", once); }); };
     document.querySelectorAll(selector).forEach((n) => { n.addEventListener("pointerdown", once); n.addEventListener("input", once); });
   }
   const links = [...document.querySelectorAll("#bar nav a")];
