@@ -21,7 +21,7 @@ and sharper stroke endings.
 
 ![Inter and Raveo side by side: the a with a tail, the R with a curled leg, the r with a longer arm, the G with a spur, the 1 with a flag, the s with angled stroke endings](docs/images/02-letters.svg)
 
-![Inter above Raveo: round commas, round quotes, and the tick of d-caron and t-caron](docs/images/07-details.svg)
+![Inter above Raveo: round commas and round quotes](docs/images/07-details.svg)
 
 ## The family
 
@@ -87,9 +87,10 @@ The 1.1 files stay in [`fonts/`](fonts) at their old paths, so pages that link t
 
 ## Building it
 
-Raveo 2.0 is not drawn by hand. A script takes the masters in `sources/` and derives every style from
-them: it squeezes and stretches letters while holding their stems, re-cuts stroke endings, respaces and
-checks the kerning. Each step is a setting in `recipe.json`.
+Raveo's own letters are drawn by hand; the a, r, e, i and R were first drawn for a wordmark. The masters
+in `sources/` hold those drawings. A script carries them through the family: it squeezes and stretches
+letters while holding their stems, cuts stroke endings at an angle, respaces and checks the kerning. Each
+step is a setting in `recipe.json`, tuned by eye in the workbench.
 
 ```sh
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt    # Python 3.12

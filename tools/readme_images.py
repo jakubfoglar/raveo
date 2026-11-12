@@ -130,13 +130,13 @@ def build(inter_path=None):
     if inter_path and Path(inter_path).exists():
         inter = Face(inter_path)
 
-        def against(name, cells, size, rows):
-            """Cells of Inter (quiet) and Raveo (ink), three to a row. With two rows the pair stands side by
+        def against(name, cells, size, rows, across=3):
+            """Cells of Inter (quiet) and Raveo (ink), `across` to a row. With two rows the pair stands side by
             side; with one row, for groups of letters, Inter stands above and Raveo below."""
             p = Panel("paper")
-            cell, pitch = inner / 3, (H - 150) / rows
+            cell, pitch = inner / across, (H - 150) / rows
             for k, (chars, note) in enumerate(cells):
-                x, top = M + (k % 3) * cell, 70 + (k // 3) * pitch
+                x, top = M + (k % across) * cell, 70 + (k // across) * pitch
                 p.rule(x, top, cell - 36)
                 if rows == 1:
                     p.put(inter, chars, size, x - size * 0.03, top + 290, "quiet", wght=520)
@@ -151,7 +151,7 @@ def build(inter_path=None):
 
         against("02-letters", (("a", "An a with a tail"), ("R", "An R with a curled leg"), ("r", "A longer arm on the r"),
                                ("G", "The G with a spur"), ("1", "The 1 with a flag"), ("s", "Strokes end in an angled cut")), 250, 2)
-        against("07-details", (("j;,", "Commas as round as the dots"), ("„a“", "Round quotes"), ("ďť", "A tick that sits by its letter")), 264, 1)
+        against("07-details", (("j;,", "Commas as round as the dots"), ("„a“", "Round quotes")), 280, 1, across=2)
 
     # 3. The width axis.
     p = Panel("dark")

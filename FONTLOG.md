@@ -15,7 +15,8 @@ SIL Open Font License 1.1. This file records what changed in each version and wh
 - Round dots, commas and quotes. The tick of ď ť ľ sits closer to its letter and the next letter is
   kept clear of it.
 - A longer arm on the r; a redrawn bowl on the a at the narrow and wide ends.
-- The family is built by script from the masters in `sources/` and the settings in `recipe.json`.
+- The r and the a take the longer arm and the more open bowl of the wordmark they were first drawn for.
+- Every style is derived from the hand-drawn masters in `sources/` by the settings in `recipe.json`.
 - Static fonts are TrueType. Display styles are part of the family "Raveo".
 - Web fonts come in two parts with a stylesheet, upright and italic.
 - Kerning differs from Inter's in one pair: the low quote is no longer pulled toward a.
