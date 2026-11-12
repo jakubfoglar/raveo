@@ -1,5 +1,8 @@
 """The pictures in README.md: eight panels drawn from the released fonts.
 
+The words in them are sample copy, a morning at a railway station, so that the type is seen at work
+and not describing itself.
+
     python tools/readme_images.py [path to InterVariable.ttf]    # writes docs/images/*.svg
 
 Each panel is an SVG of outlines on its own ground (near-black or paper), so it looks the same on a
@@ -117,8 +120,8 @@ def build(inter_path=None):
     size = roman.size_for("Raveo", inner * 1.035, wght=520, wdth=125)
     p.put(roman, "Raveo", size, M - size * 0.045, 560, wght=520, wdth=125)
     p.rule(M, 716, inner)
-    p.put(roman, "A free, open-source sans for interfaces and headlines", 30, M, 772, **small)
-    p.put(roman, "from narrow to wide, upright and italic", 30, M, 814, "quiet", **small)
+    p.put(roman, "A warm grotesque in seven weights and three widths", 30, M, 772, **small)
+    p.put(roman, "upright and italic, free and open source", 30, M, 814, "quiet", **small)
     p.put(roman, f"Version {newest['version']}", 30, W - M, 772, align="right", **small)
     p.put(roman, "SIL Open Font License", 30, W - M, 814, "quiet", align="right", **small)
     panels["01-raveo"] = p
@@ -152,7 +155,7 @@ def build(inter_path=None):
 
     # 3. The width axis.
     p = Panel("dark")
-    text, steps = "From narrow to wide", (60, 75, 90, 100, 112, 125)
+    text, steps = "Morning train to Kraków", (60, 75, 90, 100, 112, 125)
     size = roman.size_for(text, inner - 130, wght=630, wdth=125)
     for k, width in enumerate(steps):
         y = 168 + k * 126
@@ -178,7 +181,7 @@ def build(inter_path=None):
     p = Panel("dark")
     for k, (location, name) in enumerate(((dict(wght=730, wdth=60), "Narrow Bold Italic"), (dict(wght=400, wdth=100), "Italic"),
                                           (dict(wght=520, wdth=125), "Wide Medium Italic"))):
-        text, top = "Leaning at every width", 62 + k * 270
+        text, top = "Window seat, facing forward", 62 + k * 270
         size = min(190, italic.size_for(text, inner, **location))
         p.rule(M, top, inner)
         p.put(roman, name, 24, M, top + 42, "quiet", **small)
@@ -187,49 +190,49 @@ def build(inter_path=None):
 
     # 6. In use: a statement, a table of figures, a narrow headline and a chart.
     p = Panel("dark")
-    left, right, gutter = M, 880, 80
-    for k, line in enumerate(("A typeface for interfaces", "has two jobs: stay quiet in a", "table, speak up in a headline.")):
-        p.put(roman, line, 44, left, 128 + k * 54, wght=520, wdth=125)
-    poster = roman.size_for("HEADLINE HAS TO FIT", right - gutter - left, wght=760, wdth=60)
-    for k, line in enumerate(("NARROW WHERE THE", "HEADLINE HAS TO FIT")):
-        p.put(roman, line, poster, left - poster * 0.02, 628 + k * poster * 0.88, wght=760, wdth=60)
-    rows = (("Northwind", "4 218 500", "34,1 %", "+12,4 %"), ("Alder", "3 377 120", "27,3 %", "+8,0 %"),
-            ("Kestrel", "2 611 900", "21,1 %", "−3,6 %"), ("Marlow", "1 358 047", "11,0 %", "+0,7 %"))
-    columns = (1230, 1380, W - M)
-    for x, head in zip((right, *columns), ("Shop", "Sales, Kč", "Share", "Change")):
-        p.put(roman, head, 20, x, 92, "quiet", align="left" if x == right else "right", **small)
+    left, right, gutter = M, 860, 70
+    p.put(roman, "Praha hlavní nádraží", 58, left, 132, wght=520, wdth=125)
+    p.put(roman, "Departures, Thursday 12 November", 24, left, 180, "quiet", **small)
+    poster = roman.size_for("PLATFORM 3 · 07:42", right - gutter - left, wght=760, wdth=60)
+    for k, line in enumerate(("WIEN HBF", "PLATFORM 3 · 07:42")):
+        p.put(roman, line, poster, left - poster * 0.02, 650 + k * poster * 0.88, wght=760, wdth=60)
+    rows = (("07:42", "RJ 71", "Wien Hbf", "3"), ("07:55", "EC 172", "Berlin Hbf", "1"), ("08:04", "R 941", "Kolín", "6"),
+            ("08:12", "EC 111", "Kraków Główny", "2"), ("08:31", "Ex 143", "Ostrava hl. n.", "5"))
+    columns = (right, right + 130, right + 290, W - M)
+    for x, head in zip(columns, ("Time", "Train", "To", "Platform")):
+        p.put(roman, head, 20, x, 92, "quiet", align="right" if x == columns[-1] else "left", **small)
     for k, row in enumerate(rows):
         y = 150 + k * 52
         p.rule(right, y - 38, W - M - right)
-        p.put(roman, row[0], 27, right, y, wght=520, wdth=125)
-        for x, cell in zip(columns, row[1:]):
-            p.put(roman, cell, 27, x, y, align="right", features={"tnum": True}, wght=520, wdth=125)
-    p.rule(right, 150 + 4 * 52 - 38, W - M - right)
-    p.put(roman, "34,1 %", 150, right - 6, 600, wght=520, wdth=125)
-    p.put(roman, "Share of sales, fourth quarter", 20, right, 646, "quiet", **small)
-    for k, (name, share) in enumerate((("Northwind", 1.0), ("Alder", 0.8), ("Kestrel", 0.62), ("Marlow", 0.32))):
-        y = 706 + k * 36
-        p.put(roman, name, 20, right, y, "quiet", **small)
-        p.rule(right + 130, y - 14, (W - M - right - 130) * share, 13, "ink" if k == 0 else "rule_colour")
+        for x, cell in zip(columns, row):
+            p.put(roman, cell, 27, x, y, align="right" if x == columns[-1] else "left", features={"tnum": True}, wght=520, wdth=125)
+    p.rule(right, 150 + len(rows) * 52 - 38, W - M - right)
+    p.put(roman, "07:42", 210, right - 10, 740, wght=520, wdth=125)
+    p.put(roman, "Next departure. Calls at Pardubice, Brno and Břeclav.", 24, right, 796, "quiet", **small)
     panels["06-in-use"] = p
 
-    # 8. Text: the display drawing for the headline, the text drawing for the paragraph.
+    # 8. Text: the opening of an article and the stops of the journey. The first line of the text stands
+    # with its capitals at the height of the headline's.
     p = Panel("paper")
-    for k, line in enumerate(("Small type asks for", "a different drawing", "than large type")):
-        p.put(roman, line, 78, M, 170 + k * 84, wght=520, wdth=108)
-    lines = ([(roman, "Set a headline face at twelve pixels and it closes up:")],
-             [(roman, "the letters crowd each other and the openings of a, e")],
-             [(roman, "and s fill in. Raveo keeps two drawings in one file. The")],
-             [(italic, "text drawing"), (roman, " has taller small letters and more room")],
-             [(roman, "around them; the "), (italic, "display drawing"), (roman, " is tighter and finer.")],
-             [(roman, "Browsers pick between them by type size on their own.")])
+    cap, head, body, first = 0.7275, 104, 24, 196
+    for k, line in enumerate(("Four hours", "to Vienna,", "the slow way")):
+        p.put(roman, line, head, M - 4, first + k * 108, wght=520, wdth=108)
+    lines = ([(roman, "The 07:42 leaves Prague from platform three and is in")],
+             [(roman, "Vienna by ten to twelve. You could fly it in fifty")],
+             [(roman, "minutes; almost nobody on this train would. There is a")],
+             [(roman, "dining car, a river that keeps turning up on the left,")],
+             [(roman, "and four hours in which nothing is asked of you.")],
+             [(italic, "Moravia goes by in fields and church towers.")],
+             [(roman, "By Břeclav the announcements have switched to German,")],
+             [(roman, "the coffee costs 20 Kč more, and it is better.")])
+    top = first - cap * head + cap * body
     for k, parts in enumerate(lines):
-        p.run(parts, 25, 880, 122 + k * 40, **small)
-    p.rule(M, 480, inner)
-    for k, (label, size, location) in enumerate((("Text drawing, optical size 14", 150, dict(opsz=14)), ("Display drawing, optical size 32", 150, dict(opsz=32)))):
-        x = M + k * (inner / 2)
-        p.put(roman, "Hamburg", size, x - 6, 690, wght=520, **location)
-        p.put(roman, label, 24, x, 756, "quiet", **small)
+        p.run(parts, body, 880, top + k * 40, **small)
+    p.rule(M, 560, inner)
+    for k, (time, place) in enumerate((("07:42", "Praha hl. n."), ("10:16", "Brno hl. n."), ("10:49", "Břeclav"), ("11:49", "Wien Hbf"))):
+        x = M + k * inner / 4
+        p.put(roman, time, 100, x - 4, 716, features={"tnum": True}, wght=520)
+        p.put(roman, place, 24, x, 770, "quiet", **small)
     panels["08-text"] = p
 
     OUT.mkdir(parents=True, exist_ok=True)

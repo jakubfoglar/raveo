@@ -181,9 +181,9 @@ def _share_image(variable, slanted, out):
         if word.width > width - 2 * margin:
             word = word.resize((width - 2 * margin, round(word.height * (width - 2 * margin) / word.width)), Image.LANCZOS)
         page.paste(word, (margin, 150))
-        parts = [line(variable, "A free sans from narrow to wide" + ("," if slanted else ""), 44, "opsz=32,wght=400,wdth=100", QUIET)]
+        parts = [line(variable, "A warm grotesque in seven weights and three widths" + ("," if slanted else ""), 40, "opsz=32,wght=400,wdth=100", QUIET)]
         if slanted:
-            parts.append(line(slanted, "upright and italic", 44, "opsz=32,wght=400,wdth=100", QUIET))
+            parts.append(line(slanted, "upright and italic", 40, "opsz=32,wght=400,wdth=100", QUIET))
         x, y = margin, height - margin - max(part.height for part in parts)
         for part in parts:
             page.paste(part, (x, y))

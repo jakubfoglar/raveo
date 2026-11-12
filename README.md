@@ -1,12 +1,29 @@
 # Raveo
 
-![Raveo: a free, open-source sans for interfaces and headlines, from narrow to wide, upright and italic](docs/images/01-raveo.svg)
+![Raveo: a warm grotesque in seven weights and three widths, upright and italic, free and open source](docs/images/01-raveo.svg)
 
-Raveo is a free, open-source sans for interfaces and headlines. It began as a warmer cut of
-[Inter](https://github.com/rsms/inter): an a with a tail, an R with a curled leg, darker named weights.
-Version 2.0 adds a width axis from narrow to wide, an italic for every style, and sharper stroke endings.
+Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic, free
+and open source. It began as a fork of [Inter](https://github.com/rsms/inter) with an a that has a tail,
+an R with a curled leg and darker named weights. Version 2.0 adds a width axis, an italic for every style
+and sharper stroke endings.
 
-**[Specimen and tester](https://raveo.jakubfoglar.com)** · **[Download Raveo 2.0](https://github.com/jakubfoglar/raveo/releases/latest)**
+[Specimen and tester](https://raveo.jakubfoglar.com) · [Download Raveo 2.0](https://github.com/jakubfoglar/raveo/releases/latest)
+
+![The line "Morning train to Kraków" at six widths, from 60 to 125](docs/images/03-width.svg)
+
+![The seven named weights, upright and italic](docs/images/04-weight.svg)
+
+![The line "Window seat, facing forward" in Narrow Bold Italic, Italic and Wide Medium Italic](docs/images/05-italic.svg)
+
+![A departures board: the station's name in the wide Medium, a table of trains with tabular figures, the next departure in narrow capitals and its time set large](docs/images/06-in-use.svg)
+
+![The opening of an article: a headline, a paragraph with one line in italic, and the four stops of the journey with their times](docs/images/08-text.svg)
+
+![Inter and Raveo side by side: the a with a tail, the R with a curled leg, the r with a longer arm, the G with a spur, the 1 with a flag, the s with angled stroke endings](docs/images/02-letters.svg)
+
+![Inter above Raveo: round commas, round quotes, and the tick of d-caron and t-caron](docs/images/07-details.svg)
+
+## The family
 
 | Axis | Range | Named styles |
 | --- | --- | --- |
@@ -14,46 +31,19 @@ Version 2.0 adds a width axis from narrow to wide, an italic for every style, an
 | Width `wdth` | 60 to 125 | Narrow 60, regular 100, Wide 125 |
 | Optical size `opsz` | 14 to 32 | the text drawing at 14, the Display drawing at 32 |
 
-Two variable fonts, upright and italic, and 84 static styles. 826 characters: Latin script for Western,
-Central and Northern European languages, the Baltics, Romanian and Turkish. No Cyrillic, Greek or
-Vietnamese; for those, use Inter.
-
-## Width
-
-![One line at six widths, from 60 to 125](docs/images/03-width.svg)
-
-Stems keep their weight while the letters are squeezed or stretched, so a wide Medium still reads as a
-Medium next to the regular one.
-
-## Weight and italic
-
-![The seven named weights, upright and italic](docs/images/04-weight.svg)
-
-![One line in Narrow Bold Italic, Italic and Wide Medium Italic](docs/images/05-italic.svg)
-
-The italic leans 9.4 degrees. It is Inter's drawn italic with Raveo's own letters carried into it; a, e
-and f keep their upright forms. It is a second font file, so `font-style: italic` and the Italic button
-in apps find it.
-
-## Raveo and Inter
-
-![Inter and Raveo side by side: the a with a tail, the R with a curled leg, the r with a longer arm, the G with a spur, the 1 with a flag, the s with angled stroke endings](docs/images/02-letters.svg)
-
-![Inter above Raveo: round commas, round quotes, and the tick of d-caron and t-caron](docs/images/07-details.svg)
-
-Grey is Inter, black is Raveo. Curved strokes end in an angled cut, and commas and quotes are round.
-The G with a spur and the 1 with a flag are Inter's alternates, made the default.
-
-## In use
-
-![A statement in the wide Medium, a table with tabular figures, a headline in narrow capitals and a small chart](docs/images/06-in-use.svg)
-
-## Text
-
-![A headline in the display drawing, a paragraph in the text drawing, and the word Hamburg in both](docs/images/08-text.svg)
-
-Every letter is drawn twice. Browsers and design apps pick the text drawing below 14 pixels and the
-Display drawing from 32 pixels up, with a blend in between.
+- **Two variable fonts**, upright and italic, and 84 static styles.
+- **Width.** Stems keep their weight while a letter is squeezed or stretched, so the wide Medium is as dark
+  as the regular one.
+- **Italic.** It leans 9.4 degrees and is Inter's drawn italic with Raveo's letters carried into it; a, e and
+  f keep their upright forms. It is a second font file, so `font-style: italic` and the Italic button in
+  apps find it.
+- **Optical size.** Every letter is drawn twice. Browsers and design apps use the text drawing up to 14
+  pixels and the Display drawing from 32 pixels, with a blend in between.
+- **Against Inter.** An a with a tail, an R with a curled leg, a longer arm on the r, stroke endings cut at
+  an angle, round commas and quotes. The G with a spur and the 1 with a flag are Inter's alternates, made
+  the default.
+- **Languages.** 826 characters: Latin script for Western, Central and Northern Europe, the Baltics,
+  Romanian and Turkish. No Cyrillic, Greek or Vietnamese; for those, use Inter.
 
 ## Install
 

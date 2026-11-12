@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raveo — an open-source sans with weight, width, optical size and italics</title>
-<meta name="description" content="Raveo is a free, open-source variable typeface for interfaces and headlines: weight, width and optical size, upright and italic.">
+<title>Raveo — a warm grotesque in seven weights and three widths</title>
+<meta name="description" content="Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic. Free and open source.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Raveo — an open-source sans with weight, width, optical size and italics">
-<meta property="og:description" content="A free variable typeface for interfaces and headlines, from narrow to wide, upright and italic. SIL Open Font License.">
+<meta property="og:title" content="Raveo — a warm grotesque in seven weights and three widths">
+<meta property="og:description" content="A variable sans in seven weights and three widths, upright and italic. Free and open source under the SIL Open Font License.">
 <meta property="og:url" content="https://raveo.jakubfoglar.com/">
 <meta property="og:image" content="https://raveo.jakubfoglar.com/og.png">
 <link rel="canonical" href="https://raveo.jakubfoglar.com/">
@@ -307,6 +307,8 @@
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 <noscript><style>html:not(.ready) main { visibility: visible; }</style></noscript>
+<!-- Visits and clicks, counted without cookies by Umami; only on the published page, not on a local copy. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="bb5f0eb4-68cf-4111-a13b-cb2359ea2033" data-domains="raveo.jakubfoglar.com,jakubfoglar.github.io"></script>
 </head>
 <body>
 <div id="bar">
@@ -319,8 +321,8 @@
     <div class="themes" role="group" aria-label="Colours">
       <button data-theme="light" style="background:#fff" title="White" aria-label="White"></button><button data-theme="paper" style="background:#e9e6df" title="Paper" aria-label="Paper"></button><button data-theme="dark" style="background:#0b0b0b" title="Black" aria-label="Black"></button>
     </div>
-    <a id="gh" href="#">GitHub</a>
-    <a class="btn" href="#download">Download</a>
+    <a id="gh" href="#" data-umami-event="GitHub" data-umami-event-place="top bar">GitHub</a>
+    <a class="btn" href="#download" data-umami-event="Go to download" data-umami-event-place="top bar">Download</a>
   </div>
 </div>
 
@@ -331,9 +333,9 @@
       <div class="hero-read num" id="hero-read"></div>
     </div>
     <div class="hero-meta grid">
-      <p class="lede">Raveo is a free, open-source sans for interfaces and headlines. It began as a warmer cut of Inter, drawn once for text and once for large sizes. Version 2.0 adds a width axis from narrow to wide, an italic for every style, and sharper stroke endings.</p>
+      <p class="lede">Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic, free and open source. It began as a fork of Inter. Version 2.0 adds the width axis, the italics and sharper stroke endings.</p>
       <dl class="facts" id="facts"></dl>
-      <div class="actions"><a class="btn" id="zip" href="#download">Download</a><a class="btn ghost" id="gh2" href="#">Source on GitHub</a><span class="note" id="zip-note"></span></div>
+      <div class="actions"><a class="btn" id="zip" href="#download" data-umami-event="Download zip" data-umami-event-place="hero">Download</a><a class="btn ghost" id="gh2" href="#" data-umami-event="GitHub" data-umami-event-place="hero">Source on GitHub</a><span class="note" id="zip-note"></span></div>
     </div>
   </section>
 
@@ -344,7 +346,7 @@
       <div class="show">
         <div class="s" id="spaceword" contenteditable spellcheck="false">Rag</div>
         <div class="s" id="spaceline" contenteditable spellcheck="false">Hamburgefonstiv 0123456789</div>
-        <div class="readout"><b id="space-name"></b><span class="num mute" id="space-pos"></span><code id="space-css"></code><button class="copy" data-copy="space-css">Copy</button></div>
+        <div class="readout"><b id="space-name"></b><span class="num mute" id="space-pos"></span><code id="space-css"></code><button class="copy" data-copy="space-css" data-umami-event="Copy" data-umami-event-what="axis settings">Copy</button></div>
       </div>
     </div>
   </section>
@@ -364,10 +366,10 @@
     <div class="grid optical">
       <div class="half"><div class="word" id="opt-text" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-text-h"></h3><ul id="opt-text-f"></ul></div>
       <div class="half"><div class="word" id="opt-disp" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-disp-h"></h3><ul id="opt-disp-f"></ul></div>
-      <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">At twelve pixels the text drawing keeps its openings clear and its letters apart, so a table of 1 284 950 Kč and +12,4 % stays readable in a narrow column.</p><h3>The text drawing at 12 pixels, where it belongs</h3></div>
-      <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">At twelve pixels the text drawing keeps its openings clear and its letters apart, so a table of 1 284 950 Kč and +12,4 % stays readable in a narrow column.</p><h3>The display drawing at 12 pixels: tighter, smaller, harder to read</h3></div>
+      <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The text drawing at 12 pixels, where it belongs</h3></div>
+      <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The display drawing at 12 pixels: tighter, smaller, harder to read</h3></div>
       <div class="sweep">
-        <div class="line s" id="sweep" contenteditable spellcheck="false">From a caption to a headline</div>
+        <div class="line s" id="sweep" contenteditable spellcheck="false">Praha hl. n. to Wien Hbf</div>
         <div class="ctl"><span>Text</span><input id="sweep-in" type="range" step="0.5" aria-label="Optical size"><span>Display</span><output class="num" id="sweep-out"></output></div>
       </div>
     </div>
@@ -377,7 +379,7 @@
     <header class="sh grid"><h2>Italic</h2><p id="italic-says"></p></header>
     <div class="grid optical">
       <div class="stack" id="ital-stack"></div>
-      <p class="run" id="ital-run" contenteditable spellcheck="false">An italic is for the word that has to stand apart inside a sentence: a title such as <em>The Elements of Typographic Style</em>, a term on its first use, a voice that is not the writer’s own. It should read as the same typeface <em>leaning into the line</em>, as dark and as wide as the roman around it. <strong><em>A bold italic</em></strong> is there for the rare word that needs both, and figures lean with the text: <em>1 284 950 Kč, +12,4 %, 2026</em>.</p>
+      <p class="run" id="ital-run" contenteditable spellcheck="false">Order the <em>svíčková</em> in the dining car before Brno; after that the kitchen is <strong><em>very</em></strong> busy. The menu has it at <em>289 Kč</em>, the same as last year, and the waiter will tell you, <em>as he tells everyone</em>, that the dumplings are made on board.</p>
       <ul class="pairs" id="ital-pairs" aria-label="Letters upright and italic"></ul>
     </div>
   </section>
@@ -385,56 +387,56 @@
   <div class="band" id="use">
     <header class="sh grid"><h2>In use</h2><p>Wide for statements and figures, narrow where a headline has to fit, the text drawing for everything small.</p></header>
     <div class="grid use">
-      <p class="short" contenteditable spellcheck="false">A typeface for interfaces has two jobs. It has to stay quiet in a table of figures and speak up in a headline, and it should be the same voice both times.</p>
-      <p class="short" lang="cs" contenteditable spellcheck="false">Příliš žluťoučký kůň úpěl ďábelské ódy. Jedno písmo na tabulku, popisek i titulek: úzké tam, kde je málo místa, široké tam, kde má věta zaznít.</p>
+      <p class="short" contenteditable spellcheck="false">The 07:42 to Vienna leaves from platform three. Four hours, one dining car, and a river that keeps turning up on the left.</p>
+      <p class="short" lang="cs" contenteditable spellcheck="false">Příliš žluťoučký kůň úpěl ďábelské ódy. Rychlík do Vídně odjíždí v 7.42 ze třetího nástupiště: čtyři hodiny, jeden jídelní vůz a řeka, která se pořád vrací po levé straně.</p>
       <div class="figures">
         <table class="fig">
-          <thead><tr><th>Shop</th><th>Sales, Kč</th><th>Share</th><th>Change</th></tr></thead>
+          <thead><tr><th>To</th><th>Departs</th><th>Train</th><th>Platform</th></tr></thead>
           <tbody contenteditable spellcheck="false">
-            <tr><td>Northwind</td><td>4 218 500</td><td>34,1 %</td><td>+12,4 %</td></tr>
-            <tr><td>Alder</td><td>3 377 120</td><td>27,3 %</td><td>+8,0 %</td></tr>
-            <tr><td>Kestrel</td><td>2 611 900</td><td>21,1 %</td><td>−3,6 %</td></tr>
-            <tr><td>Marlow</td><td>1 358 047</td><td>11,0 %</td><td>+0,7 %</td></tr>
+            <tr><td>Wien Hbf</td><td>07:42</td><td>RJ 71</td><td>3</td></tr>
+            <tr><td>Berlin Hbf</td><td>07:55</td><td>EC 172</td><td>1</td></tr>
+            <tr><td>Kraków Główny</td><td>08:12</td><td>EC 111</td><td>2</td></tr>
+            <tr><td>Ostrava hl. n.</td><td>08:31</td><td>Ex 143</td><td>5</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="poster"><div class="p" contenteditable spellcheck="false">Narrow where the headline has to fit</div></div>
+      <div class="poster"><div class="p" contenteditable spellcheck="false">Next departure Vienna 07:42</div></div>
       <div class="chart">
         <div class="card">
-          <p class="h">Northwind took a third of the market</p>
-          <p class="d">Share of sales, fourth quarter of 2026</p>
-          <p class="big">34,1 %</p>
+          <p class="h">Nine trains in ten arrived on time</p>
+          <p class="d">Arrivals within five minutes, fourth quarter of 2026</p>
+          <p class="big">91,4 %</p>
           <div class="bars">
-            <div><span>Northwind</span><b>34,1 %</b><i style="--v:100%"></i></div>
-            <div><span>Alder</span><b>27,3 %</b><i style="--v:80%"></i></div>
-            <div><span>Kestrel</span><b>21,1 %</b><i style="--v:62%"></i></div>
-            <div><span>Marlow</span><b>11,0 %</b><i style="--v:32%"></i></div>
+            <div><span>Praha – Wien</span><b>94,8 %</b><i style="--v:100%"></i></div>
+            <div><span>Praha – Berlin</span><b>91,2 %</b><i style="--v:96%"></i></div>
+            <div><span>Praha – Kraków</span><b>89,7 %</b><i style="--v:94%"></i></div>
+            <div><span>Praha – Ostrava</span><b>86,3 %</b><i style="--v:91%"></i></div>
           </div>
-          <p class="src">Sample data. Headline and figures in the wide Medium, labels in the text drawing.</p>
+          <p class="src">Sample data.</p>
         </div>
       </div>
       <div class="app">
         <div class="ui">
-          <nav><b>Northwind</b><a class="on">Products</a><a>Orders</a><a>Customers</a><a>Reports</a><a>Settings</a></nav>
+          <nav><b>Trains</b><a class="on">Departures</a><a>Arrivals</a><a>Tickets</a><a>Delays</a><a>Settings</a></nav>
           <div class="main">
-            <h4>Products</h4><p class="sub">248 in stock across 6 shops, updated 4 minutes ago</p>
+            <h4>Departures</h4><p class="sub">248 trains today from 6 platforms, updated 4 minutes ago</p>
             <table>
-              <tr><th>Product</th><th>Status</th><th class="n">Sales, Kč</th><th class="n">Margin</th></tr>
-              <tr><td><b style="font-weight:520">Oak desk, 160 cm</b><small>Furniture · since 1 Oct 2026</small></td><td>On sale</td><td class="n">1 284 950</td><td class="n">2,41 %</td></tr>
-              <tr><td><b style="font-weight:520">Židle Lístek</b><small>Seating · since 14 Oct 2026</small></td><td>On sale</td><td class="n">611 070</td><td class="n">1,97 %</td></tr>
-              <tr><td><b style="font-weight:520">Wool rug, grey</b><small>Textiles · until 30 Nov 2026</small></td><td>Sold out</td><td class="n">2 038 114</td><td class="n">3,06 %</td></tr>
-              <tr><td><b style="font-weight:730">Total</b></td><td></td><td class="n" style="font-weight:730">3 934 134</td><td class="n" style="font-weight:730">2,48 %</td></tr>
+              <tr><th>Train</th><th>Status</th><th class="n">Departs</th><th class="n">Platform</th></tr>
+              <tr><td><b style="font-weight:520">RJ 71 Wien Hbf</b><small>Railjet · via Brno and Břeclav</small></td><td>On time</td><td class="n">07:42</td><td class="n">3</td></tr>
+              <tr><td><b style="font-weight:520">EC 172 Berlin Hbf</b><small>EuroCity · via Ústí nad Labem</small></td><td>5 min late</td><td class="n">07:55</td><td class="n">1</td></tr>
+              <tr><td><b style="font-weight:520">Ex 143 Ostrava hl. n.</b><small>Express · via Olomouc</small></td><td>On time</td><td class="n">08:31</td><td class="n">5</td></tr>
+              <tr><td><b style="font-weight:730">Next</b></td><td></td><td class="n" style="font-weight:730">07:42</td><td class="n" style="font-weight:730">3</td></tr>
             </table>
             <p class="cap">An interface at 14 and 12 pixels, in the text drawing: Regular, Medium, SemiBold and Bold with tabular figures.</p>
           </div>
         </div>
       </div>
       <div class="article">
-        <h3 contenteditable spellcheck="false">Small type asks for a different drawing than large type</h3>
+        <h3 contenteditable spellcheck="false">Four hours to Vienna, the slow way</h3>
         <div class="body" contenteditable spellcheck="false">
-          <p>Set a headline face at twelve pixels and it closes up: the letters crowd each other, the openings of a, e and s fill in, and the thin joins disappear into the pixel grid. Punchcutters knew this and cut every size of a typeface separately, with wider letters, more space and sturdier details as the type got smaller.</p>
-          <p>Raveo keeps that idea in one file. Below 14 pixels it uses its text drawing; from 32 pixels up, the display drawing; in between, a blend of the two. Nothing has to be configured. A paragraph like this one is set in the text drawing, the headline beside it in the display drawing, and both come from the same font.</p>
-          <p>The width axis works the same way for horizontal room. A narrow style fits a long title into a chart or a table header; a wide one gives a short statement more presence without setting it larger. Stems keep their weight while the letters stretch, so a wide Medium still looks like a Medium next to the regular one.</p>
+          <p>The 07:42 leaves Prague from platform three and is in Vienna by ten to twelve. You could fly it in fifty minutes; almost nobody on this train would. There is a dining car, a river that keeps turning up on the left, and four hours in which nothing is asked of you.</p>
+          <p>Past Pardubice the fields open out and the stations get smaller: a signal box, a platform, two people waiting for a train that is not this one. Moravia goes by in vineyards and church towers. Somebody opens a thermos. The conductor checks the same ticket twice and apologises both times.</p>
+          <p>By Břeclav the announcements have switched to German, the coffee costs 20 Kč more, and it is better. The border is a bridge you notice only because the phone says so. At 11:49 the train stops under the glass roof of Wien Hbf, on time to the minute, and everyone stands up at once.</p>
         </div>
       </div>
     </div>
@@ -466,10 +468,10 @@
   <section class="block" id="download">
     <header class="sh grid"><h2>Download</h2><p>Free for personal and commercial work under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>.</p></header>
     <div class="grid get">
-      <div class="lead"><a class="big" id="zip-big" href="#">Download Raveo</a><p id="zip-says"></p></div>
+      <div class="lead"><a class="big" id="zip-big" href="#" data-umami-event="Download zip" data-umami-event-place="download section">Download Raveo</a><p id="zip-says"></p></div>
       <div class="side"><h3>In the folder</h3><ul class="list" id="files"></ul></div>
       <div class="wide">
-        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet">Copy</button></div>
+        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet" data-umami-event="Copy" data-umami-event-what="css">Copy</button></div>
         <pre><code id="css-snippet"></code></pre>
       </div>
       <div class="side"><h3>On a computer</h3><p class="mute" id="install-note"></p><h3 style="margin-top:28px">Versions</h3><ul class="list" id="versions"></ul></div>
@@ -487,7 +489,7 @@
   </section>
 </main>
 
-<footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
+<footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#" data-umami-event="GitHub" data-umami-event-place="footer">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
 
 <div id="dock">
   <select id="d-style" aria-label="Named style"></select>
@@ -506,6 +508,7 @@ const state = Object.assign({ wght: 520, wdth: 125, opsz: "auto", theme: "light"
 let D = null, picked = 0x52;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const fmt = (n) => n.toLocaleString("en-US");
+const track = (name, data) => { try { if (window.umami) { window.umami.track(name, data); } } catch (e) { /* counting is optional */ } };
 const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // Variation settings for one style. The optical size is left to the browser unless it is given or fixed in the dock.
@@ -645,10 +648,10 @@ function buildStyles() {
 }
 
 const TESTERS = [
-  { text: "One family from narrow to wide", wght: 520, wdth: "max", size: 132, track: 0, lead: 0.98 },
-  { text: "Úzký řez unese i hodně dlouhý titulek", wght: 730, wdth: "min", size: 168, track: 0, lead: 0.92 },
-  { text: "Every weight and width leans the same way", wght: 400, wdth: 100, size: 112, track: 0, lead: 1, italic: true },
-  { text: "A good text face gets out of the way. You notice the words, the figures and the pauses between them, and only later, if at all, the letters: 1 284 950 Kč, 2,41 %, +12,4 %. The text drawing is made for that kind of reading.", wght: 400, wdth: 100, size: 30, track: 0, lead: 1.32 },
+  { text: "Morning train to Kraków", wght: 520, wdth: "max", size: 132, track: 0, lead: 0.98 },
+  { text: "Rychlík do Vídně odjíždí ze třetího nástupiště", wght: 730, wdth: "min", size: 168, track: 0, lead: 0.92 },
+  { text: "Window seat, facing forward", wght: 400, wdth: 100, size: 112, track: 0, lead: 1, italic: true },
+  { text: "By Břeclav the announcements have switched to German, the coffee costs 20 Kč more, and it is better. The border is a bridge you notice only because the phone says so. At 11:49 the train stops under the glass roof of Wien Hbf, on time to the minute.", wght: 400, wdth: 100, size: 30, track: 0, lead: 1.32 },
 ];
 function buildTesters() {
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
@@ -734,7 +737,7 @@ function buildItalic() {
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("ital-stack").innerHTML = [[730, wl], [400, 100], [520, wh]].map(([wght, wdth]) => {
     const style = named(clamp(wght, gl, gh), wdth);
-    return `<div class="line" data-wght="${wght}" data-wdth="${wdth}" contenteditable spellcheck="false">Raveo leans at every width</div><p>${style ? slanted(style.name) : `Italic, weight ${wght}, width ${wdth}`}</p>`;
+    return `<div class="line" data-wght="${wght}" data-wdth="${wdth}" contenteditable spellcheck="false">Window seat, facing forward</div><p>${style ? slanted(style.name) : `Italic, weight ${wght}, width ${wdth}`}</p>`;
   }).join("");
   $("ital-stack").addEventListener("input", paintItalic);
   $("ital-pairs").innerHTML = [..."aefgkyRQ&"].map((ch) => `<li>${esc(ch)}<i>${esc(ch)}</i></li>`).join("");
@@ -896,11 +899,11 @@ async function start() {
   // events
   for (const k of ["wght", "wdth"]) { $("d-" + k).addEventListener("input", (e) => { state[k] = Number(e.target.value); apply(); }); }
   $("d-style").addEventListener("change", (e) => { const s = textStyles().find((x) => x.name === e.target.value); if (s) { state.wght = s.wght; state.wdth = s.wdth; apply(); } });
-  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); } });
-  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); } });
+  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("Italic", { on: state.italic, place: "dock" }); } });
+  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("Italic", { on: state.italic, place: "styles" }); } });
   $("d-opsz").addEventListener("click", (e) => { if (e.target.dataset.opsz) { state.opsz = e.target.dataset.opsz; apply(); buildTesters(); } });
-  document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); } });
-  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); } });
+  document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); track("Theme", { theme: state.theme }); } });
+  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); track("Style", { style: $("space-name").textContent }); } });
   $("styles-size").addEventListener("click", (e) => { if (e.target.dataset.opsz) { store.stylesOpsz = Number(e.target.dataset.opsz); save(); buildStyles(); apply(); } });
   $("details-cmp").addEventListener("click", (e) => {
     if (!e.target.dataset.cmp) { return; }
@@ -908,7 +911,7 @@ async function start() {
     document.querySelectorAll("#details-cmp button").forEach((b) => b.setAttribute("aria-pressed", b === e.target));
   });
   $("sets").addEventListener("click", (e) => { if (e.target.dataset.cp) { pick(Number(e.target.dataset.cp)); } });
-  $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); });
+  $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); track("Characters", { all: !!store.allChars }); });
   let down = false;
   $("pad").addEventListener("pointerdown", (e) => { down = true; try { $("pad").setPointerCapture(e.pointerId); } catch (err) { /* nothing to capture */ } padPoint(e); });
   $("pad").addEventListener("pointermove", (e) => { if (down) { padPoint(e); } });
@@ -924,6 +927,16 @@ async function start() {
     await navigator.clipboard.writeText($(b.dataset.copy).textContent);
     const was = b.textContent; b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1200);
   });
+  // Which sections a visitor reached, once each, and the first time each tool on the page is touched.
+  const reached = new Set();
+  const reach = new IntersectionObserver((entries) => {
+    for (const entry of entries) { if (entry.isIntersecting && !reached.has(entry.target.id)) { reached.add(entry.target.id); track("Section", { section: entry.target.id }); } }
+  }, { rootMargin: "-40% 0px -40% 0px" });
+  document.querySelectorAll("main section[id], main .band[id]").forEach((el) => { if (el.id !== "top") { reach.observe(el); } });
+  for (const [selector, what] of [["#pad", "axes square"], ["#testers", "tester"], ["#d-wght, #d-wdth", "dock sliders"], ["#feats", "features"], ["#details-cmp", "compare with 1.1"], ["#sets", "characters"]]) {
+    const once = () => { track("Tried", { what }); document.querySelectorAll(selector).forEach((n) => { n.removeEventListener("pointerdown", once); n.removeEventListener("input", once); }); };
+    document.querySelectorAll(selector).forEach((n) => { n.addEventListener("pointerdown", once); n.addEventListener("input", once); });
+  }
   const links = [...document.querySelectorAll("#bar nav a")];
   const spy = new IntersectionObserver((entries) => {
     for (const entry of entries) { if (entry.isIntersecting) { links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id)); } }
