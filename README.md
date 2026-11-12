@@ -71,7 +71,7 @@ em   { font-style: italic; }
 ```
 
 The stylesheet loads the font in two parts: every European language with punctuation, arrows and common
-symbols in the first (about 260 KB), the rare letters in the second. `web/regular-width/` has the same
+symbols in the first (about 280 KB), the rare letters in the second. `web/regular-width/` has the same
 files without the width axis at about half the size, for pages that never use the narrow and wide styles.
 
 ## Upgrading from 1.1
@@ -112,13 +112,28 @@ the font is rebuilt in a few seconds. Settings are kept per width (narrowest, re
 optical size; single letters can be adjusted on their own. Save writes `recipe.json`, Export writes a
 release.
 
+The Proofs tab sets test strings in the draft: every letter between n and o, capitals that overhang,
+figures, quotes around every letter, running text in five languages, or your own lines. A second font
+can run under each line in blue (the untouched source, Raveo 1.1, or Inter), and a click between two
+letters gives that pair's kerning, gap and nearest distance.
+
+### Checking the spacing
+
+```sh
+.venv/bin/python tools/kerning_review.py measure   # every pair of 209 characters in 48 styles
+.venv/bin/python tools/kerning_review.py           # the report: build/kerning/report.md
+```
+
+The review measures the release against the same source built with every design operation off, and
+lists the pairs the recipe moved and the pairs that stand closest.
+
 ### Layout
 
 | | |
 | --- | --- |
 | `sources/` | Raveo's masters (Glyphs format): the upright family and the italic |
 | `recipe.json` | the settings a build is made from |
-| `tools/` | the pipeline (`pipeline.py`), the release (`release.py`), the page (`site_page.py`), the workbench server (`serve.py`) |
+| `tools/` | the pipeline (`pipeline.py`), the release (`release.py`), the page (`site_page.py`), the workbench server (`serve.py`), the spacing review (`kerning_review.py`) |
 | `workbench/` | the tuning page |
 | `site/` | the specimen page |
 | `releases/` | finished fonts, one folder per version |

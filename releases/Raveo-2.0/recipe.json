@@ -75,7 +75,8 @@
   "punctuation_spacing": 0.4,
   "kerning_floor": {
     "letters": 0.1,
-    "punctuation": 0.24
+    "punctuation": 0.24,
+    "kept": 0.2
   },
   "max_source_weight": 930,
   "caron_gap": 0.56,

@@ -8,6 +8,9 @@
   /* The interface is set in the last exported Raveo; Raveo 1.1 is loaded only for the reference line in the Text tab. */
   @font-face { font-family: "Raveo UI"; src: url("/site/fonts/Raveo-VF-european.woff2") format("woff2"); font-weight: 300 900; font-stretch: 60% 125%; }
   @font-face { font-family: "Raveo 1.1"; src: url("/reference/RaveoVF-1.1-shipped.ttf"); font-weight: 100 900; }
+  @font-face { font-family: "Proof source"; src: url("/build/kerning/plain/Raveo-VF.woff2") format("woff2"); font-weight: 300 900; }
+  @font-face { font-family: "Proof source italic"; src: url("/build/kerning/plain-italic/Raveo-Italic-VF.woff2") format("woff2"); font-weight: 300 900; }
+  @font-face { font-family: "Proof Inter"; src: local("Inter Variable"), local("InterVariable"), local("Inter"); font-weight: 100 900; }
 
   :root {
     --ink: #0c0c0c; --paper: #ffffff; --soft: #f4f4f2; --line: rgba(12, 12, 12, .14); --muted: #76767a;
@@ -212,6 +215,30 @@
   #export-body:empty { display: none; }
   #export-body { margin-top: 12px; }
   #export-panel p.error { color: #b3261e; white-space: pre-wrap; }
+
+  /* Proofs: test strings to read the spacing by, a line of another font under each when comparing. */
+  select { font: inherit; color: inherit; padding: 7px 28px 7px 10px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); }
+  .viewbar .field input.one { width: 44px; text-align: center; }
+  .viewbar .field[hidden] { display: none; }
+  .viewbar .field textarea { width: 340px; height: 58px; padding: 8px 10px; border: 1px solid var(--line); font: inherit; color: inherit; resize: vertical; }
+  .viewbar .seg { margin: 0; grid-auto-columns: auto; }
+  .viewbar .seg button { padding: 6px 11px; }
+  #pairline { min-height: 44px; margin: -8px 0 22px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; }
+  #pairline b { color: var(--ink); font-weight: 520; }
+  #pairline .pp { font-size: 34px; line-height: 1; font-weight: inherit; margin-right: 2px; }
+  #pairline .src { color: var(--accent); }
+  #pairline .src b { color: var(--accent); }
+  #proofs { font-size: var(--psize, 64px); line-height: 1.2; }
+  #proofs .pl { white-space: pre-wrap; overflow-wrap: anywhere; cursor: text; }
+  #proofs .pl::selection { background: color-mix(in srgb, var(--accent) 26%, transparent); }
+  #proofs .cmp { color: var(--accent); cursor: default; user-select: none; margin-bottom: .14em; font-kerning: var(--kern);
+                 font-variation-settings: "opsz" var(--opsz), "wght" var(--wght), "wdth" var(--wdth); }
+  #proofs .cmp-source { font-family: "Proof source", var(--ui); }
+  #proofs.slanted .cmp-source { font-family: "Proof source italic", var(--ui); }
+  #proofs .cmp-old { font-family: "Raveo 1.1", var(--ui); }
+  #proofs .cmp-inter { font-family: "Proof Inter", var(--ui); }
+  #proofs .pt { font: 12px/1.4 var(--ui); color: var(--muted); margin: 26px 0 8px; }
+  #proofs .pt:first-child { margin-top: 0; }
 </style>
 </head>
 <body>
@@ -232,6 +259,7 @@
   <div class="tabs" role="tablist">
     <button role="tab" data-tab="letters">Letters</button>
     <button role="tab" data-tab="text">Text</button>
+    <button role="tab" data-tab="proofs">Proofs</button>
     <button role="tab" data-tab="styles">Styles</button>
   </div>
 
@@ -290,6 +318,27 @@
       <div class="big hl" style="font-size:88px">Příliš žluťoučký kůň úpěl ďábelské ódy</div>
       <div class="big hl" style="font-size:88px">AVATAR Type Wave, To. LYLTA 1174</div>
     </section>
+  </div>
+
+  <div class="panel" data-panel="proofs" hidden>
+    <div class="viewbar">
+      <div class="field"><label for="proof"><span class="name">Sample</span></label><select id="proof"></select></div>
+      <div class="field" id="proof-letter-field"><label for="proof-letter"><span class="name">Letter</span></label><input class="one" id="proof-letter" type="text" maxlength="1" aria-label="The letter to test"></div>
+      <div class="field" id="proof-text-field" hidden><textarea id="proof-text" spellcheck="false" aria-label="Your text"></textarea></div>
+      <div class="field"><label for="p-wdth"><span class="name">Width</span><output id="o-p-wdth"></output></label><input id="p-wdth" type="range" step="1"></div>
+      <div class="field"><label for="p-size"><span class="name">Size</span><output id="o-p-size"></output></label><input id="p-size" type="range" min="12" max="220" step="2"></div>
+      <label class="check"><input id="p-kern" type="checkbox" checked> Kerning</label>
+      <div class="field"><label><span class="name">Compare with</span></label>
+        <div class="seg" id="compare">
+          <button data-compare="" title="Only the font on the table">Nothing</button>
+          <button data-compare="source" title="The same source built with every design operation off: Inter's letters, spacing and kerning, scaled to the width">Source</button>
+          <button data-compare="old" title="Raveo 1.1 as shipped in 2024 (regular width only)">Raveo 1.1</button>
+          <button data-compare="inter" title="Inter, if it is installed on this computer (regular width only)">Inter</button>
+        </div>
+      </div>
+    </div>
+    <div id="pairline"></div>
+    <div id="proofs"></div>
   </div>
 
   <div class="panel" data-panel="styles" hidden>
@@ -478,6 +527,7 @@
   const view = { ...VIEW_DEFAULT, kern: true, text: "Raveo sets every headline" };
   const lab = { text: "Races", points: false, comb: false, ghost: false, busy: false, dirty: false };
   const ui = Object.assign({ tab: "letters", open: {} }, JSON.parse(localStorage.getItem("raveo-workbench") || "{}"));
+  const proof = Object.assign({ sample: "Around a letter", letter: "r", size: 64, compare: "", text: "Praha „a“ KVĚTY 3,14\nYour own lines go here.", pair: null }, ui.proof || {}, { pair: null });
   const saveUi = () => localStorage.setItem("raveo-workbench", JSON.stringify(ui));
   let recipe = null;      // design settings currently shown
   let saved = null;       // design settings in recipe.json
@@ -531,6 +581,11 @@
     $("o-wdth").textContent = view.wdth;
     $("o-size").textContent = view.size + " px";
     $("o-track").textContent = view.track;
+    root.style.setProperty("--psize", proof.size + "px");
+    $("p-wdth").value = view.wdth; $("o-p-wdth").textContent = view.wdth;
+    $("p-size").value = proof.size; $("o-p-size").textContent = proof.size + " px";
+    $("p-kern").checked = view.kern;
+    proofSoon();
     if (!fromSpecimen) { $("specimen").textContent = view.text; $("text").value = view.text; }
     $("specimen-ref").textContent = view.text;
     document.querySelectorAll("#widths .t").forEach((n) => { n.textContent = view.text; n.style.fontVariationSettings = `"wght" ${view.wght}, "wdth" ${n.dataset.wdth}`; });
@@ -559,6 +614,7 @@
     const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights);
     $("ranges-summary").textContent = `width ${narrow}–${wide} · weight ${light}–${heavy}`;
     $("wdth").min = narrow; $("wdth").max = wide;
+    $("p-wdth").min = narrow; $("p-wdth").max = wide;
     $("wght").min = light; $("wght").max = heavy;
     view.wdth = clampTo(view.wdth, narrow, wide);
     view.wght = clampTo(view.wght, light, heavy);
@@ -852,6 +908,7 @@
       ` · ${report.guarded_pairs ?? 0} pairs kept apart` +
       (capped.length ? ` · narrowest width: ${capped.join(", ")}` : "") + (dirty ? " · not saved" : "");
     status(built);
+    measurePair();
     try {
       const quality = await (await fetch("/api/quality", { method: "POST", body: JSON.stringify({ ...recipe, opsz: size, italic }) })).json();
       if (mine !== buildNo || !quality.rows) { return; }
@@ -860,6 +917,144 @@
       status(`${built} · kinked joins: ${kinks} · uneven curvature: up to ${worst.jumps} of ${worst.joins} joins (${worst.weight}/${worst.width})`);
     } catch (error) { /* the build line stays */ }
   }
+
+  // --- proofs: strings to read the spacing by. Click between two letters to measure that pair. ---
+  const LOWER = "abcdefghijklmnopqrstuvwxyz", UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", FIGURES = "0123456789";
+  const each = (set, make) => [...set].map(make).join(" ");
+  const between = (side, set) => [...set].map((c) => side + c).join("") + side;
+  const TEXTS = {
+    English: "The 07:42 leaves Prague from platform three and is in Vienna by ten to twelve. “You could fly it in fifty minutes,” says the guard, “but almost nobody on this train would.” There’s a dining car, a river that keeps turning up on the left, and four hours in which nothing is asked of you. Tickets from €19; children under 6 travel free. Wayward vowels, awkward gaps: Type, Avery, Yvonne, Rotary, Kraków, 1974–2026.",
+    "Čeština": "Rychlík do Vídně odjíždí v 7.42 ze třetího nástupiště. „Letadlem by to trvalo padesát minut,“ říká průvodčí, „ale v tomhle vlaku by neletěl skoro nikdo.“ Je tu jídelní vůz, řeka, která se pořád vrací po levé straně, a čtyři hodiny, kdy po vás nikdo nic nechce. Příliš žluťoučký kůň úpěl ďábelské ódy. Jízdenky od 490 Kč; děti do 6 let zdarma. Břeclav, Třebíč, Ždár, Ľubovňa, loďka, veľký, sťatý.",
+    Deutsch: "Der Zug nach Wien fährt um 7.42 Uhr von Gleis drei. „Mit dem Flugzeug wären es fünfzig Minuten“, sagt der Schaffner, „aber in diesem Zug würde kaum jemand fliegen.“ Es gibt einen Speisewagen, einen Fluss, der immer wieder links auftaucht, und vier Stunden, in denen niemand etwas von Ihnen will. Fahrkarten ab 19 €; Kinder unter 6 Jahren fahren frei. Würzburg, Straße, Auffahrt, Wolfgang, Vorverkauf, Typografie.",
+    Polski: "Pociąg do Wiednia odjeżdża o 7.42 z peronu trzeciego. „Samolotem trwałoby to pięćdziesiąt minut — mówi konduktor — ale w tym pociągu prawie nikt by nie poleciał”. Jest wagon restauracyjny, rzeka, która wciąż wraca po lewej stronie, i cztery godziny, w których nikt niczego od ciebie nie chce. Bilety od 79 zł; dzieci do lat 6 jadą za darmo. Kraków Główny, Łódź, Żywiec, Świnoujście, źdźbło.",
+    "Français": "Le train de Vienne part à 7 h 42, voie trois. « En avion, cela prendrait cinquante minutes, dit le contrôleur, mais presque personne dans ce train ne le ferait. » Il y a une voiture-restaurant, une rivière qui revient toujours sur la gauche, et quatre heures pendant lesquelles on ne vous demande rien. Billets à partir de 19 € ; les enfants de moins de 6 ans voyagent gratuitement. L’aller, d’où, qu’à, aujourd’hui, Yaoundé.",
+    Capitals: "NIGHT TRAINS ARE BACK, AND FULL. WAVY TYPE, AVATAR, KYOTO, LAYOUT, RAILWAY, VOLTA, TOKYO, FJORD, PRAHA HLAVNÍ NÁDRAŽÍ, WIEN HAUPTBAHNHOF, KRAKÓW GŁÓWNY, ŽĎÁR NAD SÁZAVOU, ĽUBOVŇA, ŤAŽKÝ, TYPOGRAFIE, PLATFORM 3, 07:42.",
+  };
+  const wordsWith = (letter) => {
+    const found = new Set();
+    for (const text of Object.values(TEXTS)) {
+      for (const word of text.split(/[\s—]+/)) { if (word.includes(letter) && word.length > 2) { found.add(word.replace(/^[„“«(]+|[.,;:!?”“»)]+$/g, "")); } }
+    }
+    return [...found].slice(0, 48).join(" ");
+  };
+  const PROOFS = [
+    ["Pairs", {
+      "Around a letter": () => { const c = proof.letter; return [
+        `n${c}n o${c}o H${c}H O${c}O 0${c}0`,
+        "# After it", each(LOWER, (x) => c + x), each(UPPER, (x) => c + x), each(FIGURES, (x) => c + x), each(".,:;!?’”“‘)]-–/", (x) => c + x),
+        "# Before it", each(LOWER, (x) => x + c), each(UPPER, (x) => x + c), each(FIGURES, (x) => x + c), each("„“‘«([-–/", (x) => x + c),
+        "# In words", wordsWith(c) || "No word in the sample texts has this letter."]; },
+      "Lowercase between n and o": () => [between("n", LOWER), between("o", LOWER), "# Each letter doubled", each(LOWER, (x) => x + x)],
+      "Capitals between H and O": () => [between("H", UPPER), between("O", UPPER), "# Each letter doubled", each(UPPER, (x) => x + x)],
+      "Capitals that lean and overhang": () => [..."AKLTVWYFPRXZ"].map((a) => each(UPPER, (x) => a + x)),
+      "Capital, then lowercase": () => [..."TVWYFPKRAL"].map((a) => each("aceorsuvwyáéíóúůě", (x) => a + x)),
+      "Figures": () => [...[...FIGURES].map((a) => each(FIGURES, (b) => a + b)), "# In use",
+        "1 234 567,89 Kč  3,14  12:30  7/8  (1984)  50 %  €19  $7  №5  2×3  −1 °C  +420 777 123 456  R2-D2  A4  v2.0"],
+      "Stops after every letter": () => [each(LOWER, (x) => x + "."), each(LOWER, (x) => x + ","), each(UPPER, (x) => x + "."), each(UPPER, (x) => x + ","),
+        each(LOWER, (x) => x + ":"), each(LOWER, (x) => x + ";"), each("flrtyvwkTVWYPF", (x) => x + "!" + " " + x + "?")],
+      "Quotes around every letter": () => [each(LOWER, (x) => `„${x}“`), each(UPPER, (x) => `„${x}“`), each(LOWER, (x) => `“${x}”`), each(UPPER, (x) => `“${x}”`),
+        each(LOWER, (x) => `‘${x}’`), each(LOWER, (x) => `«${x}»`), each(LOWER, (x) => `»${x}«`), "# Apostrophes", "it’s don’t l’aller d’où qu’à rock’n’roll O’Hara ’90 ’twas J’y"],
+      "Dashes and brackets": () => [each(LOWER, (x) => `(${x})`), each(UPPER, (x) => `[${x}]`), each("aehnorTAVWY07", (x) => `${x}–${x} ${x}—${x} ${x}-${x}`),
+        "–– —— -- __ ==  1984–2026  Praha — Wien  re-enter  T-shirt  A/B  km/h  e.g.  i.e."],
+    }],
+    ["Text", { ...Object.fromEntries(Object.entries(TEXTS).map(([name, text]) => [name, () => [text]])), "Your text": () => proof.text.split("\n") }],
+    ["From the last review", { "Moved most by the recipe": "moved", "Letters standing closest": "closest" }],
+  ];
+  $("proof").append(...PROOFS.map(([group, list]) => {
+    const g = document.createElement("optgroup"); g.label = group;
+    g.append(...Object.keys(list).map((name) => new Option(name)));
+    return g;
+  }));
+  const COMPARED = { source: "Blue: the source with every design operation off (Inter's letters, spacing and kerning, scaled to the width).",
+    old: "Blue: Raveo 1.1 as shipped. It has no width axis, so it stays at the regular width.",
+    inter: "Blue: Inter, if it is installed on this computer. It has no width axis, so it stays at the regular width." };
+  let proofTimer = 0, proofNo = 0;
+  const saveProof = () => { ui.proof = proof; saveUi(); };
+  function proofSoon() { clearTimeout(proofTimer); proofTimer = setTimeout(() => { if (ui.tab === "proofs") { showProof(true); measurePair(); } }, 180); }
+  async function reviewed(kind) {
+    const res = await fetch(`/api/findings?italic=${italic ? 1 : 0}&opsz=${size}&wght=${view.wght}&wdth=${view.wdth}`);
+    const found = await res.json();
+    if (!res.ok) { return ["# " + found.error]; }
+    const s = found.style, lines = [];
+    const head = kind === "moved" ? "The pairs the recipe moved most against the source" : "The letters and figures that stand closest, in stems";
+    lines.push(`# ${head}. Measured at ${s.opsz === 14 ? "text" : "Display"} ${s.wght}, width ${s.wdth}${s.italic ? ", italic" : ""}, in the font exported last. Click a pair for today's numbers.`);
+    for (let k = 0; k < found[kind].length; k += 12) { lines.push(found[kind].slice(k, k + 12).map((f) => f.pair).join("  ")); }
+    return lines;
+  }
+  async function showProof(quiet) {
+    if (!recipe || ui.tab !== "proofs") { return; }
+    const list = Object.assign({}, ...PROOFS.map(([, l]) => l));
+    if (!(proof.sample in list)) { proof.sample = "Around a letter"; }
+    const make = list[proof.sample], mine = ++proofNo;
+    if (quiet && typeof make !== "string") { return; }           // only the review lists follow the weight and width
+    $("proof").value = proof.sample; $("proof-letter").value = proof.letter; $("proof-text").value = proof.text;
+    $("proof-letter-field").hidden = proof.sample !== "Around a letter";
+    $("proof-text-field").hidden = proof.sample !== "Your text";
+    document.querySelectorAll("#compare button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.compare === proof.compare));
+    const lines = typeof make === "string" ? await reviewed(make) : make();
+    if (mine !== proofNo) { return; }
+    const box = $("proofs");
+    box.classList.toggle("slanted", italic);
+    box.replaceChildren(...lines.flatMap((line) => {
+      const row = document.createElement("div");
+      if (line.startsWith("# ")) { row.className = "pt"; row.textContent = line.slice(2); return [row]; }
+      row.className = "pl hl"; row.textContent = line;
+      if (!proof.compare) { return [row]; }
+      const other = document.createElement("div");
+      other.className = "pl cmp cmp-" + proof.compare; other.textContent = line;
+      return [row, other];
+    }));
+    if (!quiet) { pairNote(); }
+  }
+  function pairNote(text) {
+    $("pairline").textContent = text || [proof.compare ? COMPARED[proof.compare] : "", "Click between two letters to measure the pair."].filter(Boolean).join(" ");
+  }
+  async function measurePair() {
+    if (!proof.pair || !recipe || ui.tab !== "proofs") { return; }
+    const pair = proof.pair;
+    const res = await fetch("/api/pair", { method: "POST", body: JSON.stringify({ ...recipe, pair, wght: view.wght, wdth: view.wdth, opsz: size, italic }) });
+    const d = await res.json();
+    if (pair !== proof.pair) { return; }
+    if (!res.ok) { pairNote(d.error); return; }
+    const show = (v) => (v === null ? "none" : v);
+    const part = (m) => `kerning <b>${m.kern}</b> · gap <b>${show(m.gap)}</b> · nearest <b>${show(m.nearest)}</b>`;
+    const line = $("pairline");
+    line.innerHTML = `<b class="pp hl"></b><span>${part(d.now)}${d.now.nearest === null ? "" : ` (${(d.now.nearest / d.stem).toFixed(2)} of a stem)`}</span>` +
+      `<span class="src">In the source: ${part(d.source)}</span><span>Thousandths of the em, at weight ${view.wght} and width ${view.wdth}.</span>`;
+    line.querySelector(".pp").textContent = pair;
+  }
+  $("proofs").addEventListener("click", (e) => {
+    if (!e.target.closest(".pl:not(.cmp)")) { return; }
+    const at = document.caretPositionFromPoint ? document.caretPositionFromPoint(e.clientX, e.clientY) : null;
+    const range = at ? null : document.caretRangeFromPoint(e.clientX, e.clientY);
+    const node = at ? at.offsetNode : range && range.startContainer, offset = at ? at.offset : range && range.startOffset;
+    if (!node || node.nodeType !== 3) { return; }
+    const chars = [...node.textContent];                        // by character, not by UTF-16 unit
+    let k = [...node.textContent.slice(0, offset)].length;
+    k = Math.max(1, Math.min(chars.length - 1, k));
+    if (/\s/.test(chars[k - 1]) && k + 1 < chars.length) { k += 1; }
+    if (/\s/.test(chars[k]) && k > 1) { k -= 1; }
+    if (/\s/.test(chars[k - 1]) || /\s/.test(chars[k])) { return; }
+    const start = chars.slice(0, k - 1).join("").length, picked = document.createRange();
+    picked.setStart(node, start); picked.setEnd(node, start + chars[k - 1].length + chars[k].length);
+    const selection = getSelection(); selection.removeAllRanges(); selection.addRange(picked);
+    proof.pair = chars[k - 1] + chars[k];
+    measurePair();
+  });
+  $("proof").addEventListener("change", (e) => { proof.sample = e.target.value; proof.pair = null; saveProof(); showProof(); });
+  $("proof-letter").addEventListener("input", (e) => { if (e.target.value) { proof.letter = [...e.target.value].pop(); e.target.value = proof.letter; saveProof(); showProof(); } });
+  $("proof-letter").addEventListener("focus", (e) => e.target.select());
+  $("proof-text").addEventListener("input", (e) => { proof.text = e.target.value; saveProof(); showProof(); });
+  $("p-wdth").addEventListener("input", (e) => { view.wdth = Number(e.target.value); render(); });
+  $("p-size").addEventListener("input", (e) => { proof.size = Number(e.target.value); saveProof(); render(); });
+  $("p-kern").addEventListener("change", (e) => { view.kern = e.target.checked; render(); });
+  $("compare").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) { return; }
+    proof.compare = b.dataset.compare; saveProof(); showProof();
+    if (proof.compare === "inter") { document.fonts.load('16px "Proof Inter"').then((faces) => { if (!faces.length) { pairNote("Inter is not installed on this computer, so there is nothing to compare with."); } }); }
+    if (proof.compare === "source") { document.fonts.load(`16px "Proof source${italic ? " italic" : ""}"`).catch(() => pairNote("The source build is missing. Run: python tools/kerning_review.py measure")); }
+  });
 
   // --- other pages open on this server (the comparison with Raveo 1.1) are told about each new build ---
   const fontChannel = new BroadcastChannel("raveo-font");
@@ -874,6 +1069,7 @@
     document.querySelectorAll(".panel").forEach((p) => (p.hidden = p.dataset.panel !== name));
     if (name === "letters") { live(); }
     if (name === "styles") { showStyles(); loadSpace(); }
+    if (name === "proofs") { showProof(); }
     window.scrollTo(0, 0);
   }
   document.querySelector(".tabs").addEventListener("click", (e) => { if (e.target.dataset.tab) { showTab(e.target.dataset.tab); } });

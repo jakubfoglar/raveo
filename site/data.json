@@ -4549,25 +4549,25 @@
  "files": {
   "variable": {
    "name": "Raveo-VF.ttf",
-   "kb": 943
+   "kb": 972
   },
   "web": {
    "name": "Raveo-VF.woff2",
-   "kb": 366
+   "kb": 380
   },
   "statics": 84,
   "italic": {
    "name": "Raveo-Italic-VF.ttf",
-   "kb": 989
+   "kb": 1021
   },
   "regular_width": {
    "name": "Raveo-VF.woff2",
-   "kb": 167
+   "kb": 175
   },
   "zip": {
    "url": "https://github.com/jakubfoglar/raveo/releases/download/v2.0/Raveo-2.0.zip",
    "name": "Raveo-2.0.zip",
-   "kb": 14423
+   "kb": 14952
   }
  }
 }

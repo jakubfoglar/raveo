@@ -11,6 +11,10 @@ POST /api/build           body: recipe + opsz -> builds a quick draft of one opt
                           (roman and italic)
 Requests that draw or build take "italic": true to work on the italic instead of the roman.
 POST /api/quality         body: recipe -> kinked joins and curvature jumps per style
+POST /api/pair            body: recipe + pair, wght, wdth, opsz -> kerning, gap and nearest distance of two
+                          characters, with the recipe and in the untouched source
+GET  /api/findings        ?italic&opsz&wght&wdth -> what tools/kerning_review.py measured in the nearest style:
+                          the pairs the recipe moved most, the letter pairs standing closest
 GET  /api/releases        versions already exported, and the version the recipe names
 POST /api/export          body: recipe + version -> writes releases/<Family>-<version>/, returns the file list
 POST /api/recipe          body: recipe -> saves it as recipe.json
@@ -119,6 +123,13 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(site_page.working())
             except FileNotFoundError:
                 return self._json({"error": "No font built yet. Save the recipe in the workbench, or run tools/pipeline.py."}, 404)
+        if self.path.startswith("/api/findings"):
+            import kerning_review
+            from urllib.parse import parse_qs, urlparse
+            ask = {k: v[0] for k, v in parse_qs(urlparse(self.path).query).items()}
+            found = kerning_review.findings(ask.get("italic") == "1", int(float(ask.get("opsz", DISPLAY))),
+                                            float(ask.get("wght", 400)), float(ask.get("wdth", 100)))
+            return self._json(found or {"error": "Nothing measured yet. Run: python tools/kerning_review.py measure"}, 200 if found else 404)
         if self.path.startswith("/api/fontinfo"):
             try:
                 return self._json(fontinfo())
@@ -162,6 +173,13 @@ class Handler(SimpleHTTPRequestHandler):
                     recipe, str(body.get("sample") or "acers")[:24], float(body.get("wght", 630)),
                     [float(w) for w in body.get("row_widths", recipe["widths"])][:4], bool(body.get("comb")),
                     self._size(body, recipe)))
+            if self.path.startswith("/api/pair"):
+                engine = ready(body.get("italic"))
+                recipe = self._recipe(body)
+                pair = str(body.get("pair") or "")
+                found = engine.pair(recipe, pair[0], pair[1], float(body.get("wght", 630)), float(body.get("wdth", 100)),
+                                    self._size(body, recipe)) if len(pair) == 2 else None
+                return self._json(found or {"error": "No such pair in the font"}, 200 if found else 404)
             if self.path.startswith("/api/space"):
                 # What the map of styles draws: the masters, the named styles as the font will have them, and how
                 # heavy each width can get before its shapes would need more than Raveo Black.

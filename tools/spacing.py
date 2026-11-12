@@ -47,7 +47,8 @@ def reach_over(old_right, new_right, lefts, top):
     The wordmark r has a longer arm than Raveo's. Before a letter that stands upright at the arm's
     height (n, i, k) the arm's tip keeps the distance Raveo gave it. Before one whose side is set back
     there (the shoulder of o, e, c), or that has nothing there at all (a full stop), the arm reaches
-    over it instead, so the r's stem stays as near to that letter as it was.
+    over it instead, so the r's stem stays as near to that letter as it was. A letter with a part above
+    the arm that comes further left (2, 3, 7, ?) is not reached under.
     old_right, new_right: (bands,) right profiles before and after; lefts: (n, bands); top: the x-height.
     """
     body = slice(max(0, int((0 - Y0) // BAND)), int((top - Y0) // BAND) + 3)     # up to just above the x-height: no accents
@@ -57,27 +58,46 @@ def reach_over(old_right, new_right, lefts, top):
         return np.zeros(lefts.shape[0])
     arm = np.zeros(new_right.shape[0], dtype=bool)
     arm[body] = new_right[body] >= reach_new - 40
-    leftmost = lefts[:, body].min(axis=1)
+    arm[np.argmax(arm): int((1.45 * top - Y0) // BAND) + 1] = True      # and whatever stands above the arm: the hook
+    leftmost = lefts[:, body].min(axis=1)                              # of a 2 or a 3, the bar of a 7
     setback = np.where(leftmost < BIG / 2, lefts[:, arm].min(axis=1) - leftmost, 0.0)
     return np.clip(np.minimum(growth, setback), 0.0, None)
 
 
 def shortfall(reach, lefts, kern, floor):
-    """How far each right-hand glyph falls short of `floor` behind one left-hand glyph (negative = clear).
+    """How far a right-hand glyph falls short of `floor` behind a left-hand glyph (negative = clear).
 
-    reach: (bands,) advance minus right profile of the left glyph. lefts: (n, bands) left profiles.
-    kern, floor: (n,) per right-hand glyph.
+    reach: (bands,) advance minus right profile of the left glyph; lefts: (n, bands) left profiles; or
+    (n, bands) and (bands,) for many left glyphs before one right glyph. kern, floor: (n,).
     """
-    bands = reach.shape[0]
-    worst = np.full(lefts.shape[0], -BIG)
+    bands = reach.shape[-1]
+    worst = np.full(np.broadcast(reach[..., 0], lefts[..., 0]).shape, -BIG)
     for k in range(-(int(math.ceil(float(np.max(floor)) / BAND)) + 1), int(math.ceil(float(np.max(floor)) / BAND)) + 2):
         height = max(0, abs(k) - 1) * BAND                     # bands next to each other may touch
         need = np.sqrt(np.maximum(0.0, floor * floor - height * height))
         if not need.any():
             continue
-        room = ((reach[None, :bands - k] + lefts[:, k:]) if k >= 0 else (reach[None, -k:] + lefts[:, :bands + k])).min(axis=1)
+        room = ((reach[..., :bands - k] + lefts[..., k:]) if k >= 0 else (reach[..., -k:] + lefts[..., :bands + k])).min(axis=-1)
         worst = np.maximum(worst, np.where(need > 0, need - (room + kern), -BIG))
     return worst
+
+
+def apart(reach, lefts, kern, limit):
+    """The narrowest distance in any direction, looked for no further than `limit` up and down, and
+    measured as shortfall() measures it. Shapes as in shortfall()."""
+    bands, span = reach.shape[-1], int(math.ceil(limit / BAND)) + 1
+    best = np.full(np.broadcast(reach[..., 0], lefts[..., 0]).shape, float(BIG))
+    for k in range(-span, span + 1):
+        room = ((reach[..., :bands - k] + lefts[..., k:]) if k >= 0 else (reach[..., -k:] + lefts[..., :bands + k])).min(axis=-1) + kern
+        best = np.minimum(best, np.hypot(np.clip(room, 0.0, None), max(0, abs(k) - 1) * BAND))
+    return best
+
+
+def kept_apart(was, limit, reach, lefts, kern):
+    """The kerning change that sets pairs `was` apart again; none where they were out of each other's reach."""
+    near = (was > 1.0) & (was < limit)
+    change = shortfall(reach, lefts, kern, np.where(near, was, 1.0))
+    return np.where(near & (np.abs(change) < 2 * limit), change, 0.0)     # the new drawing may be out of reach altogether
 
 
 def _flatten(contour):
@@ -140,6 +160,24 @@ class Clearance:
         self.kern[i] += change
         return change
 
+    def keep_apart(self, name, old_profile, old_advance, limit):
+        """Re-kern a redrawn glyph on both sides, so it stands as far from every other glyph, in any
+        direction, as its old drawing did: a round quote above an a shares no height with it.
+        Returns the changes after it and before it, and applies them."""
+        i = self.names.index(name)
+        reach = self.advance[:, None] - self.right
+        after = kept_apart(apart(old_advance - old_profile[1], self.left, self.kern[i], limit), limit,
+                           reach[i], self.left, self.kern[i])
+        self.kern[i] += after
+        before = kept_apart(apart(reach, old_profile[0], self.kern[:, i], limit), limit, reach, self.left[i], self.kern[:, i])
+        self.kern[:, i] += before
+        return after, before
+
+    def nearest(self, limit):
+        """(n, n) narrowest distance of every pair in any direction, kerning included."""
+        reach = self.advance[:, None] - self.right
+        return np.array([apart(reach[i], self.left, self.kern[i], limit) for i in range(len(self.names))])
+
     def short(self, i, floor, height=None):
         """Shortfall behind left glyph `i` for every right glyph; with `height`, for its part above that only."""
         reach = self.advance[i] - self.right[i]
@@ -158,22 +196,36 @@ def pair_shortfall(left_profile, left_advance, right_profile, kern, floor, heigh
     return max(0.0, float(worst[0]))
 
 
-def shortfalls(clearance, is_text, stem, floors, joiners=(), ticks=(), tick_floor=None, tick_height=0.0):
+def pair_nearest(left_profile, left_advance, right_profile, kern, limit):
+    """The narrowest distance of one pair in any direction: Clearance.nearest for two glyphs."""
+    return float(apart(left_advance - left_profile[1], right_profile[0], kern, limit))
+
+
+def shortfalls(clearance, is_text, stem, floors, joiners=(), ticks=(), tick_floor=None, tick_height=0.0, source=None):
     """{(left, right): units to add} for every pair in `clearance` closer than its floor.
 
-    Pairs of `joiners` (f and t, whose crossbars are drawn to meet) are left alone, and so are
-    shortfalls too small to see. Left glyphs in `ticks` (d-caron and its kin) also keep their tick,
-    the part above `tick_height`, at least `tick_floor` units from whatever follows, joiner or not.
+    Two glyphs of one set in `joiners` are left alone: f and t, whose crossbars are drawn to meet, and
+    the dashes, which are drawn to run on. Shortfalls too small to see are left alone as well. Left
+    glyphs in `ticks` (d-caron and its kin) also keep their tick, the part above `tick_height`, at
+    least `tick_floor` units from whatever follows, joiner or not.
+
+    With `source`, the (n, n) distances the same pairs have in the untouched source, two letters stay
+    floors["kept"] of a stem apart, or as far as the source set them if that was closer: tightening
+    the spacing of a whole style must not close pairs that were kerned tight already (V and W).
     """
     names = clearance.names
     text = np.array([is_text[n] for n in names])
-    joins = np.array([n in joiners for n in names])
+    sets = [np.array([n in group for n in names]) for group in joiners]
     out = {}
     for i, left in enumerate(names):
-        floor = np.where(text[i] & text, floors["letters"], floors["punctuation"]) * stem
+        letters = np.full(len(names), floors["letters"] * stem)
+        if source is not None and floors.get("kept"):
+            letters = np.maximum(letters, np.minimum(floors["kept"] * stem, source[i]))
+        floor = np.where(text[i] & text, letters, floors["punctuation"] * stem)
         short = clearance.short(i, floor)
-        if joins[i]:
-            short = np.where(joins, -BIG, short)
+        for members in sets:
+            if members[i]:
+                short = np.where(members, -BIG, short)
         if left in ticks and tick_floor:
             short = np.maximum(short, clearance.short(i, np.full(len(names), float(tick_floor)), tick_height))
         for j in np.nonzero(short > 0.04 * stem)[0]:

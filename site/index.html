@@ -510,7 +510,7 @@ const fmt = (n) => n.toLocaleString("en-US");
 // is stored in the browser and no identity is sent: PostHog counts visitors by a hash it rotates daily and
 // keeps on its side. Sent only from the published page, and not when the browser asks not to be tracked.
 // The project must have "Enable cookieless tracking" switched on, or PostHog drops these events.
-const POSTHOG = { key: "", host: "https://eu.i.posthog.com", hosts: ["raveo.jakubfoglar.com", "jakubfoglar.github.io"] };
+const POSTHOG = { key: "phc_mw5MxkkUdFoNFaatA9pm2D5vAvt4z8tfo2hNRdY9e5xC", host: "https://eu.i.posthog.com", hosts: ["raveo.jakubfoglar.com", "jakubfoglar.github.io"] };
 function track(event, props) {
   try {
     if (!POSTHOG.key || !POSTHOG.hosts.includes(location.hostname) || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true) { return; }

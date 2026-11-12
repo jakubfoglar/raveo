@@ -41,7 +41,8 @@ import diagonals  # noqa: E402
 import bowl  # noqa: E402
 import leg  # noqa: E402
 import wordmark  # noqa: E402
-from spacing import Clearance, floor_for, pair_shortfall, profile, reach_over, shortfalls  # noqa: E402
+from spacing import (Clearance, apart, floor_for, kept_apart, pair_nearest, pair_shortfall, profile,  # noqa: E402
+                     reach_over, shortfalls)  # noqa: E402
 from curves import (GlyphData, curve_report, cut_terminals, fix_smooth, harmonize, lerp3,  # noqa: E402
                     logo_r, shift_middle, slant_compensate, square_arcs)
 
@@ -90,6 +91,7 @@ ROUND_TICK = "commaaccentright.cn.round"                    # the d-caron tick d
 CARON_GLYPHS = ("dcaron", "tcaron", "lcaron", "Lcaron")     # letters with the upright tick: ď ť ľ Ľ
 RESHAPED = ("r", "a", "R")                                  # letters whose advance the design operations change
 TICK_ABOVE = 40                                             # the tick is what these letters have this far above the x-height
+REDRAWN_REACH = 2.0                         # a redrawn quote keeps its distance to what stands within this many stems
 QUOTES = ("quoteright", "quoteleft", "quotereversed", "quotesinglbase",
           "quotedblright", "quotedblleft", "quotedblreversed", "quotedblbase")
 
@@ -123,7 +125,8 @@ DEFAULT_RECIPE = {
     "light_spacing": 1.0,                     # share of the spacing change the Thin keeps; grows to all of it at Regular
     "spacing_by_side": False,                 # true = a letter takes the spacing change in proportion to the room each side has
     "punctuation_spacing": 0.4,               # share of the spacing change that punctuation and symbols take
-    "kerning_floor": {"letters": 0.1, "punctuation": 0.24},   # smallest gap between neighbours, in stems
+    "kerning_floor": {"letters": 0.1, "punctuation": 0.24, "kept": 0.2},   # smallest gap between neighbours, in stems;
+                                              # two letters keep `kept`, or what the source gave them if that was less
     "max_source_weight": 930,                 # how far past Raveo Black (900) narrow bold styles may reach
     "caron_gap": 0.32,                        # distance of the tick in ď ť ľ Ľ from its letter, in stems; null = as drawn
     "caron_tuck": 0.6,                        # share of the tick's width a following small letter slides under
@@ -386,7 +389,8 @@ class Pipeline:
         self.is_text = {name: self._is_text(name) for name in self.glyph_order}
         self.spaces = {g.name for g in self.font.glyphs if g.unicode and unicodedata.category(chr(int(g.unicode, 16))) == "Zs"}
         self.guarded = [self.cmap[ord(ch)] for ch in GUARD_CHARS if ord(ch) in self.cmap]
-        self.joiners = {n for n in self.guarded if n in ("f", "t", "tcaron")}      # crossbars meant to meet
+        self.joiners = [{n for n in self.guarded if n in ("f", "t", "tcaron")},     # crossbars meant to meet
+                        {n for n in self.guarded if n in ("endash", "emdash")}]    # dashes meant to run on
         self.r_letters = [n for n in self.guarded if n in ("r", "rcaron", "racute")]
         self._kern_src = {}
         self.load_seconds = time.time() - started
@@ -698,10 +702,11 @@ class Pipeline:
         plan = self.plan(recipe, opsz)
         plain_recipe = {**recipe, **PLAIN}
         ghost_plan = self.plan(plain_recipe, opsz)
+        square = self.plan({**recipe, "round_commas": False}, opsz) if recipe.get("round_commas") else None
         rows = []
         for width in widths:
             loc, ghost_loc = self.location(recipe, weight, width, opsz), self.location(plain_recipe, weight, width, opsz)
-            glyphs, pen, previous = [], 0.0, None
+            glyphs, pen, previous, source = [], 0.0, None, None
             floors = recipe.get("kerning_floor")
             for ch in text:
                 name = self.cmap.get(ord(ch))
@@ -720,17 +725,31 @@ class Pipeline:
                             mine = previous[1] or profile(self.contours(plan, previous[0], loc)[0])
                             kern += before - after - recipe.get("logo_r_over", 0) * float(reach_over(
                                 profile(old)[1], mine[1], (shape or profile(contours))[0][None, :], self.sources[opsz].metrics["x"])[0])
+                    if square:                      # a round quote stands where the square one stood
+                        mine, here = previous[1] or profile(self.contours(plan, previous[0], loc)[0]), shape or profile(contours)
+                        limit = REDRAWN_REACH * loc["stem"]
+                        for redrawn, first in ((previous[0], True), (name, False)):
+                            if plan["alias"].get(redrawn, "").endswith(".fit"):
+                                old, old_adv = self.contours(square, redrawn, loc)
+                                old = profile(old)
+                                was = apart(old_adv - old[1], here[0], kern, limit) if first else apart(previous[2] - mine[1], old[0], kern, limit)
+                                kern += float(kept_apart(was, limit, previous[2] - mine[1], here[0], kern))
                     if floors:
                         short = 0.0
-                        if not (previous[0] in self.joiners and name in self.joiners):
+                        if not any(previous[0] in group and name in group for group in self.joiners):
                             floor = floor_for(self.is_text[previous[0]], self.is_text[name], loc["stem"], floors)
+                            if floors.get("kept") and self.is_text[previous[0]] and self.is_text[name]:
+                                kept = floors["kept"] * loc["stem"]     # or what the source gave the pair, if less
+                                floor = max(floor, min(kept, pair_nearest(source[0], source[1], profile(
+                                    self.contours(ghost_plan, name, ghost_loc)[0]), self.kern(previous[0], name, ghost_loc), kept)))
                             short = pair_shortfall(previous[1], previous[2], shape, kern, floor)
                         if previous[0] in CARON_GLYPHS and recipe.get("caron_floor"):       # the tick keeps its own distance
                             short = max(short, pair_shortfall(previous[1], previous[2], shape, kern, recipe["caron_floor"] * loc["regular_stem"],
                                                               self.sources[opsz].metrics["x"] + TICK_ABOVE))
                         kern += short if short > 0.04 * loc["stem"] else 0.0
                     pen += kern
-                ghost, _ = self.contours(ghost_plan, name, ghost_loc)
+                ghost, ghost_adv = self.contours(ghost_plan, name, ghost_loc)
+                source = (profile(ghost), ghost_adv)
                 base = self.base(plan, name)
                 slanted = bool(loc["slant"][0])               # an italic is worked on upright and shown as it will be
                 drawn = self.contours(plan, name, loc, leaned=True)[0] if slanted else contours
@@ -749,6 +768,26 @@ class Pipeline:
                          "x_from_weight": round(loc["w_x"], 1), "drawn_weight": loc["drawn_weight"],
                          "extrapolated": not 100 <= loc["w_x"] <= 900})
         return {"rows": rows, "metrics": self.sources[opsz].metrics}
+
+    def pair(self, recipe, left, right, weight, width, opsz=DISPLAY):
+        """Two characters side by side, as the recipe sets them and as the untouched source does: the
+        kerning, the narrowest gap straight across and the narrowest distance in any direction, in
+        thousandths of the em. None for a character the font does not have."""
+        recipe = at_size(recipe, opsz)
+        names = [self.cmap.get(ord(left)), self.cmap.get(ord(right))]
+        if None in names:
+            return None
+        unit, out = 1000 / self.font.upm, {}
+        for label, rec in (("now", recipe), ("source", {**recipe, **PLAIN})):
+            first, second = self.outline(rec, left + right, weight, [width], opsz=opsz)["rows"][0]["glyphs"]
+            plan, loc = self.plan(rec, opsz), self.location(rec, weight, width, opsz)
+            (a, a_adv), (b, _) = (self.contours(plan, name, loc) for name in names)
+            a, b, kern = profile(a), profile(b), second["x"] - first["x"] - first["advance"]
+            gap, near = float((a_adv - a[1] + b[0]).min()) + kern, pair_nearest(a, a_adv, b, kern, 0.3 * self.font.upm)
+            out[label] = {"kern": round(kern * unit), "gap": round(gap * unit) if gap < 1e5 else None,
+                          "nearest": round(near * unit) if near < 1e5 else None}
+        out["stem"] = round(self.location(recipe, weight, width, opsz)["stem"] * unit)
+        return out
 
     # --- quality -------------------------------------------------------------------------------
     def quality(self, recipe, names=None, locations=None, opsz=DISPLAY):
@@ -792,6 +831,10 @@ class Pipeline:
         for opsz in sizes:
             plan = self.plan(recipe, opsz)
             sized = plan["recipe"]
+            untouched = {**at_size(recipe, opsz), **PLAIN}             # the source, scaled to the width and no more
+            source_plan = self.plan(untouched, opsz)
+            square = self.plan({**at_size(recipe, opsz), "round_commas": False}, opsz) if sized.get("round_commas") else None
+            redrawn = [n for n in self.guarded if plan["alias"].get(n, "").endswith(".fit")] if square else []   # the round quotes
             for width in widths:
                 for weight in weights:
                     loc = self.location(recipe, weight, width, opsz)
@@ -814,10 +857,18 @@ class Pipeline:
                                 change = clearance.keep_gaps(name, profile(old), old_adv, self.sources[opsz].metrics["x"],
                                                              sized.get("logo_r_over", 0))
                                 forced.update((name, right) for right, c in zip(self.guarded, change) if abs(c) > 3)
+                        for name in redrawn:               # a round quote stands where the square one stood
+                            shape, shape_adv = self.contours(square, name, loc)
+                            after, before = clearance.keep_apart(name, profile(shape), shape_adv, REDRAWN_REACH * loc["stem"])
+                            forced.update((name, right) for right, c in zip(self.guarded, after) if abs(c) > 0.06 * loc["stem"])
+                            forced.update((left, name) for left, c in zip(self.guarded, before) if abs(c) > 0.06 * loc["stem"])
+                        kept = sized["kerning_floor"].get("kept")
+                        source = Clearance(self, source_plan, self.location(untouched, weight, width, opsz),
+                                           self.guarded).nearest(kept * loc["stem"]) if kept else None
                         guards[mid] = (clearance, shortfalls(clearance, self.is_text, loc["stem"], sized["kerning_floor"],
                                                              self.joiners, CARON_GLYPHS,
                                                              (sized.get("caron_floor") or 0) * loc["regular_stem"],
-                                                             self.sources[opsz].metrics["x"] + TICK_ABOVE))
+                                                             self.sources[opsz].metrics["x"] + TICK_ABOVE, source))
                     report["masters"].append({"opsz": opsz, "weight": weight, "width": width,
                                               "x_from_weight": round(loc["w_x"], 1), "drawn_weight": loc["drawn_weight"],
                                               "extrapolated": not 100 <= loc["w_x"] <= 900,

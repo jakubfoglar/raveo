@@ -18,6 +18,7 @@ SIL Open Font License 1.1. This file records what changed in each version and wh
 - The family is built by script from the masters in `sources/` and the settings in `recipe.json`.
 - Static fonts are TrueType. Display styles are part of the family "Raveo".
 - Web fonts come in two parts with a stylesheet, upright and italic.
+- Kerning differs from Inter's in one pair: the low quote is no longer pulled toward a.
 
 ## 1.1 (October 2024)
 
