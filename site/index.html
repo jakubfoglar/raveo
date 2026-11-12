@@ -274,7 +274,6 @@
   .get .lead { grid-column: 1 / span 7; }
   .get .lead a.big { display: inline-block; font-variation-settings: "opsz" 32, "wght" 520, "wdth" 125; font-size: clamp(44px, 7vw, 124px); line-height: .96; text-decoration-thickness: .045em; text-underline-offset: .12em; }
   .get .lead a.big:hover { text-decoration: none; }
-  .get .lead p { margin: 22px 0 0; max-width: 56ch; color: var(--mute); text-wrap: pretty; }
   .get .side { grid-column: 9 / span 4; }
   .get .wide { grid-column: 1 / span 7; min-width: 0; }
   @media (max-width: 1000px) { .get .lead, .get .side, .get .wide { grid-column: 1 / -1; } }
@@ -285,8 +284,6 @@
   #versions li span:last-child, #news li span:last-child { white-space: normal; text-align: right; text-wrap: balance; }
   #news li { display: block; } #news li span:last-child { display: block; text-align: left; }
   .get h3 { margin: 0 0 10px; font-size: 14px; font-weight: 630; }
-  pre { margin: 0; padding: 16px 18px; background: var(--soft); overflow: auto; line-height: 1.55; }
-  .pre-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
 
   /* --- about, footer --- */
   .about { row-gap: 32px; }
@@ -465,14 +462,9 @@
   <section class="block" id="download">
     <header class="sh grid"><h2>Download</h2><p>Free for personal and commercial work under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>.</p></header>
     <div class="grid get">
-      <div class="lead"><a class="big" id="zip-big" href="#" data-track="download_clicked" data-track-place="download section">Download Raveo</a><p id="zip-says"></p></div>
-      <div class="side"><h3>In the folder</h3><ul class="list" id="files"></ul></div>
-      <div class="wide">
-        <div class="pre-head"><h3>On a web page</h3><button class="copy" data-copy="css-snippet" data-track="copied" data-track-what="css">Copy</button></div>
-        <pre><code id="css-snippet"></code></pre>
-      </div>
-      <div class="side"><h3>On a computer</h3><p class="mute" id="install-note"></p><h3 style="margin-top:28px">Versions</h3><ul class="list" id="versions"></ul></div>
+      <div class="lead"><a class="big" id="zip-big" href="#" data-track="download_clicked" data-track-place="download section">Download Raveo</a></div>
       <div class="wide"><h3>New in 2.0</h3><ul class="list" id="news"></ul></div>
+      <div class="side"><h3>On a computer</h3><p class="mute" id="install-note"></p><h3 style="margin-top:28px">Versions</h3><ul class="list" id="versions"></ul></div>
     </div>
   </section>
 
@@ -853,20 +845,13 @@ function buildFeatures() {
 }
 
 function buildDownload() {
-  const f = D.files || {}, zip = f.zip, a = D.axes;
+  const zip = (D.files || {}).zip;
   const href = zip ? zip.url : D.github;
   for (const id of ["zip", "zip-big"]) { $(id).href = href; if (zip) { $(id).setAttribute("download", zip.name); } }
   $("zip").textContent = `Download Raveo ${D.version}`;
   $("zip-big").textContent = `Download Raveo ${D.version}`;
   $("zip-note").textContent = zip ? `Zip, ${(zip.kb / 1024).toFixed(1)} MB` : D.working ? "A working build: export a version to get a download." : "";
-  $("zip-says").textContent = `One zip${zip ? ` of ${(zip.kb / 1024).toFixed(1)} MB` : ""} with the variable font${D.italic ? " and its italic" : ""}, a file for each named style, web fonts with a stylesheet, and the licence. Use it for anything, also commercially; it may not be sold on its own.`;
   for (const id of ["gh", "gh2", "gh3"]) { $(id).href = D.github; }
-  const kb = (x) => (x ? `${fmt(x.kb)} KB` : "");
-  $("files").innerHTML = [["Variable font, desktop", kb(f.variable)], ...(f.italic ? [["Variable font, italic", kb(f.italic)]] : []), [`Static fonts, one per style`, f.statics ? `${f.statics} files` : ""], ["Variable font, web", kb(f.web)],
-    ...(f.regular_width ? [["Web font without the width axis", kb(f.regular_width)]] : []), ["Stylesheet, licence, read-me", ""]]
-    .map(([k, v]) => `<li><span>${k}</span><span class="num">${v}</span></li>`).join("");
-  $("css-snippet").textContent = `<link rel="stylesheet" href="fonts/raveo.css">\n\nbody { font-family: "Raveo", sans-serif; }\nh1   { font-weight: 520; font-stretch: ${a.wdth[2]}%; }\n.tag { font-weight: 730; font-stretch: ${a.wdth[0]}%; }` + (D.italic ? `\nem   { font-style: italic; }` : "") +
-    (a.opsz ? `\n\n/* the display drawing at any size */\n.figure { font-variation-settings: "opsz" ${a.opsz[2]}; }` : "");
   $("install-note").textContent = `Install the variable font${D.italic ? "s, upright and italic," : ""} or the static files; one set is enough. Programs list the variable font as “Raveo Variable” and the static files as “Raveo”. Remove Raveo 1.1 first.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("news").innerHTML = [["Width", `An axis from ${wl} to ${wh}, with Narrow and Wide as named styles at every weight.`],
