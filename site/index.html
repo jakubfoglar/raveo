@@ -291,7 +291,6 @@
   /* --- about, footer --- */
   .about { row-gap: 32px; }
   .about .say { grid-column: 1 / span 7; font-size: clamp(20px, 2.1vw, 30px); line-height: 1.22; font-variation-settings: "opsz" 32, "wght" 430, "wdth" 104; margin: 0; text-wrap: pretty; }
-  .about .say + .say { margin-top: -8px; }
   .about .line { grid-column: 9 / span 4; }
   @media (max-width: 1000px) { .about .say, .about .line { grid-column: 1 / -1; } }
   footer { margin-top: clamp(96px, 13vw, 190px); padding: 16px var(--pad) calc(var(--dock) + 28px); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; color: var(--mute); }
@@ -480,9 +479,8 @@
   <section class="block" id="about">
     <header class="sh grid"><h2>About</h2><p>Where it comes from.</p></header>
     <div class="grid about">
-      <p class="say">Raveo is a fork of Inter by Rasmus Andersson. The first version made Inter a little warmer and sturdier: an a with a tail, an R with a curled leg, darker named weights.</p>
+      <p class="say">Raveo is built on Inter by Rasmus Andersson. It keeps Inter's proportions and its legibility on screens, with warmer letterforms and darker weights. It is meant for interfaces, running text and headlines.</p>
       <ul class="list line" id="lineage"></ul>
-      <p class="say">Several of its letters were drawn for a wordmark first: the a, the r, the e, the i, the R. Version 2.0 adds three widths and an italic.</p>
     </div>
   </section>
 </main>
