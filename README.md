@@ -87,10 +87,8 @@ The 1.1 files stay in [`fonts/`](fonts) at their old paths, so pages that link t
 
 ## Building it
 
-Raveo's own letters are drawn by hand; the a, r, e, i and R were first drawn for a wordmark. The masters
-in `sources/` hold those drawings. A script carries them through the family: it squeezes and stretches
-letters while holding their stems, cuts stroke endings at an angle, respaces and checks the kerning. Each
-step is a setting in `recipe.json`, tuned by eye in the workbench.
+The masters in `sources/` are drawn by hand. A script derives the widths, the italic and the weights in
+between from them; its settings are in `recipe.json`.
 
 ```sh
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt    # Python 3.12
