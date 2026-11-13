@@ -17,7 +17,7 @@
 <style>
   :root {
     --font: "Raveo", system-ui, sans-serif;
-    --wght: 520; --wdth: 125; --pad: 28px; --bar: 52px; --dock: 54px;
+    --wght: 520; --wdth: 125; --pad: 28px; --bar: 52px; --fvs: "wght" 400, "wdth" 100;
   }
   [data-theme="light"] { --bg: #ffffff; --fg: #0c0c0c; --mute: #76767a; --line: rgba(12, 12, 12, .14); --soft: #f4f4f2; --inv-bg: #0c0c0c; --inv-fg: #f6f6f4; --inv-mute: #8e8e90; --inv-line: rgba(255, 255, 255, .17); }
   [data-theme="dark"] { --bg: #0b0b0b; --fg: #f4f4f2; --mute: #8b8b8d; --line: rgba(255, 255, 255, .16); --soft: #171717; --inv-bg: #f4f4f2; --inv-fg: #0b0b0b; --inv-mute: #6f6f72; --inv-line: rgba(12, 12, 12, .15); }
@@ -27,7 +27,7 @@
   html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar) + 12px); }
   body { margin: 0; overflow-x: clip; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font); font-weight: 400; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   html.ready body { transition: background-color .25s, color .25s; }
-  html:not(.ready) main, html:not(.ready) #dock { visibility: hidden; }
+  html:not(.ready) main { visibility: hidden; }
   a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em; }
   button, select, input { font: inherit; color: inherit; }
   button { cursor: pointer; }
@@ -125,19 +125,21 @@
   .styles .col { min-width: 0; }
   @media (max-width: 800px) { .styles .col { grid-column: 1 / -1 !important; } }
   .styles h3 { margin: 0 0 10px; font-size: 14px; font-weight: 400; color: var(--mute); display: flex; justify-content: space-between; }
-  .styles .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; width: 100%; padding: 5px 0 6px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; }
+  .styles .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 5px 0 6px; border-top: 1px solid var(--line); }
   .styles .row:last-child { border-bottom: 1px solid var(--line); }
   .styles .row span:first-child { font-size: clamp(20px, 2.2vw, 34px); line-height: 1.12; white-space: nowrap; overflow: hidden; }
   .styles .row span:last-child { color: var(--mute); font-size: 12px; }
-  .styles .row:hover span:last-child, .styles .row.on span:last-child { color: var(--fg); }
-  .styles .row.on { border-top-color: var(--fg); }
 
   /* --- testers --- */
   .tester { border-top: 1px solid var(--line); padding: 10px 0 44px; }
-  .tester .ctl { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; color: var(--mute); margin-bottom: 18px; }
-  .tester .ctl label { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-  .tester .ctl input[type="range"] { width: 68px; }
-  .tester .ctl output { color: var(--fg); min-width: 30px; font-variant-numeric: tabular-nums; }
+  .tester .ctl, .ctl.own { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; color: var(--mute); margin-bottom: 18px; }
+  .tester .ctl label, .ctl.own label { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .tester .ctl input[type="range"], .ctl.own input[type="range"] { width: 68px; }
+  .tester .ctl output, .ctl.own output { color: var(--fg); min-width: 30px; font-variant-numeric: tabular-nums; }
+  /* A section's own sliders: they sit in the room under its heading and show when the pointer is over the section. */
+  .ctl.own { margin: -30px 0 12px; min-height: 30px; opacity: 0; transition: opacity .15s; }
+  section:hover > .ctl.own, section:focus-within > .ctl.own { opacity: 1; }
+  @media (hover: none), (max-width: 900px) { .ctl.own { opacity: 1; margin-top: -22px; } }
   .tester .ctl .push { margin-left: auto; }
   .tester .text { overflow-wrap: break-word; text-wrap: balance; }
   @media (max-width: 620px) { .tester .ctl label:nth-of-type(n + 4), .tester .ctl [data-k="align"], .tester .ctl [data-k="caps"] { display: none; } }
@@ -232,7 +234,7 @@
   .ui nav b { font-weight: 630; padding: 4px 8px 12px; }
   .ui nav a { padding: 6px 8px; font-weight: 520; color: var(--mute); text-decoration: none; }
   .ui nav a.on { color: inherit; background: color-mix(in srgb, currentColor 10%, transparent); }
-  .ui .main { padding: 16px 18px; min-width: 0; }
+  .ui .main { padding: 16px 18px; min-width: 0; overflow: hidden; }
   .ui h4 { margin: 0; font-size: 18px; font-weight: 630; }
   .ui .sub { margin: 2px 0 14px; color: var(--mute); }
   .ui table { border-collapse: collapse; width: 100%; }
@@ -298,16 +300,8 @@
   .about .say { grid-column: 1 / span 7; font-size: clamp(20px, 2.1vw, 30px); line-height: 1.22; font-variation-settings: "opsz" 32, "wght" 430, "wdth" 104; margin: 0; text-wrap: pretty; }
   .about .line { grid-column: 9 / span 4; }
   @media (max-width: 1000px) { .about .say, .about .line { grid-column: 1 / -1; } }
-  footer { margin-top: clamp(96px, 13vw, 190px); padding: 16px var(--pad) calc(var(--dock) + 28px); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; color: var(--mute); }
+  footer { margin-top: clamp(96px, 13vw, 190px); padding: 16px var(--pad) 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; color: var(--mute); }
 
-  /* --- dock: the page's weight, width and optical size --- */
-  #dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; height: var(--dock); padding: 0 var(--pad); display: flex; align-items: center; gap: 26px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); }
-  #dock label { display: flex; align-items: center; gap: 10px; color: var(--mute); white-space: nowrap; flex: 1 1 0; min-width: 0; max-width: 300px; }
-  #dock label input { flex: 1 1 0; width: auto; min-width: 36px; }
-  #dock output { color: var(--fg); min-width: 28px; font-variant-numeric: tabular-nums; }
-  #dock select { max-width: 190px; }
-  #dock .push { margin-left: auto; color: var(--mute); }
-  @media (max-width: 900px) { #dock { gap: 14px; } #dock .opt, #dock .push, #dock select { display: none; } }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 <noscript><style>html:not(.ready) main { visibility: visible; }</style></noscript>
@@ -347,7 +341,7 @@
   </section>
 
   <section class="block" id="space">
-    <header class="sh grid"><h2>Axes</h2></header>
+    <header class="sh grid"><h2>Axes</h2><p></p><div class="tools"><div class="seg" id="space-slant"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div></div></header>
     <div class="grid space">
       <div class="pad"><svg id="pad" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Weight and width"></svg></div>
       <div class="show">
@@ -493,20 +487,11 @@
 
 <footer><span>Raveo is free and open source under the <a href="https://openfontlicense.org">SIL Open Font License 1.1</a>. <a id="gh3" href="#" data-track="github_clicked" data-track-place="footer">Source on GitHub</a>.</span><span>Designed by Jakub Foglar. Based on <a href="https://rsms.me/inter/">Inter</a> by Rasmus Andersson.</span></footer>
 
-<div id="dock">
-  <select id="d-style" aria-label="Named style"></select>
-  <label>Weight <input id="d-wght" type="range" step="1"><output id="o-wght"></output></label>
-  <label>Width <input id="d-wdth" type="range" step="1"><output id="o-wdth"></output></label>
-  <div class="seg opt" id="d-ital"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div>
-  <div class="seg opt" id="d-opsz"><button data-opsz="auto" aria-pressed="true">Auto</button><button data-opsz="14">Text</button><button data-opsz="32">Display</button></div>
-  <span class="push" id="d-note">Page style</span>
-</div>
-
 <script>
 const $ = (id) => document.getElementById(id), root = document.documentElement;
 const store = JSON.parse(localStorage.getItem("raveo-site") || "{}");
 const save = () => localStorage.setItem("raveo-site", JSON.stringify(store));
-const state = Object.assign({ wght: 520, wdth: 125, opsz: "auto", theme: "light", italic: false }, store.state || {});
+const state = Object.assign({ wght: 520, wdth: 125, theme: "light", italic: false }, store.state || {});      // the style set in the Axes square, and the theme
 let D = null, picked = 0x52;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const fmt = (n) => n.toLocaleString("en-US");
@@ -533,8 +518,8 @@ function track(event, props) {
 }
 const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-// Variation settings for one style. The optical size is left to the browser unless it is given or fixed in the dock.
-const fvs = (wght, wdth, opsz = state.opsz) => (D.axes.opsz && opsz && opsz !== "auto" ? `"opsz" ${opsz}, ` : "") + `"wght" ${Math.round(wght)}, "wdth" ${Math.round(wdth)}`;
+// Variation settings for one style. The optical size is left to the browser unless it is given.
+const fvs = (wght, wdth, opsz = null) => (D.axes.opsz && opsz ? `"opsz" ${opsz}, ` : "") + `"wght" ${Math.round(wght)}, "wdth" ${Math.round(wdth)}`;
 const textStyles = () => D.styles.filter((s) => s.opsz === undefined || s.opsz === D.axes.opsz[0]);
 const named = (wght, wdth) => textStyles().find((s) => s.wght === wght && s.wdth === wdth);
 // A style's name as the italic has it: "Regular" gives way to "Italic", every other name gains it.
@@ -554,27 +539,44 @@ function apply() {
   state.wdth = clamp(Math.round(state.wdth), wl, wh);
   root.dataset.theme = state.theme;
   state.italic = !!(state.italic && D.italic);
-  root.style.setProperty("--fvs", fvs(state.wght, state.wdth));
-  root.style.setProperty("--fst", state.italic ? "italic" : "normal");
-  document.querySelectorAll("#d-ital button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === state.italic));
-  document.querySelectorAll("#styles-slant button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === state.italic));
-  document.querySelectorAll("#styles-list .row > span:first-child").forEach((n) => { n.textContent = state.italic ? slanted(n.dataset.name) : n.dataset.name; n.style.fontStyle = state.italic ? "italic" : "normal"; });
-  [...$("d-style").options].forEach((o) => { if (o.value) { o.textContent = state.italic ? slanted(o.value) : o.value; } });
+  $("space").style.setProperty("--fvs", fvs(state.wght, state.wdth));
+  $("space").style.setProperty("--fst", state.italic ? "italic" : "normal");
+  document.querySelectorAll("#space-slant button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === state.italic));
   document.querySelectorAll(".themes button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.theme === state.theme));
-  $("d-wght").value = state.wght; $("d-wdth").value = state.wdth;
-  $("o-wght").textContent = state.wght; $("o-wdth").textContent = state.wdth;
-  document.querySelectorAll("#d-opsz button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.opsz === String(state.opsz)));
   const hit = named(state.wght, state.wdth);
-  $("d-style").value = hit ? hit.name : "";
   $("space-name").textContent = hit ? styleName(hit) : "Between named styles";
   $("space-pos").textContent = `weight ${state.wght} · width ${state.wdth}`;
   $("space-css").textContent = `font-variation-settings: ${fvs(state.wght, state.wdth)};` + (state.italic ? "\nfont-style: italic;" : "");
-  document.querySelectorAll("#styles-list .row").forEach((r) => r.classList.toggle("on", Number(r.dataset.wght) === state.wght && Number(r.dataset.wdth) === state.wdth));
   drawPad();
   fit($("spaceword")); fit($("spaceline"));
-  paintOptical();
-  paintItalic();
   store.state = state; save();
+}
+
+// A section's own weight, width and slope: a row of sliders under its heading, kept from visit to visit.
+// The section's samples take the style through --fvs and --fst; `paint` is for those that are set by hand.
+const own = {};
+function controls(id, first, paint) {
+  const section = $(id), { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes, slope = D.italic && "italic" in first;
+  store.own = store.own || {};
+  const mine = own[id] = store.own[id] = Object.assign({}, first, store.own[id]);
+  const row = document.createElement("div");
+  row.className = "ctl own";
+  row.innerHTML = `<label>Weight <input data-k="wght" type="range" min="${gl}" max="${gh}" step="1"><output></output></label>
+    <label>Width <input data-k="wdth" type="range" min="${wl}" max="${wh}" step="1"><output></output></label>` +
+    (slope ? `<span class="seg"><button data-v="0">Roman</button><button data-v="1">Italic</button></span>` : "");
+  section.querySelector(".sh").after(row);
+  const set = () => {
+    mine.wght = clamp(mine.wght, gl, gh); mine.wdth = clamp(mine.wdth, wl, wh);
+    section.style.setProperty("--fvs", fvs(mine.wght, mine.wdth));
+    section.style.setProperty("--fst", slope && mine.italic ? "italic" : "normal");
+    row.querySelectorAll("input").forEach((input) => { input.value = mine[input.dataset.k]; input.nextElementSibling.textContent = mine[input.dataset.k]; });
+    row.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.v === "1") === !!mine.italic));
+    if (paint) { paint(); }
+    save();
+  };
+  row.addEventListener("input", (e) => { if (e.target.dataset.k) { mine[e.target.dataset.k] = Number(e.target.value); set(); } });
+  row.addEventListener("click", (e) => { if (e.target.dataset.v) { mine.italic = e.target.dataset.v === "1"; set(); track("italic_toggled", { on: mine.italic, place: id }); } });
+  set();
 }
 
 // --- hero: the word breathes along weight and width until the pointer takes over ---
@@ -660,13 +662,15 @@ function buildStyles() {
     const rows = list.filter((s) => s.wdth === w).sort((a, b) => a.wght - b.wght);
     const title = w === 100 ? "Regular width" : rows.find((s) => s.wght === 400)?.name.replace(/ ?Regular$/, "") || `Width ${w}`;
     return `<div class="col" style="grid-column: span ${span}"><h3><span>${title}</span><span class="num">${w}</span></h3>` + rows.map((s) =>
-      `<button class="row" data-wght="${s.wght}" data-wdth="${s.wdth}"><span data-name="${s.name}" style='font-variation-settings:${fvs(s.wght, s.wdth, D.axes.opsz ? opsz : null)}'>${s.name}</span><span class="num">${s.wght}</span></button>`).join("") + `</div>`;
+      `<div class="row"><span data-name="${s.name}" style='font-variation-settings:${fvs(s.wght, s.wdth, D.axes.opsz ? opsz : null)}'>${s.name}</span><span class="num">${s.wght}</span></div>`).join("") + `</div>`;
   }).join("");
   document.querySelectorAll("#styles-size button").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.opsz) === opsz));
   $("styles-size").hidden = !D.axes.opsz;
   $("styles-slant").hidden = !D.italic;
   $("styles-note").textContent = `${D.styles.length * (D.italic ? 2 : 1)} named styles: ${new Set(list.map((s) => s.wght)).size} weights at ${widths.length} widths` + (D.axes.opsz ? ", text and display" : "") + (D.italic ? ", upright and italic." : ".");
-  $("d-style").innerHTML = `<option value="">Custom</option>` + list.map((s) => `<option value="${s.name}">${s.name}</option>`).join("");
+  const leaning = !!(store.stylesItalic && D.italic);
+  document.querySelectorAll("#styles-slant button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.ital === "1") === leaning));
+  document.querySelectorAll("#styles-list .row > span:first-child").forEach((n) => { n.textContent = leaning ? slanted(n.dataset.name) : n.dataset.name; n.style.fontStyle = leaning ? "italic" : "normal"; });
 }
 
 const TESTERS = [
@@ -727,15 +731,15 @@ function buildOptical() {
   const input = $("sweep-in");
   input.min = lo; input.max = hi; input.value = store.sweep ?? (lo + hi) / 2;
   input.addEventListener("input", () => { store.sweep = Number(input.value); save(); paintOptical(); });
-  paintOptical();
+  controls("optical", { wght: 520, wdth: 100 }, paintOptical);
 }
-// The three optical-size samples take the page's weight and width; the two words are fitted so the widest style still shows whole.
+// The optical-size samples take the section's own weight and width; the two words are fitted so the widest style still shows whole.
 function paintOptical() {
   if (!D.axes.opsz) { return; }
-  const [lo, , hi] = D.axes.opsz, input = $("sweep-in");
+  const [lo, , hi] = D.axes.opsz, input = $("sweep-in"), mine = own.optical || { wght: 520, wdth: 100 };
   for (const [id, opsz] of [["opt-text", lo], ["opt-disp", hi]]) {
     const el = $(id);
-    el.style.fontVariationSettings = fvs(state.wght, state.wdth, opsz);
+    el.style.fontVariationSettings = fvs(mine.wght, mine.wdth, opsz);
     el.style.fontSize = "";
     const room = el.parentElement.clientWidth * 0.93, base = parseFloat(getComputedStyle(el).fontSize);     // air between the two words
     el.style.overflow = "visible";
@@ -745,14 +749,14 @@ function paintOptical() {
   $("opt-text").style.fontSize = $("opt-disp").style.fontSize = same + "px";      // same size, so the two drawings can be compared
   $("opt-small-text").style.fontVariationSettings = fvs(400, 100, lo);
   $("opt-small-disp").style.fontVariationSettings = fvs(400, 100, hi);
-  $("sweep").style.fontVariationSettings = fvs(state.wght, state.wdth, input.value);
+  $("sweep").style.fontVariationSettings = fvs(mine.wght, mine.wdth, input.value);
   fit($("sweep"));
   $("sweep-out").textContent = Number(input.value).toFixed(input.value % 1 ? 1 : 0);
 }
 
-// The italic section: the same word upright and italic at the page's weight and width, fitted to one size.
+// The italic section: one line in three italic styles, fitted to one size.
 function buildItalic() {
-  if (!D.italic) { $("italic").hidden = true; document.querySelector('#bar nav a[href="#italic"]').hidden = true; $("d-ital").hidden = true; return; }
+  if (!D.italic) { $("italic").hidden = true; document.querySelector('#bar nav a[href="#italic"]').hidden = true; return; }
   const angle = String(D.italic.angle).replace(/\.0$/, "");
   $("italic-says").textContent = `Every style has an italic, leaned ${angle} degrees. It is a second font file.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
@@ -776,7 +780,7 @@ function paintItalic() {
   }
   if (scale < 1) { const base = parseFloat(getComputedStyle(lines[0]).fontSize); for (const el of lines) { el.style.fontSize = Math.floor(base * scale * 10) / 10 + "px"; } }
   $("ital-run").style.fontVariationSettings = fvs(400, 100, D.axes.opsz ? D.axes.opsz[0] : null);
-  $("ital-pairs").style.fontVariationSettings = fvs(state.wght, 100, display);
+  $("ital-pairs").style.fontVariationSettings = fvs(520, 100, display);
 }
 
 const DETAILS = [
@@ -903,23 +907,19 @@ async function start() {
   D = await (await fetch(working ? "/api/site" : "data.json")).json();
   await loadFonts();
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
-  $("d-wght").min = gl; $("d-wght").max = gh; $("d-wdth").min = wl; $("d-wdth").max = wh;
-  $("d-opsz").hidden = !D.axes.opsz;
+  $("space-slant").hidden = !D.italic;
   buildFacts(); buildStyles(); buildTesters(); buildOptical(); buildItalic(); buildDetails(); buildLanguages(); buildCharacters(); buildFeatures(); buildDownload();
+  for (const id of ["features", "languages", "characters"]) { controls(id, { wght: 400, wdth: 100, italic: false }); }
   apply();
   root.classList.add("ready");
   heroFit(); heroSet(520, wh);
   requestAnimationFrame(heroTick);
 
   // events
-  for (const k of ["wght", "wdth"]) { $("d-" + k).addEventListener("input", (e) => { state[k] = Number(e.target.value); apply(); }); }
-  $("d-style").addEventListener("change", (e) => { const s = textStyles().find((x) => x.name === e.target.value); if (s) { state.wght = s.wght; state.wdth = s.wdth; apply(); } });
-  $("d-ital").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("italic_toggled", { on: state.italic, place: "dock" }); } });
-  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("italic_toggled", { on: state.italic, place: "styles" }); } });
-  $("d-opsz").addEventListener("click", (e) => { if (e.target.dataset.opsz) { state.opsz = e.target.dataset.opsz; apply(); buildTesters(); } });
+  $("space-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { state.italic = e.target.dataset.ital === "1"; apply(); track("italic_toggled", { on: state.italic, place: "axes" }); } });
+  $("styles-slant").addEventListener("click", (e) => { if (e.target.dataset.ital) { store.stylesItalic = e.target.dataset.ital === "1"; save(); buildStyles(); track("italic_toggled", { on: store.stylesItalic, place: "styles" }); } });
   document.querySelector(".themes").addEventListener("click", (e) => { if (e.target.dataset.theme) { state.theme = e.target.dataset.theme; apply(); track("theme_changed", { theme: state.theme }); } });
-  $("styles-list").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { state.wght = Number(r.dataset.wght); state.wdth = Number(r.dataset.wdth); apply(); track("style_picked", { style: $("space-name").textContent }); } });
-  $("styles-size").addEventListener("click", (e) => { if (e.target.dataset.opsz) { store.stylesOpsz = Number(e.target.dataset.opsz); save(); buildStyles(); apply(); } });
+  $("styles-size").addEventListener("click", (e) => { if (e.target.dataset.opsz) { store.stylesOpsz = Number(e.target.dataset.opsz); save(); buildStyles(); } });
   $("details-cmp").addEventListener("click", (e) => {
     if (!e.target.dataset.cmp) { return; }
     $("details-grid").classList.toggle("compare", e.target.dataset.cmp === "1");
@@ -961,7 +961,7 @@ async function start() {
     for (const entry of entries) { if (entry.isIntersecting && !reached.has(entry.target.id)) { reached.add(entry.target.id); track("section_viewed", { section: entry.target.id }); } }
   }, { rootMargin: "-40% 0px -40% 0px" });
   document.querySelectorAll("main section[id], main .band[id]").forEach((el) => { if (el.id !== "top") { reach.observe(el); } });
-  for (const [selector, what] of [["#pad", "axes square"], ["#testers", "tester"], ["#d-wght, #d-wdth", "dock sliders"], ["#feats", "features"], ["#details-cmp", "compare with 1.1"], ["#sets", "characters"]]) {
+  for (const [selector, what] of [["#pad", "axes square"], ["#testers", "tester"], [".ctl.own", "section sliders"], ["#feats", "features"], ["#details-cmp", "compare with 1.1"], ["#sets", "characters"]]) {
     const once = () => { track("tool_tried", { what }); document.querySelectorAll(selector).forEach((n) => { n.removeEventListener("pointerdown", once); n.removeEventListener("input", once); }); };
     document.querySelectorAll(selector).forEach((n) => { n.addEventListener("pointerdown", once); n.addEventListener("input", once); });
   }
