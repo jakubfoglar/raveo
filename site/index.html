@@ -148,7 +148,13 @@
   .optical { row-gap: 28px; }
   .optical .half { grid-column: span 6; min-width: 0; }
   @media (max-width: 900px) { .optical .half { grid-column: 1 / -1; } }
-  .optical .word { font-family: var(--font); font-size: clamp(60px, 10.2vw, 190px); line-height: 1; white-space: nowrap; overflow: hidden; padding-bottom: .08em; }
+  .optical .over { grid-column: 1 / -1; display: grid; min-width: 0; }      /* the two drawings on one another: where they agree the ink is darkest */
+  .optical .over .word { grid-area: 1 / 1; justify-self: start; font-family: var(--font); font-size: clamp(80px, 30vw, 460px); line-height: 1; white-space: nowrap; padding-bottom: .08em; }
+  .optical .over .t { opacity: .3; }
+  .optical .over .d { opacity: .62; }
+  .optical h3.t::before, .optical h3.d::before { content: ""; display: inline-block; width: .7em; height: .7em; margin-right: .6em; background: var(--fg); }
+  .optical h3.t::before { opacity: .3; }
+  .optical h3.d::before { opacity: .62; }
   .optical h3 { margin: 4px 0 10px; font-size: 14px; font-weight: 400; color: var(--mute); }
   .optical .small p { margin: 0; font-family: var(--font); font-size: 12px; line-height: 1.5; max-width: 44ch; }
   .optical .small h3 { margin-top: 10px; }
@@ -365,8 +371,9 @@
   <section class="block" id="optical">
     <header class="sh grid"><h2>Optical size</h2><p>Every letter is drawn twice, for text and for display. Browsers and design apps choose by size.</p></header>
     <div class="grid optical">
-      <div class="half"><div class="word" id="opt-text" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-text-h"></h3><ul id="opt-text-f"></ul></div>
-      <div class="half"><div class="word" id="opt-disp" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-disp-h"></h3><ul id="opt-disp-f"></ul></div>
+      <div class="over" aria-hidden="true"><div class="word t" id="opt-text">Hamburg</div><div class="word d" id="opt-disp">Hamburg</div></div>
+      <div class="half"><h3 class="t" id="opt-text-h"></h3><ul id="opt-text-f"></ul></div>
+      <div class="half"><h3 class="d" id="opt-disp-h"></h3><ul id="opt-disp-f"></ul></div>
       <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The text drawing at 12 pixels</h3></div>
       <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The display drawing at 12 pixels</h3></div>
       <div class="sweep">
@@ -635,11 +642,10 @@ function padPoint(e) {
 
 // --- sections built from the font's own data ---
 function buildFacts() {
-  const a = D.axes, sizes = a.opsz ? 2 : 1, widths = new Set(D.styles.map((s) => s.wdth)).size, weights = new Set(D.styles.map((s) => s.wght)).size;
+  const a = D.axes;
   const rows = [["Version", `${D.version}, ${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}`],
     ["Weight", `${a.wght[0]} to ${a.wght[2]}`], ["Width", `${a.wdth[0]} to ${a.wdth[2]}`],
     ...(a.opsz ? [["Optical size", `${a.opsz[0]} to ${a.opsz[2]}`]] : []),
-    ["Named styles", `${D.styles.length * (D.italic ? 2 : 1)}: ${weights} weights at ${widths} widths${sizes > 1 ? ", for text and display" : ""}${D.italic ? ", upright and italic" : ""}`],
     ["Characters", `${fmt(D.character_count)}, Latin script`],
     ["Licence", "SIL Open Font License 1.1"],
     ["Designer", 'Jakub Foglar, <a href="https://x.com/jakubfoglar" data-track="designer_clicked" data-track-place="hero">@jakubfoglar</a>'], ["Lineage", "Inter by Rasmus Andersson"]];
@@ -720,7 +726,6 @@ function buildOptical() {
   $("opt-disp-f").innerHTML = rows(d);
   const input = $("sweep-in");
   input.min = lo; input.max = hi; input.value = store.sweep ?? (lo + hi) / 2;
-  for (const id of ["opt-text", "opt-disp"]) { $(id).addEventListener("input", paintOptical); }
   input.addEventListener("input", () => { store.sweep = Number(input.value); save(); paintOptical(); });
   paintOptical();
 }
