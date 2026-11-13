@@ -19,7 +19,7 @@ SIL Open Font License 1.1. This file records what changed in each version and wh
 - 51 more characters, among them æ ø ð œ ă ğ ő ű and « »: Danish, Norwegian, Icelandic, Hungarian,
   Romanian and Turkish can be set.
 - Static fonts are TrueType. Display styles are part of the family "Raveo".
-- Web fonts come in two parts with a stylesheet, upright and italic.
+- Web fonts are WOFF2: the two variable files and every static style.
 - Kerning differs from Inter's in one pair: the low quote is no longer pulled toward a.
 
 ## 1.1 (October 2024)

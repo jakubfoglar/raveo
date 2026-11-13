@@ -228,13 +228,16 @@ def build():
     if fonts.exists():
         shutil.rmtree(fonts)
     fonts.mkdir(parents=True)
-    for source in sorted((folder / "web").glob("*.woff2")) + sorted((folder / "web").glob("*.css")):
-        shutil.copy(source, fonts / source.name)
-    css = next((folder / "web").glob("*.css"))
-    data["font"] = {"family": newest["family"], "css": f"fonts/{css.name}"}
+    # The page loads the font in two parts: every European language with punctuation, arrows and common signs
+    # in the first, the rare letters in the second, so that a visit downloads only what it shows.
     slanted = folder / "desktop" / "variable" / f"{slug}-Italic-VF.ttf"
-    if slanted.exists():                                # the stylesheet already carries its @font-face rules
+    rules = release._web_parts(variable, newest["family"], fonts, f"{slug}-VF", lambda path, kind: None, "")
+    if slanted.exists():
+        rules += release._web_parts(slanted, newest["family"], fonts, f"{slug}-Italic-VF", lambda path, kind: None, "", italic=True)
         data["italic"] = {"angle": round(-TTFont(slanted)["post"].italicAngle, 1)}
+    css = fonts / f"{slug.lower()}.css"
+    css.write_text("\n".join(rules))
+    data["font"] = {"family": newest["family"], "css": f"fonts/{css.name}"}
 
     _favicon(variable, SITE / "favicon.svg")
     _share_image(variable, slanted if slanted.exists() else None, SITE / "og.png")
@@ -255,9 +258,6 @@ def build():
              "statics": len(list((folder / "desktop" / "static").glob("*.ttf")))}
     if slanted.exists():
         files["italic"] = {"name": slanted.name, "kb": _kb(slanted)}
-    slim = folder / "web" / "regular-width" / f"{slug}-VF.woff2"
-    if slim.exists():
-        files["regular_width"] = {"name": slim.name, "kb": _kb(slim)}
     if archive.exists():
         files["zip"] = {"url": f"{GITHUB}/releases/download/v{data['version']}/{archive.name}", "name": archive.name, "kb": _kb(archive)}
     data["files"] = files

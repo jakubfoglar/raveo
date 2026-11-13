@@ -61,20 +61,19 @@ One set is enough. Remove Raveo 1.1 first: several of its files carry the same n
 
 ## On a web page
 
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jakubfoglar/raveo@v2.0/releases/Raveo-2.0/web/raveo.css">
-```
+`web/` has the two variable files as WOFF2 and, in `web/static/`, every named style.
 
 ```css
+@font-face { font-family: "Raveo"; src: url("Raveo-VF.woff2") format("woff2");
+             font-weight: 300 900; font-stretch: 60% 125%; font-style: normal; }
+@font-face { font-family: "Raveo"; src: url("Raveo-Italic-VF.woff2") format("woff2");
+             font-weight: 300 900; font-stretch: 60% 125%; font-style: italic; }
+
 body { font-family: "Raveo", sans-serif; }
 h1   { font-weight: 520; font-stretch: 125%; }
 .tag { font-weight: 730; font-stretch: 60%; }
 em   { font-style: italic; }
 ```
-
-The stylesheet loads the font in two parts: every European language with punctuation, arrows and common
-symbols in the first (about 280 KB), the rare letters in the second. `web/regular-width/` has the same
-files without the width axis at about half the size, for pages that never use the narrow and wide styles.
 
 ## Upgrading from 1.1
 

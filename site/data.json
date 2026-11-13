@@ -4535,12 +4535,12 @@
    "advance": 1006
   }
  },
+ "italic": {
+  "angle": 9.4
+ },
  "font": {
   "family": "Raveo",
   "css": "fonts/raveo.css"
- },
- "italic": {
-  "angle": 9.4
  },
  "compare": {
   "family": "Raveo 1.1",
@@ -4560,14 +4560,10 @@
    "name": "Raveo-Italic-VF.ttf",
    "kb": 1021
   },
-  "regular_width": {
-   "name": "Raveo-VF.woff2",
-   "kb": 175
-  },
   "zip": {
    "url": "https://github.com/jakubfoglar/raveo/releases/download/v2.0/Raveo-2.0.zip",
    "name": "Raveo-2.0.zip",
-   "kb": 14952
+   "kb": 13347
   }
  }
 }

@@ -7,20 +7,18 @@ releases/
   <Family>-<version>/
     README.txt                          what each file is for and how to use it
     OFL.txt                             the licence, which must travel with the fonts
-    recipe.json                         the settings this version was built from
+    recipe.json                         the settings this version was built from (not in the zip)
     desktop/variable/<Family>-VF.ttf    one file with every weight and width
     desktop/variable/<Family>-Italic-VF.ttf   the italic, when the project has one: a second file, as CSS and
                                         desktop apps expect (font-style: italic, the I button)
     desktop/static/<Family>-<Style>.ttf one file per named style, for apps without variable-font support
-    web/<Family>-VF.woff2               every character in one file
-    web/<Family>-VF-european.woff2      split: every European language, punctuation, arrows and common symbols
-    web/<Family>-VF-more.woff2          split: everything else (rare letters), when the font has more
-    web/<Family>-Italic-VF*.woff2       the same for the italic
-    web/<family>.css                    @font-face rules for the split files, roman and italic
-    web/regular-width/                  the same four files and stylesheet without the width axis, when the
-                                        font also has an optical size: the axes Raveo 1.1 has, at half the size
-    web/static/<Family>-<Style>.woff2
-  <Family>-<version>.zip                the same folder, for sending to someone
+    web/<Family>-VF.woff2               the variable font for web pages
+    web/<Family>-Italic-VF.woff2        its italic
+    web/static/<Family>-<Style>.woff2   one file per named style
+  <Family>-<version>.zip                what people download: the folder without recipe.json
+
+A release holds what someone installing the typeface needs and nothing else. The specimen page cuts the
+variable fonts into parts for itself (tools/site_page.py).
 
 Exporting a version that already exists replaces its folder.
 """
@@ -28,6 +26,7 @@ import json
 import re
 import shutil
 import sys
+import zipfile
 import time
 from pathlib import Path
 
@@ -183,7 +182,7 @@ def releases():
     return sorted(out, key=lambda r: [float(r["version"]) if re.fullmatch(r"[\d.]+", r["version"]) else 0], reverse=True)
 
 
-def _readme(recipe, label, font, slug, slim, italic=None):
+def _readme(recipe, label, font, slug, italic=None):
     names = font["name"]
     axes = {a.axisTag: (a.minValue, a.maxValue) for a in font["fvar"].axes}
     styles = [names.getDebugName(i.subfamilyNameID) for i in font["fvar"].instances]
@@ -216,7 +215,6 @@ headline drawing. To choose yourself in CSS:
     font-variation-settings: "opsz" {axes['opsz'][1]:g};      /* headline drawing at any size */
     font-optical-sizing: none;                  /* text drawing at any size */
 """ if sized else ""
-    more = f", web/{slug}-VF-more.woff2" if full else ""
     lightest = f"{axes['wght'][0]:g}"
     upgrade = f"""
 
@@ -257,16 +255,6 @@ added: Italic, Bold Italic, Narrow Medium Italic, Display Wide Black Italic.
 desktop/variable/{slug}-Italic-VF.ttf
     The italic of every style. Install it together with the file above.
 """ if italic else ""
-    italic_web = f"""
-web/{slug}-Italic-VF.woff2 and its parts
-    The italic, in the same forms. The stylesheet covers both: <em> and font-style: italic just work.
-""" if italic else ""
-    slim_part = f"""
-web/regular-width/
-    The same web files without the width axis: optical size and weight only, the axes Raveo 1.1
-    has, at about half the size. Use these where the narrow and wide styles are never needed,
-    for example in an app's interface. Same family name, so use one set or the other on a page.
-""" if slim else ""
     return f"""{family} {label}
 {time.strftime("%Y-%m-%d")}
 
@@ -290,28 +278,15 @@ desktop/static/
 
 WEB
 
-web/{slug}-VF.woff2
-    Everything in one file. It needs a rule of your own that names its ranges, or browsers
-    fake the bold{" and the italic" if italic else ""}:
+web/{slug}-VF.woff2{f" and web/{slug}-Italic-VF.woff2" if italic else ""}
+    The variable font{"s" if italic else ""}. A page names {"their" if italic else "its"} ranges itself, or browsers fake the bold{" and the italic" if italic else ""}:
 {single}
 
-web/{slug}-VF-european.woff2{more}, web/{slug.lower()}.css
-    The same font in two parts. Link the stylesheet and the browser downloads only what a page
-    needs: one part holds every European language with punctuation, arrows and common symbols,
-    the other the rare letters.
-
-        <link rel="stylesheet" href="{slug.lower()}.css">
         h1 {{ font-family: "{family}", sans-serif; font-weight: 520; font-stretch: {axes['wdth'][1]:g}%; }}
-{italic_web}{slim_part}
+
 web/static/
-    Static styles as WOFF2, for the rare case a variable font cannot be used.
+    One file per named style, as WOFF2.
 
-
-OTHER FILES
-
-recipe.json   The design settings this version was built from. Copied over the project's
-              recipe.json, it brings the workbench back to exactly these fonts.
-OFL.txt       The licence. It must stay with the fonts wherever they are copied.
 
 
 LICENCE AND CREDITS
@@ -360,10 +335,14 @@ def _web_parts(source, family, folder, stem, add, label, italic=False):
     return css
 
 
-def _stylesheet(rules, family, folder, add, label):
-    css_path = folder / f"{family.replace(' ', '').lower()}.css"
-    css_path.write_text("\n".join(rules))
-    add(css_path, f"Stylesheet for the parts ({label.lower()})")
+def pack(folder):
+    """The zip people download: the release folder without the settings it was built from."""
+    archive = folder.with_suffix(folder.suffix + ".zip")
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as out:
+        for path in sorted(folder.rglob("*")):
+            if path.is_file() and path.name not in ("recipe.json", ".DS_Store"):
+                out.write(path, path.relative_to(folder.parent))
+    return archive
 
 
 def export(pipeline, recipe, statics=True, version=None, italic=None):
@@ -404,7 +383,6 @@ def export(pipeline, recipe, statics=True, version=None, italic=None):
     ascent, descent = _win_metrics([cut for _, _, _, cuts, _ in family for cut in cuts])
     first = family[0][2]
 
-    rules, slim_rules, slim = [], [], False
     for slanted, stem, font, cuts, report in family:
         kind = "Variable italic" if slanted else "Variable"
         desktop = out / "desktop" / "variable" / f"{stem}.ttf"
@@ -415,22 +393,7 @@ def export(pipeline, recipe, statics=True, version=None, italic=None):
         font.flavor = "woff2"
         web = out / "web" / f"{stem}.woff2"
         font.save(web)
-        add(web, f"{kind}, web, everything in one file")
-        rules += _web_parts(desktop, recipe["family"], out / "web", stem, add, f"{kind}, web", slanted)
-
-        # Without the width axis the font has the axes Raveo 1.1 has, and a third of the data.
-        slim = {"opsz", "wdth"} <= {a.axisTag for a in font["fvar"].axes}
-        if slim:
-            (out / "web" / "regular-width").mkdir(exist_ok=True)
-            narrow = instancer.instantiateVariableFont(TTFont(desktop), {"wdth": 100})
-            path = out / "web" / "regular-width" / f"{stem}.ttf"
-            narrow.save(path)
-            narrow.flavor = "woff2"
-            narrow.save(path.with_suffix(".woff2"))
-            add(path.with_suffix(".woff2"), f"{kind}, web, regular width only")
-            slim_rules += _web_parts(path, recipe["family"], path.parent, stem, add, f"{kind}, web, regular width only", slanted)
-            path.unlink()
-
+        add(web, f"{kind}, web")
         if statics:
             for style, cut in cuts:
                 _rename(cut, recipe["family"], style, weights)
@@ -445,15 +408,12 @@ def export(pipeline, recipe, statics=True, version=None, italic=None):
                 path = out / "web" / "static" / f"{slug}-{style.replace(' ', '')}.woff2"
                 cut.save(path)
                 add(path, "Static italic, web" if slanted else "Static, web")
-    _stylesheet(rules, recipe["family"], out / "web", add, "Variable, web")
-    if slim:
-        _stylesheet(slim_rules, recipe["family"], out / "web" / "regular-width", add, "Variable, web, regular width only")
     desktop = out / "desktop" / "variable" / f"{slug}-VF.ttf"
     report = family[0][4]
 
     shutil.copy(ROOT / "LICENSE.txt", out / "OFL.txt")
     (out / "recipe.json").write_text(json.dumps(recipe, indent=2) + "\n")
-    (out / "README.txt").write_text(_readme(recipe, label, TTFont(desktop), slug, slim, family[1][2] if italic else None))
+    (out / "README.txt").write_text(_readme(recipe, label, TTFont(desktop), slug, family[1][2] if italic else None))
     for extra, kind in (("README.txt", "What each file is for"), ("OFL.txt", "Licence"), ("recipe.json", "Settings of this version")):
         add(out / extra, kind)
 
@@ -463,7 +423,7 @@ def export(pipeline, recipe, statics=True, version=None, italic=None):
     if replaced:
         shutil.rmtree(final)
     shutil.move(str(out), str(final))
-    archive = Path(shutil.make_archive(str(RELEASES / name), "zip", root_dir=RELEASES, base_dir=name))
+    archive = pack(final)
     files.append({"path": f"releases/{archive.name}", "kb": round(archive.stat().st_size / 1024, 1),
                   "kind": "Everything above, zipped"})
     return {"files": files, "seconds": round(time.time() - started, 1), "glyphs": report["glyphs"],

@@ -1,5 +1,5 @@
 Raveo 2.0
-2026-11-12
+2026-11-13
 
 A typeface for text and headlines with three axes: optical size (14 to 32), weight
 (300 to 900) and width (60 to 125; 100 is the regular width).
@@ -70,40 +70,19 @@ desktop/static/
 
 WEB
 
-web/Raveo-VF.woff2
-    Everything in one file. It needs a rule of your own that names its ranges, or browsers
-    fake the bold and the italic:
+web/Raveo-VF.woff2 and web/Raveo-Italic-VF.woff2
+    The variable fonts. A page names their ranges itself, or browsers fake the bold and the italic:
 
         @font-face { font-family: "Raveo"; src: url("Raveo-VF.woff2") format("woff2");
                      font-weight: 300 900; font-stretch: 60% 125%; font-style: normal; }
         @font-face { font-family: "Raveo"; src: url("Raveo-Italic-VF.woff2") format("woff2");
                      font-weight: 300 900; font-stretch: 60% 125%; font-style: italic; }
 
-web/Raveo-VF-european.woff2, web/Raveo-VF-more.woff2, web/raveo.css
-    The same font in two parts. Link the stylesheet and the browser downloads only what a page
-    needs: one part holds every European language with punctuation, arrows and common symbols,
-    the other the rare letters.
-
-        <link rel="stylesheet" href="raveo.css">
         h1 { font-family: "Raveo", sans-serif; font-weight: 520; font-stretch: 125%; }
 
-web/Raveo-Italic-VF.woff2 and its parts
-    The italic, in the same forms. The stylesheet covers both: <em> and font-style: italic just work.
-
-web/regular-width/
-    The same web files without the width axis: optical size and weight only, the axes Raveo 1.1
-    has, at about half the size. Use these where the narrow and wide styles are never needed,
-    for example in an app's interface. Same family name, so use one set or the other on a page.
-
 web/static/
-    Static styles as WOFF2, for the rare case a variable font cannot be used.
+    One file per named style, as WOFF2.
 
-
-OTHER FILES
-
-recipe.json   The design settings this version was built from. Copied over the project's
-              recipe.json, it brings the workbench back to exactly these fonts.
-OFL.txt       The licence. It must stay with the fonts wherever they are copied.
 
 
 LICENCE AND CREDITS
