@@ -144,7 +144,7 @@ def working(recipe=None):
     return data
 
 
-INK, PAPER, QUIET = "#0d0d0d", "#f6f6f3", "#a9a9a4"
+INK, PAPER, RULE = "#0d0d0d", "#f6f6f3", "#3a3a3c"
 
 
 def _favicon(variable, out):
@@ -164,40 +164,46 @@ def _favicon(variable, out):
 
 
 def _share_image(variable, slanted, out):
-    """The picture link previews show: the name in the wide Medium and one line under it. Set with HarfBuzz
-    (hb-view), so it is kerned as the font is; skipped when hb-view or Pillow is not installed."""
+    """The picture link previews show: the name in the wide Medium over three lines about the typeface, one in
+    each width. Every line is set so that its ink, not its box, begins and ends on the margins. Set with
+    HarfBuzz (hb-view), so it is kerned as the font is; skipped when hb-view or Pillow is not installed."""
     try:
-        from PIL import Image
+        from PIL import Image, ImageDraw
     except ImportError:
         return False
+    metrics = TTFont(variable)
+    ascent = metrics["hhea"].ascent / metrics["head"].unitsPerEm          # the baseline, below the top of a line hb-view draws
 
-    def line(font, text, size, variations, colour):
-        png = subprocess.run(["hb-view", str(font), text, f"--font-size={size}", f"--variations={variations}", "--margin=0",
-                              f"--foreground={colour[1:]}", f"--background={INK[1:]}", "-O", "png"], capture_output=True, check=True).stdout
-        return Image.open(io.BytesIO(png)).convert("RGB")
+    def line(text, size, variations):
+        png = subprocess.run(["hb-view", str(variable), text, f"--font-size={size:.3f}", f"--variations={variations}", "--margin=0",
+                              f"--foreground={PAPER[1:]}", f"--background={INK[1:]}", "-O", "png"], capture_output=True, check=True).stdout
+        image = Image.open(io.BytesIO(png)).convert("RGB")
+        return image, image.convert("L").point(lambda v: 255 if v > 40 else 0).getbbox()
+
+    def flush(text, variations, room):
+        """The line at the size at which its ink is `room` wide, cut to its ink at both ends, and its baseline."""
+        size = 200
+        for _ in range(2):                                   # the second pass takes up what rounding left
+            image, ink = line(text, size, variations)
+            size *= room / (ink[2] - ink[0])
+        image, ink = line(text, size, variations)
+        image = image.crop((ink[0], 0, ink[2], image.height))
+        return (image if image.width == room else image.resize((room, image.height), Image.LANCZOS)), round(size * ascent)
 
     try:
-        width, height, margin = 1200, 630, 64
+        width, height, margin, first, step = 1200, 630, 64, 330, 84
+        room = width - 2 * margin
         page = Image.new("RGB", (width, height), INK)
-        word = line(variable, "Raveo", 300, "opsz=32,wght=520,wdth=125", PAPER)
-        word = word.crop(word.point(lambda v: 255 if v > 40 else 0).getbbox())
-        if word.width > width - 2 * margin:
-            word = word.resize((width - 2 * margin, round(word.height * (width - 2 * margin) / word.width)), Image.LANCZOS)
-        page.paste(word, (margin, 150))
-        def under(size):
-            parts = [line(variable, "A warm grotesque in seven weights and three widths" + ("," if slanted else ""), size, "opsz=32,wght=400,wdth=100", QUIET)]
-            if slanted:
-                parts.append(line(slanted, "upright and italic", size, "opsz=32,wght=400,wdth=100", QUIET))
-            return parts
-
-        parts, room = under(40), width - 2 * margin
-        taken = sum(part.width for part in parts) + 12 * (len(parts) - 1)
-        if taken > room:                                    # the line must end inside the picture
-            parts = under(int(40 * room / taken))
-        x, y = margin, height - margin - max(part.height for part in parts)
-        for part in parts:
-            page.paste(part, (x, y))
-            x += part.width + 12
+        draw = ImageDraw.Draw(page)
+        name, base = flush("Raveo", "opsz=32,wght=520,wdth=125", room)
+        page.paste(name, (margin, 286 - base))
+        rows = [("A warm grotesque for interfaces, running text and headlines", 60),
+                ("Seven weights, three widths" + (", italics" if slanted else ""), 100), ("Variable, free and open source", 125)]
+        for i, (text, wdth) in enumerate(rows):
+            row, base = flush(text, f"opsz=32,wght=630,wdth={wdth}", room)
+            page.paste(row, (margin, first + i * step + 62 - base))
+        for i in range(len(rows) + 1):                       # the rules go on last, over the edge of any line box
+            draw.rectangle([margin, first + i * step, width - margin - 1, first + i * step + 1], fill=RULE)
         page.save(out)
         return True
     except (OSError, subprocess.CalledProcessError):
