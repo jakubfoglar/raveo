@@ -84,7 +84,8 @@
   .sh p { grid-column: 4 / span 6; margin: 0; color: var(--mute); max-width: 62ch; text-wrap: pretty; }
   .sh .tools { grid-column: 10 / span 3; justify-self: end; display: flex; gap: 10px; align-items: center; }
   @media (max-width: 900px) { .sh h2, .sh p, .sh .tools { grid-column: 1 / -1; justify-self: start; } .sh p { margin-top: 4px; } .sh .tools { margin-top: 12px; } }
-  .reel { display: block; width: 100%; aspect-ratio: 16 / 9; background: #0c0c0c; cursor: pointer; }
+  .film video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #0c0c0c; cursor: pointer; }
+  .film .copy { display: block; margin: 10px 0 0 auto; }
   .seg { display: inline-flex; border: 1px solid var(--line); }
   .seg button { border: 0; background: none; padding: 5px 11px; color: var(--mute); }
   .seg button + button { border-left: 1px solid var(--line); }
@@ -309,7 +310,7 @@
 <div id="bar">
   <a class="name" href="#top">Raveo<span id="ver"></span></a>
   <nav>
-    <a href="#film">Film</a><a href="#space">Axes</a><a href="#styles">Styles</a><a href="#details">Details</a><a href="#optical">Optical size</a><a href="#italic">Italic</a><a href="#use">In use</a>
+    <a href="#space">Axes</a><a href="#styles">Styles</a><a href="#details">Details</a><a href="#optical">Optical size</a><a href="#italic">Italic</a><a href="#use">In use</a>
     <a href="#tester">Tester</a><a href="#features">Features</a><a href="#languages">Languages</a><a href="#characters">Characters</a><a href="#about">About</a>
   </nav>
   <div class="side">
@@ -334,9 +335,9 @@
     </div>
   </section>
 
-  <section class="block" id="film">
-    <header class="sh grid"><h2>Film</h2><p>Raveo 2.0 in half a minute. Music: Jazz drums solo 120 bpm by Alban_Gogh.</p><div class="tools"><div class="seg" id="film-sound"><button data-sound="0" aria-pressed="true">Silent</button><button data-sound="1">With sound</button></div></div></header>
-    <video class="reel" id="reel" src="film/raveo-2.0.mp4" poster="film/poster.jpg" muted loop playsinline preload="none" aria-label="A film of Raveo 2.0: its widths, weights, stroke endings and italics in motion"></video>
+  <section class="block film" id="film">
+    <video id="reel" src="film/raveo-2.0.mp4" poster="film/poster.jpg" muted loop playsinline preload="none" aria-label="A film of Raveo 2.0: its widths, stroke endings and italics in motion"></video>
+    <button class="copy" id="reel-hold" aria-controls="reel">Pause</button>
   </section>
 
   <section class="block" id="space">
@@ -640,7 +641,8 @@ function buildFacts() {
     ...(a.opsz ? [["Optical size", `${a.opsz[0]} to ${a.opsz[2]}`]] : []),
     ["Named styles", `${D.styles.length * (D.italic ? 2 : 1)}: ${weights} weights at ${widths} widths${sizes > 1 ? ", for text and display" : ""}${D.italic ? ", upright and italic" : ""}`],
     ["Characters", `${fmt(D.character_count)}, Latin script, ${D.italic ? "roman and italic" : "upright only"}`],
-    ["Licence", "SIL Open Font License 1.1"], ["Lineage", "Inter by Rasmus Andersson"]];
+    ["Licence", "SIL Open Font License 1.1"],
+    ["Designer", 'Jakub Foglar, <a href="https://x.com/jakubfoglar" data-track="designer_clicked" data-track-place="hero">@jakubfoglar</a>'], ["Lineage", "Inter by Rasmus Andersson"]];
   $("facts").innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
   $("ver").textContent = D.version + (D.working ? " working build" : "");
 }
@@ -928,19 +930,14 @@ async function start() {
   for (const id of ["spaceword", "spaceline", "sweep"]) { $(id).addEventListener("input", () => fit($(id))); }
   addEventListener("resize", () => { heroFit(); fit($("spaceword")); fit($("spaceline")); paintOptical(); paintItalic(); });
   new IntersectionObserver(([entry]) => { hero.seen = entry.isIntersecting; }).observe($("stage"));
-  const reel = $("reel");                                     // the film plays while it is on screen, silent until asked
-  reel.controls = !hero.auto;
-  new IntersectionObserver(([entry]) => { if (entry.isIntersecting && hero.auto) { reel.play().catch(() => {}); } else { reel.pause(); } }, { threshold: 0.35 }).observe(reel);
-  reel.addEventListener("click", () => { if (hero.auto) { reel.paused ? reel.play().catch(() => {}) : reel.pause(); } });
-  $("film-sound").addEventListener("click", (e) => {
-    const b = e.target.closest("button");
-    if (!b) { return; }
-    reel.muted = b.dataset.sound !== "1";
-    for (const other of $("film-sound").children) { other.setAttribute("aria-pressed", String(other === b)); }
-    if (!reel.muted) { reel.currentTime = 0; }
-    reel.play().catch(() => {});
-    track("film_sound", { on: !reel.muted });
-  });
+  const reel = $("reel"), held = { by: !hero.auto, seen: false };     // the film plays, silent, while it is on screen, unless it has been paused
+  const roll = () => {
+    held.by || !held.seen ? reel.pause() : reel.play().catch(() => {});
+    $("reel-hold").textContent = held.by ? "Play" : "Pause";
+  };
+  new IntersectionObserver(([entry]) => { held.seen = entry.isIntersecting; roll(); }, { threshold: 0.35 }).observe(reel);
+  for (const el of [reel, $("reel-hold")]) { el.addEventListener("click", () => { held.by = !held.by; roll(); }); }
+  roll();
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-copy]");
     if (!b) { return; }

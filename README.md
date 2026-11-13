@@ -1,6 +1,6 @@
 # Raveo
 
-![Raveo: a warm grotesque in seven weights and three widths, upright and italic, free and open source](docs/images/01-raveo.svg)
+https://github.com/user-attachments/assets/a4b7cbc4-17b9-4f3b-8901-0388d001e9b5
 
 Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic, free
 and open source. It began as a fork of [Inter](https://github.com/rsms/inter) with an a that has a tail,
@@ -8,6 +8,8 @@ an R with a curled leg and darker named weights. Version 2.0 adds a width axis, 
 and sharper stroke endings.
 
 [Specimen and tester](https://raveo.jakubfoglar.com) · [Download Raveo 2.0](https://github.com/jakubfoglar/raveo/releases/latest)
+
+![Raveo: a warm grotesque in seven weights and three widths, upright and italic, free and open source](docs/images/01-raveo.svg)
 
 ![The line "Morning train to Kraków" at six widths, from 60 to 125](docs/images/03-width.svg)
 
