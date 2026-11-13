@@ -1,37 +1,140 @@
 # Raveo
-Raveo is a warmer version of the open-source typeface [Inter](https://github.com/rsms/inter). Inter is one of the highest quality typefaces around. It is almost the default for digital products nowadays. This project builds on top of Inter with a fork that shifts it slightly towards imperfection and human touch, while doubling down on the sturdiness.
 
-![A slightly warmer, sturdier Inter. Free typeface on GitHub.](/documentation/images/raveo_07.png?raw=true "Title")
-![Raveo is a warmer take on Inter](/documentation/images/raveo_01.png?raw=true "Title")
+https://github.com/user-attachments/assets/a4b7cbc4-17b9-4f3b-8901-0388d001e9b5
 
-![Updated characters](/documentation/images/raveo_03.png?raw=true "Title")
+Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic, free
+and open source. It began as a fork of [Inter](https://github.com/rsms/inter) with an a that has a tail,
+an R with a curled leg and darker named weights. Version 2.0 adds a width axis, an italic for every style
+and sharper stroke endings.
 
-### New characters
-There are a few redrawn letters.
-- Lowercase “a” with a tail.
-- Uppercase “R” with a curled leg.
+[Specimen and tester](https://raveo.jakubfoglar.com) · [Download Raveo 2.0](https://github.com/jakubfoglar/raveo/releases/latest)
 
-![Differences between Inter and Raveo: "Radio"](/documentation/images/raveo_02.png?raw=true "Title")
+![Raveo: a warm grotesque in seven weights and three widths, upright and italic, free and open source](docs/images/01-raveo.svg)
 
-### Baked stylistic choices
-Raveo uses some characters from Inter’s stylistic sets by default, like the “G” with a spur, or the alternate "1". This is baked in.
+![The line "Morning train to Kraków" at six widths, from 60 to 125](docs/images/03-width.svg)
 
-### Shifted weights
-The locations of the most commonly used named weights on the variable weight axis are moved. This results in slightly darker appearance. When using the variable font, you can use numbers to overwrite this to the classic Inter weight locations (e.g. 500 will get you the same weight as in Inter Medium).
-In Raveo, the named weight changes are:
-- Medium is 520 instead of 500
-- SemiBold is 630 instead of 600
-- Bold is 730 instead of 700
+![The seven named weights, upright and italic](docs/images/04-weight.svg)
 
-![Darker default weights](/documentation/images/raveo_05.png?raw=true "Title")
+![The line "Window seat, facing forward" in Narrow Bold Italic, Italic and Wide Medium Italic](docs/images/05-italic.svg)
 
-### Subsetted weights
-Raveo is distributed mainly with subsetted weights to the range between Regular–Bold. This way, the variable font file is around 100 KB. This should cover most of use cases for the web. Full set is also available. The font remains variable.
+![A station's departures: three lines in the wide Medium, a table of trains with tabular figures, a headline in narrow capitals, the word Praha set large and the stops of one train](docs/images/06-in-use.svg)
 
-### Other modifications
-- The whole glyph set is heavily subsetted towards extended latin.
-- There are not italics at this point.
+![The opening of an article: a headline, a paragraph with one line in italic, and the names of the four stops of the journey](docs/images/08-text.svg)
 
-![Differences between Inter and Raveo: thin, elegant weights](/documentation/images/raveo_06.png?raw=true "Title")
+![Inter and Raveo side by side: the a with a tail, the R with a curled leg, the r with a longer arm, the G with a spur, the 1 with a flag, the s with angled stroke endings](docs/images/02-letters.svg)
 
-![Showcase of Raveo in body text](/documentation/images/raveo_04.png?raw=true "Title")
+![Inter above Raveo: round commas and round quotes](docs/images/07-details.svg)
+
+## The family
+
+| Axis | Range | Named styles |
+| --- | --- | --- |
+| Weight `wght` | 300 to 900 | Light 300, Regular 400, Medium 520, SemiBold 630, Bold 730, ExtraBold 850, Black 900 |
+| Width `wdth` | 60 to 125 | Narrow 60, regular 100, Wide 125 |
+| Optical size `opsz` | 14 to 32 | the text drawing at 14, the Display drawing at 32 |
+
+- **Two variable fonts**, upright and italic, and 84 static styles.
+- **Italic.** Every style, leaned 9.4 degrees.
+- **Optical size.** Every letter is drawn twice, for text and for display. Browsers and design apps choose
+  by size.
+- **Against Inter.** An a with a tail, an R with a curled leg, a longer arm on the r, stroke endings cut at
+  an angle, round commas and quotes. The G with a spur and the 1 with a flag are Inter's alternates, made
+  the default.
+- **Languages.** 826 characters: Latin script for Western, Central and Northern Europe, the Baltics,
+  Romanian and Turkish. No Cyrillic, Greek or Vietnamese.
+
+## Install
+
+Download the zip from [Releases](https://github.com/jakubfoglar/raveo/releases/latest), or take the files
+from [`releases/Raveo-2.0`](releases/Raveo-2.0).
+
+- `desktop/variable/`: `Raveo-VF.ttf` and `Raveo-Italic-VF.ttf`, for Figma, Keynote, Adobe apps and
+  browsers. Programs list them as "Raveo Variable".
+- `desktop/static/`: one file per named style, for programs without variable-font support (Word,
+  PowerPoint). Programs list them as "Raveo".
+
+Install the one your programs can use. If Raveo 1.1 is installed, remove it first.
+
+## On a web page
+
+`web/` has the two variable files as WOFF2 and, in `web/static/`, every named style.
+
+```css
+@font-face { font-family: "Raveo"; src: url("Raveo-VF.woff2") format("woff2");
+             font-weight: 300 900; font-stretch: 60% 125%; font-style: normal; }
+@font-face { font-family: "Raveo"; src: url("Raveo-Italic-VF.woff2") format("woff2");
+             font-weight: 300 900; font-stretch: 60% 125%; font-style: italic; }
+
+body { font-family: "Raveo", sans-serif; }
+h1   { font-weight: 520; font-stretch: 125%; }
+.tag { font-weight: 730; font-stretch: 60%; }
+em   { font-style: italic; }
+```
+
+## Upgrading from 1.1
+
+- The weight axis starts at 300. Thin and ExtraLight are gone.
+- Display styles belong to the family "Raveo"; there is no family "Raveo Display".
+- Quotes and commas are round.
+- Static fonts are TrueType, named `Raveo-<Style>.ttf`; the variable font is `Raveo-VF`, not `RaveoVF`.
+- Every character of 1.1 is still there, with the same line height. At the regular width only r, a, the
+  semicolon, the quotes and ď ť ľ are spaced differently.
+
+The 1.1 files stay in [`fonts/`](fonts) at their old paths, so pages that link them keep working.
+
+## Building it
+
+The masters in `sources/` are drawn by hand. `tools/pipeline.py` builds the family from them with the
+settings in `recipe.json`.
+
+```sh
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt    # Python 3.12
+.venv/bin/python tools/pipeline.py             # the upright variable font, into build/headline/
+.venv/bin/python tools/pipeline.py --italic    # the italic
+.venv/bin/python tools/release.py 2.0          # everything in releases/Raveo-2.0/, and the zip
+.venv/bin/python tools/site_page.py            # the specimen page in site/
+```
+
+The sharing image of the page needs `hb-view` (HarfBuzz); everything else comes with the requirements.
+
+### The workbench
+
+```sh
+.venv/bin/python tools/serve.py                # http://localhost:4173/workbench/
+```
+
+A local page for adjusting `recipe.json` and proofing the result.
+
+### Checking the spacing
+
+```sh
+.venv/bin/python tools/kerning_review.py measure   # every pair of 209 characters in 48 styles
+.venv/bin/python tools/kerning_review.py           # the report: build/kerning/report.md
+```
+
+### Layout
+
+| | |
+| --- | --- |
+| `sources/` | Raveo's masters (Glyphs format): the upright family and the italic |
+| `recipe.json` | the settings a build is made from |
+| `tools/` | the pipeline (`pipeline.py`), the release (`release.py`), the page (`site_page.py`), the workbench server (`serve.py`), the spacing review (`kerning_review.py`) |
+| `workbench/` | the tuning page |
+| `site/` | the specimen page |
+| `releases/` | finished fonts, one folder per version |
+| `fonts/` | Raveo 1.1, as released in 2024 |
+
+`sources/raveo-italic.glyphs` is made by `tools/make_italic.py` from Inter's italic source
+([rsms/inter](https://github.com/rsms/inter) at `66647c0`, version 4.1) and needs rebuilding only when
+the upright source changes.
+
+## Licence
+
+[SIL Open Font License 1.1](LICENSE.txt): free to use, embed, modify and redistribute, also commercially.
+It may not be sold on its own, and modified versions must keep the licence.
+
+"Raveo" is a Reserved Font Name: a modified version needs another name. Subsetting the fonts or
+converting them to another format, without changing the letters, is permitted under the name Raveo.
+
+Designed by [Jakub Foglar](https://jakubfoglar.com). Based on Inter by Rasmus Andersson and the Inter
+Project Authors. History in [FONTLOG.md](FONTLOG.md).

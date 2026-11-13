@@ -1,0 +1,1368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raveo workbench</title>
+<style>
+  /* The interface is set in the last exported Raveo; Raveo 1.1 is loaded only for the reference line in the Text tab. */
+  @font-face { font-family: "Raveo UI"; src: url("/site/fonts/Raveo-VF-european.woff2") format("woff2"); font-weight: 300 900; font-stretch: 60% 125%; }
+  @font-face { font-family: "Raveo 1.1"; src: url("/reference/RaveoVF-1.1-shipped.ttf"); font-weight: 100 900; }
+  @font-face { font-family: "Proof source"; src: url("/build/kerning/plain/Raveo-VF.woff2") format("woff2"); font-weight: 300 900; }
+  @font-face { font-family: "Proof source italic"; src: url("/build/kerning/plain-italic/Raveo-Italic-VF.woff2") format("woff2"); font-weight: 300 900; }
+  @font-face { font-family: "Proof Inter"; src: local("Inter Variable"), local("InterVariable"), local("Inter"); font-weight: 100 900; }
+
+  :root {
+    --ink: #0c0c0c; --paper: #ffffff; --soft: #f4f4f2; --line: rgba(12, 12, 12, .14); --muted: #76767a;
+    --accent: #2a5bd7;                       /* one colour, for what differs from the saved recipe and what is picked */
+    --ui: "Raveo UI", system-ui, sans-serif; --top: 52px;
+    --wght: 630; --wdth: 75; --size: 120px; --track: 0em; --headline: "Raveo UI"; --kern: normal; --opsz: 32;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.45 var(--ui); -webkit-font-smoothing: antialiased; display: grid; grid-template-columns: minmax(0, 1fr) 332px; grid-template-rows: var(--top) auto; min-height: 100vh; }
+
+  /* Top bar: which font is on the table (upright or italic, text or display, how heavy) and what to do with it. */
+  #top { grid-column: 1 / -1; position: sticky; top: 0; z-index: 5; height: var(--top); display: flex; align-items: center; gap: 14px; padding: 0 20px; background: var(--paper); border-bottom: 1px solid var(--ink); }
+  #top .brand { font-weight: 630; font-size: 15px; margin-right: 10px; white-space: nowrap; }
+  #top .seg { margin: 0; grid-auto-columns: auto; }
+  #top .seg button { padding: 6px 12px; }
+  #top .weight { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12.5px; flex: 0 1 260px; min-width: 150px; }
+  #top .weight output { color: var(--ink); font-weight: 520; font-variant-numeric: tabular-nums; min-width: 26px; }
+  #top .push { flex: 1; }
+  #top a { color: var(--muted); font-size: 12.5px; white-space: nowrap; margin-right: 6px; }
+  #top button { padding: 7px 14px; white-space: nowrap; }
+  #size-block[hidden] { display: none; }
+
+  /* Inspector: the width being edited, then the settings in the order a letter is shaped. */
+  aside { position: sticky; top: var(--top); height: calc(100vh - var(--top)); display: flex; flex-direction: column; border-left: 1px solid var(--line); min-width: 0; }
+  .insp-head { padding: 14px 18px 2px; border-bottom: 1px solid var(--line); }
+  .insp-head .seg { margin-bottom: 10px; }
+  .insp-head .hint { margin-bottom: 8px; }
+  .insp-head .hint:empty { display: none; }
+  .insp-scroll { flex: 1; overflow: auto; padding: 0 18px 24px; }
+  button.link { border: 0; background: none; padding: 0; font-size: 12px; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+  #letter-block { border-bottom: 1px solid var(--ink); }
+  #letter-block:has(#letter-controls[hidden]) { display: none; }
+
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 13px 0; font-size: 13px; font-weight: 630; color: var(--ink); user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary small { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: auto; }
+  summary::after { content: "+"; font-size: 14px; line-height: 1; color: var(--muted); }
+  details[open] > summary::after { content: "–"; }
+  details > .body { padding: 2px 0 16px; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .field output { color: var(--ink); font-size: 12.5px; font-weight: 520; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .field output i { font-style: normal; font-weight: 400; color: var(--muted); margin: 0 3px; }
+  .field output b { font-weight: 630; margin: 0 3px; }
+  .field.off { opacity: .4; }
+  .field.changed .name::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 6px; vertical-align: 1px; }
+  .field.changed output, .field.changed output b { color: var(--accent); }
+  input[type=range] { width: 100%; margin: 0; height: 18px; background: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-runnable-track { height: 2px; background: var(--line); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -5px; border-radius: 50%; background: var(--ink); }
+  input[type=range]::-moz-range-track { height: 2px; background: var(--line); }
+  input[type=range]::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: var(--ink); }
+  input[type=range]:disabled { opacity: .35; cursor: default; }
+  input[type=text] { width: 100%; padding: 8px 10px; border: 1px solid var(--line); background: var(--paper); font: inherit; color: inherit; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin-bottom: 10px; }
+  .check input { accent-color: var(--ink); margin: 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  button { border: 1px solid var(--line); background: var(--paper); padding: 7px 8px; font: inherit; font-size: 12px; color: var(--ink); cursor: pointer; text-align: center; }
+  button:hover { border-color: var(--ink); }
+  button:disabled { opacity: .5; cursor: default; }
+  button.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  button.primary.dirty::after { content: " •"; color: var(--accent); }
+  button.wide { width: 100%; }
+  .hint { font-size: 12px; color: var(--muted); margin: 0 0 12px; }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--line); overflow: hidden; background: var(--paper); margin-bottom: 14px; }
+  .seg button { border: 0; border-radius: 0; color: var(--muted); padding: 7px 4px; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed=true] { background: var(--ink); color: var(--paper); }
+  #status { font-size: 12px; line-height: 1.4; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #status.busy { color: var(--accent); }
+  #status.error { color: #b3261e; white-space: pre-wrap; max-height: 120px; overflow: auto; }
+
+  /* Two-ended range: both ends of an axis on one track, with Raveo's own value marked. */
+  .dual-block { margin-bottom: 16px; }
+  .dual { position: relative; height: 26px; }
+  .dual .track { position: absolute; left: 0; right: 0; top: 9px; height: 4px; background: var(--line); }
+  .dual .fill { position: absolute; top: 9px; height: 4px; background: var(--ink); }
+  .dual .centre { position: absolute; top: 3px; width: 2px; height: 16px; background: var(--accent); transform: translateX(-1px); }
+  .dual input { position: absolute; left: 0; top: 2px; width: 100%; height: 18px; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; }
+  .dual input::-webkit-slider-runnable-track { background: none; height: 18px; }
+  .dual input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 16px; height: 16px; margin-top: 1px; border-radius: 50%; background: var(--ink); border: 2px solid var(--paper); cursor: ew-resize; }
+  .dual input::-moz-range-track { background: none; }
+  .dual input::-moz-range-thumb { pointer-events: auto; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 2px solid var(--paper); cursor: ew-resize; }
+  .dual-title { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .dual-labels { display: grid; grid-template-columns: 1fr auto 1fr; font-size: 12px; color: var(--muted); margin-bottom: 2px; font-variant-numeric: tabular-nums; }
+  .dual-labels b { color: var(--ink); font-weight: 520; }
+  .dual-labels b.changed { color: var(--accent); }
+  .dual-labels span:nth-child(2) { color: var(--accent); }
+  .dual-labels span:last-child { text-align: right; }
+
+  #letter-name { color: var(--accent); }
+  #letter-controls[hidden], #letter-empty[hidden] { display: none; }
+
+  /* Main area: tabs. */
+  main { min-width: 0; }
+  .tabs { position: sticky; top: var(--top); z-index: 3; display: flex; gap: 4px; align-items: center; padding: 12px 36px 0; background: var(--paper); border-bottom: 1px solid var(--line); }
+  .tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 8px 14px 10px; font-size: 13.5px; color: var(--muted); }
+  .tabs button[aria-selected=true] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 520; }
+  .panel { padding: 22px 36px 70px; }
+  .viewbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding: 0 0 18px; margin-bottom: 26px; border-bottom: 1px solid var(--line); }
+  .viewbar .field { margin: 0; display: flex; align-items: center; gap: 10px; }
+  .viewbar .field label { margin: 0; white-space: nowrap; }
+  .viewbar .field input[type=range] { width: 110px; }
+  .viewbar .field input[type=text] { width: 250px; }
+  .viewbar .check { margin: 0; }
+  .viewbar .grid2 { display: flex; flex-wrap: wrap; gap: 6px; flex-basis: 100%; }
+  .viewbar .grid2 button { padding: 5px 10px; color: var(--muted); }
+  #status-bar { position: sticky; bottom: 0; z-index: 2; padding: 8px 36px; background: var(--paper); border-top: 1px solid var(--line); }
+  h2 small { font-weight: 400; color: var(--muted); margin-left: 8px; }
+  .panel[hidden] { display: none; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 13px; font-weight: 630; margin: 0 0 12px; padding-top: 10px; border-top: 1px solid var(--ink); }
+  .hl { font-family: var(--headline), var(--ui); font-variation-settings: "wght" var(--wght), "wdth" var(--wdth); letter-spacing: var(--track); font-kerning: var(--kern); }
+  .ref { font-family: "Raveo 1.1"; font-variation-settings: "opsz" var(--opsz), "wght" var(--wght); font-kerning: var(--kern); }
+  .big { font-size: var(--size); line-height: 1.02; overflow-wrap: anywhere; outline: none; }
+  .tag { font-size: 11px; color: var(--muted); margin: 14px 0 2px; }
+  .row { display: grid; grid-template-columns: 110px 1fr; align-items: baseline; gap: 8px; border-bottom: 1px solid var(--line); padding: 6px 0; }
+  .row span:first-child { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row .t { font-size: 64px; line-height: 1.1; white-space: nowrap; overflow: hidden; letter-spacing: var(--track); font-kerning: var(--kern); font-family: var(--headline), var(--ui); }
+
+  /* Styles: the map of the two axes and the tables of named positions. */
+  .styles { display: grid; grid-template-columns: minmax(420px, 1.25fr) minmax(300px, 1fr); gap: 36px; align-items: start; }
+  @media (max-width: 1180px) { .styles { grid-template-columns: 1fr; } }
+  #map { width: 100%; display: block; background: var(--paper); border: 1px solid var(--line); touch-action: none; user-select: none; }
+  #map text { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  #map text.name { fill: var(--ink); font-weight: 520; }
+  #map text.out { fill: #b9b7af; }
+  #map .space { fill: var(--soft); stroke: var(--ink); stroke-width: 1.5; }
+  #map .cap { fill: rgba(42, 91, 215, .12); }
+  #map .capline { fill: none; stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; }
+  #map .raveo { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 4; }
+  #map .named { stroke: var(--ink); stroke-width: 1; opacity: .28; }
+  #map .named.out { stroke-dasharray: 2 3; opacity: .2; }
+  #map .grab { stroke: transparent; stroke-width: 14; }
+  #map .grab.x { cursor: ew-resize; } #map .grab.y { cursor: ns-resize; }
+  #map .grab:hover + .named, #map .named.live { opacity: 1; stroke-width: 1.5; }
+  #map .edge { stroke: transparent; stroke-width: 12; }
+  #map .edge.x { cursor: ew-resize; } #map .edge.y { cursor: ns-resize; }
+  #map .dot { fill: var(--ink); cursor: pointer; }
+  #map .dot:hover { fill: var(--accent); }
+  #map .dot.on { fill: var(--accent); stroke: var(--paper); stroke-width: 2; }
+  #map .master { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+  #map .here { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+  .legend i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: 0; }
+  table.named-list { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  table.named-list td { padding: 3px 0; border-bottom: 1px solid var(--line); }
+  table.named-list td:nth-child(2) { width: 84px; padding-left: 8px; }
+  table.named-list td:last-child { width: 30px; text-align: right; }
+  table.named-list input { width: 100%; padding: 5px 8px; border: 1px solid transparent; background: none; font: inherit; color: inherit; font-variant-numeric: tabular-nums; }
+  table.named-list input:hover, table.named-list input:focus { border-color: var(--line); background: var(--paper); outline: none; }
+  table.named-list input[type=number] { text-align: right; }
+  table.named-list tr.out input { color: #a3a59d; }
+  table.named-list button { border: 0; background: none; padding: 2px 6px; font-size: 15px; line-height: 1; color: var(--muted); }
+  table.named-list button:hover { color: #b3261e; }
+  .named-cols h2 { margin-top: 0; }
+  .named-cols section { margin-bottom: 26px; }
+  #style-label { font-size: 12px; color: var(--muted); margin: 26px 0 6px; font-variant-numeric: tabular-nums; }
+  #style-label b { color: var(--ink); font-weight: 520; }
+
+  .labbar { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+  .labbar input[type=text] { width: 190px; }
+  .labbar .check { margin: 0; }
+  .labbar .chips { display: flex; gap: 6px; }
+  .labbar .chips button { padding: 5px 9px; color: var(--muted); }
+  .labbar .hint { margin: 0 0 0 auto; }
+  #lab { width: 100%; height: max(520px, calc(100vh - 222px)); display: block; background: var(--paper); border: 1px solid var(--line); }
+  #lab .band { fill: transparent; cursor: pointer; }
+  #lab .band.on { fill: var(--soft); }
+  #lab .edge { fill: var(--ink); pointer-events: none; }
+  #lab .guide { stroke: var(--line); pointer-events: none; }
+  #lab .ink { fill: var(--ink); cursor: pointer; }
+  #lab .ink.picked { fill: var(--accent); }
+  #lab.inspect .ink { fill-opacity: .16; stroke: var(--ink); }
+  #lab.inspect .ink.picked { stroke: var(--accent); }
+  #lab .ghost { fill: none; stroke: var(--muted); stroke-dasharray: 3 3; pointer-events: none; }
+  #lab .handle { fill: none; stroke: var(--muted); pointer-events: none; }
+  #lab .on { fill: var(--ink); pointer-events: none; }
+  #lab .off { fill: var(--paper); stroke: var(--muted); pointer-events: none; }
+  #lab .comb { fill: none; stroke: var(--accent); stroke-opacity: .7; pointer-events: none; }
+  #lab text { fill: var(--muted); font-family: var(--ui); pointer-events: none; }
+  #lab text.editing { fill: var(--ink); font-weight: 520; }
+  #lab path, #lab line, #lab circle { vector-effect: non-scaling-stroke; stroke-width: 1px; }
+
+
+  /* Export results. */
+  #export-panel { position: fixed; right: 20px; top: calc(var(--top) + 10px); z-index: 6; width: 430px; max-height: 70vh; overflow: auto; background: var(--paper); border: 1px solid var(--ink); padding: 16px 18px; box-shadow: 0 8px 28px rgba(12, 12, 12, .12); }
+  #export-panel[hidden] { display: none; }
+  #export-panel h4 { margin: 0 0 10px; font-size: 13px; font-weight: 630; display: flex; justify-content: space-between; align-items: center; }
+  #export-panel h4 button { border: 0; padding: 0 4px; font-size: 18px; line-height: 1; }
+  #export-panel table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  #export-panel td { padding: 5px 0; border-top: 1px solid var(--line); }
+  #export-panel td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 12px; }
+  #export-panel a { color: inherit; }
+  #export-panel p { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+  #export-form { display: flex; align-items: center; gap: 10px; margin: 0; }
+  #export-form label { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  #export-form input { width: 64px; padding: 5px 8px; border: 1px solid var(--line); font: inherit; font-variant-numeric: tabular-nums; }
+  #export-body:empty { display: none; }
+  #export-body { margin-top: 12px; }
+  #export-panel p.error { color: #b3261e; white-space: pre-wrap; }
+
+  /* Proofs: test strings to read the spacing by, a line of another font under each when comparing. */
+  select { font: inherit; color: inherit; padding: 7px 28px 7px 10px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); }
+  .viewbar .field input.one { width: 44px; text-align: center; }
+  .viewbar .field[hidden] { display: none; }
+  .viewbar .field textarea { width: 340px; height: 58px; padding: 8px 10px; border: 1px solid var(--line); font: inherit; color: inherit; resize: vertical; }
+  .viewbar .seg { margin: 0; grid-auto-columns: auto; }
+  .viewbar .seg button { padding: 6px 11px; }
+  #pairline { min-height: 44px; margin: -8px 0 22px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; }
+  #pairline b { color: var(--ink); font-weight: 520; }
+  #pairline .pp { font-size: 34px; line-height: 1; font-weight: inherit; margin-right: 2px; }
+  #pairline .src { color: var(--accent); }
+  #pairline .src b { color: var(--accent); }
+  #proofs { font-size: var(--psize, 64px); line-height: 1.2; }
+  #proofs .pl { white-space: pre-wrap; overflow-wrap: anywhere; cursor: text; }
+  #proofs .pl::selection { background: color-mix(in srgb, var(--accent) 26%, transparent); }
+  #proofs .cmp { color: var(--accent); cursor: default; user-select: none; margin-bottom: .14em; font-kerning: var(--kern);
+                 font-variation-settings: "opsz" var(--opsz), "wght" var(--wght), "wdth" var(--wdth); }
+  #proofs .cmp-source { font-family: "Proof source", var(--ui); }
+  #proofs.slanted .cmp-source { font-family: "Proof source italic", var(--ui); }
+  #proofs .cmp-old { font-family: "Raveo 1.1", var(--ui); }
+  #proofs .cmp-inter { font-family: "Proof Inter", var(--ui); }
+  #proofs .pt { font: 12px/1.4 var(--ui); color: var(--muted); margin: 26px 0 8px; }
+  #proofs .pt:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="brand"><span id="family">Raveo</span> workbench</div>
+  <div class="seg" id="slants" title="The family is two fonts: the roman and its italic. Every setting below shapes both; this picks which one you look at and build.">
+      <button data-italic="0">Roman</button><button data-italic="1">Italic</button>
+    </div>
+  <div id="size-block" hidden><div class="seg" id="sizes"><button data-size="14">Text</button><button data-size="32">Display</button></div></div>
+  <label class="weight" for="wght">Weight <input id="wght" type="range" min="300" max="800" step="5"><output id="o-wght"></output></label>
+  <span class="push"></span>
+  <a href="/site/?build" target="_blank" title="The public page, set in the font saved last">Specimen ↗</a>
+  <button id="revert" title="Discard every change since the last save">Revert</button>
+  <button class="primary" id="save" title="Write recipe.json and build the whole family">Save</button>
+  <button id="export" title="Write the finished font files as a numbered version">Export</button>
+</header>
+<main>
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="letters">Letters</button>
+    <button role="tab" data-tab="text">Text</button>
+    <button role="tab" data-tab="proofs">Proofs</button>
+    <button role="tab" data-tab="styles">Styles</button>
+  </div>
+
+  <div class="panel" data-panel="letters">
+    <div class="labbar">
+      <input id="labtext" type="text" value="Races" maxlength="24" aria-label="Letters to preview">
+      <div class="chips" id="labchips">
+        <button>Races</button><button>acegrs</button><button>NRSKa</button><button>ďťľ „o“</button><button>23569</button>
+      </div>
+      <label class="check"><input id="show-points" type="checkbox"> Points</label>
+      <label class="check"><input id="show-comb" type="checkbox"> Curvature</label>
+      <label class="check"><input id="show-ghost" type="checkbox"> Before design</label>
+      <p class="hint">Click a row to edit that width.<span id="letter-empty"> Click a letter to adjust it alone.</span></p>
+    </div>
+    <svg id="lab" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet"></svg>
+  </div>
+
+  <div class="panel" data-panel="text" hidden>
+    <div class="viewbar">
+        
+        <div class="field"><label for="text"><span class="name">Text</span></label><input id="text" type="text" value="Raveo sets every headline"></div>
+        <div class="field"><label for="wdth"><span class="name">Width</span><output id="o-wdth"></output></label><input id="wdth" type="range" min="75" max="125" step="1"></div>
+        <div class="field"><label for="size"><span class="name">Size</span><output id="o-size"></output></label><input id="size" type="range" min="10" max="260" step="2"></div>
+        <div class="field"><label for="track"><span class="name">Tracking preview</span><output id="o-track"></output></label><input id="track" type="range" min="-40" max="40" step="1"></div>
+        <label class="check"><input id="kern" type="checkbox" checked> Kerning</label>
+        <div class="grid2" id="presets">
+          <button data-wght="630" data-wdth="min">Narrowest SemiBold</button>
+          <button data-wght="730" data-wdth="min">Narrowest Bold</button>
+          <button data-wght="630" data-wdth="100">Normal SemiBold</button>
+          <button data-wght="520" data-wdth="max">Widest Medium</button>
+          <button data-wght="400" data-wdth="max">Widest Regular</button>
+          <button data-wght="730" data-wdth="max">Widest Bold</button>
+        </div>
+      </div>
+    <section>
+      <h2>Specimen: click to type</h2>
+      <div class="big hl" id="specimen" contenteditable spellcheck="false"></div>
+      <div class="tag" id="ref-tag">Raveo 1.1 at the same weight, for reference</div>
+      <div class="big ref" id="specimen-ref"></div>
+    </section>
+
+    <section>
+      <h2>Width at the current weight</h2>
+      <div id="widths"></div>
+    </section>
+
+    <section>
+      <h2>Weight at the current width</h2>
+      <div id="weights"></div>
+    </section>
+
+    <section>
+      <h2>Terminals, dots, figures, Czech</h2>
+      <div class="big hl" style="font-size:88px">acegrs CGJS 23569?</div>
+      <div class="big hl" style="font-size:88px">ij.,:;!?… äöü „ano“ 1 234 567,89 Kč</div>
+      <div class="big hl" style="font-size:88px">Příliš žluťoučký kůň úpěl ďábelské ódy</div>
+      <div class="big hl" style="font-size:88px">AVATAR Type Wave, To. LYLTA 1174</div>
+    </section>
+  </div>
+
+  <div class="panel" data-panel="proofs" hidden>
+    <div class="viewbar">
+      <div class="field"><label for="proof"><span class="name">Sample</span></label><select id="proof"></select></div>
+      <div class="field" id="proof-letter-field"><label for="proof-letter"><span class="name">Letter</span></label><input class="one" id="proof-letter" type="text" maxlength="1" aria-label="The letter to test"></div>
+      <div class="field" id="proof-text-field" hidden><textarea id="proof-text" spellcheck="false" aria-label="Your text"></textarea></div>
+      <div class="field"><label for="p-wdth"><span class="name">Width</span><output id="o-p-wdth"></output></label><input id="p-wdth" type="range" step="1"></div>
+      <div class="field"><label for="p-size"><span class="name">Size</span><output id="o-p-size"></output></label><input id="p-size" type="range" min="12" max="220" step="2"></div>
+      <label class="check"><input id="p-kern" type="checkbox" checked> Kerning</label>
+      <div class="field"><label><span class="name">Compare with</span></label>
+        <div class="seg" id="compare">
+          <button data-compare="" title="Only the font on the table">Nothing</button>
+          <button data-compare="source" title="The same source built with every design operation off: Inter's letters, spacing and kerning, scaled to the width">Source</button>
+          <button data-compare="old" title="Raveo 1.1 as shipped in 2024 (regular width only)">Raveo 1.1</button>
+          <button data-compare="inter" title="Inter, if it is installed on this computer (regular width only)">Inter</button>
+        </div>
+      </div>
+    </div>
+    <div id="pairline"></div>
+    <div id="proofs"></div>
+  </div>
+
+  <div class="panel" data-panel="styles" hidden>
+    <div class="styles">
+      <div>
+        <svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 600"></svg>
+        <div class="legend">
+          <span><i style="background:var(--ink);border-radius:50%"></i>A named style: listed in font menus and exported as its own file</span>
+          <span><i style="border:1.2px solid var(--ink)"></i>A master the font is built from</span>
+          <span><i style="background:rgba(42,91,215,.28)"></i>Narrow widths cannot be drawn this heavy; styles here come out lighter</span>
+        </div>
+        <p class="hint" style="margin-top:12px">Drag a line to move a named weight or width. Drag an edge of the box to change how far the axis reaches. Click a dot to look at that style. Hold Alt while dragging for single steps.</p>
+      </div>
+      <div class="named-cols">
+        <section>
+          <h2>Axis ranges <small id="ranges-summary"></small></h2>
+          
+        <p class="hint">The two ends of each axis in the exported font. Drag a handle; double-click it to return to the saved value.</p>
+        <div class="dual-block">
+          <div class="dual-labels"><span>Narrowest <b id="o-wmin"></b></span><span>Raveo 100</span><span>Widest <b id="o-wmax"></b></span></div>
+          <div class="dual">
+            <div class="track"></div><div class="fill" id="width-fill"></div><div class="centre" id="width-centre"></div>
+            <input id="wmin" type="range" min="50" max="160" step="1" aria-label="Narrowest width">
+            <input id="wmax" type="range" min="50" max="160" step="1" aria-label="Widest width">
+          </div>
+        </div>
+        <div class="dual-block" style="margin-bottom:0">
+          <div class="dual-labels"><span>Lightest <b id="o-gmin"></b></span><span>Regular 400</span><span>Heaviest <b id="o-gmax"></b></span></div>
+          <div class="dual">
+            <div class="track"></div><div class="fill" id="weight-fill"></div><div class="centre" id="weight-centre"></div>
+            <input id="gmin" type="range" min="100" max="900" step="10" aria-label="Lightest weight">
+            <input id="gmax" type="range" min="100" max="900" step="10" aria-label="Heaviest weight">
+          </div>
+        </div>
+      
+        </section>
+        <section>
+          <h2>Named weights</h2>
+          <table class="named-list" id="nw"></table>
+          <button id="nw-add">Add a weight</button>
+        </section>
+        <section>
+          <h2>Named widths</h2>
+          <table class="named-list" id="nd"></table>
+          <button id="nd-add">Add a width</button>
+        </section>
+        <p class="hint" id="styles-count"></p>
+        <button id="named-reset" title="Back to Raveo's nine weights and the two ends of the width axis">Use Raveo's default names</button>
+      </div>
+    </div>
+    <div id="style-label"></div>
+    <div class="big hl" id="style-preview" style="font-size:96px"></div>
+  </div>
+
+  <footer id="status-bar"><div id="status"></div></footer>
+</main>
+<aside>
+  <div class="insp-head">
+    <div class="seg" id="poles">
+          <button data-pole="condensed"></button><button data-pole="normal"></button><button data-pole="wide"></button>
+        </div>
+    <p class="hint"><span id="design-summary"></span> <button class="link" id="copy-all" title="Use the settings of this width at all three widths">Copy to all widths</button></p>
+    <p class="hint" id="size-hint"></p>
+  </div>
+  <div class="insp-scroll">
+    <details data-section="letter" id="letter-block" open>
+      <summary>One letter <small id="letter-name"></small></summary>
+      <div class="body">
+        
+        <div id="letter-controls" hidden>
+          <p class="hint" id="letter-hint"></p>
+          <div class="field" id="f-middle"><label><span class="name">Middle bar height</span><output></output></label><input class="letter" data-key="middle" type="range" min="-140" max="140" step="4"></div>
+          <div class="field"><label><span class="name">Round tension</span><output></output></label><input class="letter" data-key="tension" type="range" min="-1" max="1" step="0.05"></div>
+          <div class="field"><label><span class="name">Curve smoothing</span><output></output></label><input class="letter" data-key="smoothing" type="range" min="0" max="1" step="0.1"></div>
+          <div class="field bowl"><label><span class="name">Bowl: height on the stem</span><output></output></label><input class="letter" data-key="bowl_height" type="range" min="-100" max="100" step="2"></div>
+          <div class="field bowl"><label><span class="name">Bowl: stroke rises to the stem</span><output></output></label><input class="letter" data-key="bowl_slant" type="range" min="-80" max="160" step="2"></div>
+          <div class="field bowl"><label><span class="name">Bowl: stroke arches</span><output></output></label><input class="letter" data-key="bowl_arch" type="range" min="-50" max="90" step="2"></div>
+          <div class="field bowl"><label><span class="name">Bowl: stroke weight</span><output></output></label><input class="letter" data-key="bowl_weight" type="range" min="-50" max="50" step="1"></div>
+          <div class="field bowl"><label><span class="name">Bowl: thins into the stem</span><output></output></label><input class="letter" data-key="join_thin" type="range" min="0" max="90" step="2"></div>
+          <div class="field bowl"><label><span class="name">Bowl: notch cut into the stem</span><output></output></label><input class="letter" data-key="join_notch" type="range" min="0" max="1" step="0.05"></div>
+          <div class="field bowl"><label><span class="name">Bowl: corner at the stem</span><output></output></label><input class="letter" data-key="bowl_corner" type="range" min="-0.6" max="1.5" step="0.05"></div>
+          <div class="field bowl"><label><span class="name">Bowl: reach to the left</span><output></output></label><input class="letter" data-key="bowl_width" type="range" min="-80" max="100" step="2"></div>
+          <div class="field bowl"><label><span class="name">Bowl: squarer or rounder</span><output></output></label><input class="letter" data-key="bowl_round" type="range" min="-1" max="1" step="0.05"></div>
+          <div class="field leg" title="1 is Raveo's curl. Lower runs straighter to the foot, higher swings out more."><label><span class="name">Leg: curl</span><output></output></label><input class="letter" data-key="leg_curl" type="range" min="0" max="2" step="0.05"></div>
+          <div class="field leg"><label><span class="name">Leg: foot further right</span><output></output></label><input class="letter" data-key="leg_reach" type="range" min="-160" max="200" step="4"></div>
+          <div class="field leg"><label><span class="name">Leg: stroke weight</span><output></output></label><input class="letter" data-key="leg_weight" type="range" min="-60" max="60" step="2"></div>
+          <div class="field leg" title="The leg widens toward the foot (+) or narrows"><label><span class="name">Leg: widens at the foot</span><output></output></label><input class="letter" data-key="leg_flare" type="range" min="-0.4" max="0.6" step="0.02"></div>
+          <div class="field ends"><label><span class="name">Stroke end angle</span><output></output></label><input class="letter" data-key="angle" type="range" min="0" max="40" step="1"></div>
+          <div class="field ends"><label><span class="name">Stroke end length</span><output></output></label><input class="letter" data-key="arm" type="range" min="-120" max="320" step="5"></div>
+          <div class="field ends"><label><span class="name">Stroke end corners</span><output></output></label><input class="letter" data-key="corners" type="range" min="0" max="1" step="0.05"></div>
+          <div class="grid3">
+            <button id="letter-same" title="Use this width's values at all three widths">Same at all widths</button>
+            <button id="letter-reset">Reset letter</button>
+            <button id="letter-close">Done</button>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details data-section="ends" open>
+      <summary>Stroke endings</summary>
+      <div class="body">
+        <div title="How far the cut at the end of a curved stroke leans, in degrees. 0 is a level cut." class="field"><label><span class="name">Angle of the cut</span><output></output></label><input class="design" data-key="terminal_angle" type="range" min="0" max="40" step="1"></div>
+        <div title="How far the stroke is cut back: larger opens a, c, e and s." class="field"><label><span class="name">Opening</span><output></output></label><input class="design" data-key="aperture" type="range" min="-40" max="90" step="2"></div>
+        <div title="0 keeps the stroke's edges as they are; 1 turns them until they meet the cut at a right angle." class="field"><label><span class="name">Stroke meets the cut squarely</span><output></output></label><input class="design" data-key="terminal_soften" type="range" min="0" max="1" step="0.05"></div>
+      </div>
+    </details>
+
+    <details data-section="curves" open>
+      <summary>Curves</summary>
+      <div class="body">
+        <div title="Tension of every round: above 0 squarer, below 0 rounder." class="field"><label><span class="name">Squarer or rounder</span><output></output></label><input class="design" data-key="squareness" type="range" min="-1" max="1" step="0.05"></div>
+        <div title="Evens out curvature where two curves join." class="field"><label><span class="name">Smoothing</span><output></output></label><input class="design" data-key="smoothing" type="range" min="0" max="1" step="0.1"></div>
+      </div>
+    </details>
+
+    <details data-section="stems">
+      <summary>Stems and strokes</summary>
+      <div class="body">
+        <div title="How much the stems thin in a narrow letter and thicken in a wide one. 0 keeps them as in the regular width." class="field"><label><span class="name">Stems follow width</span><output></output></label><input class="design" data-key="stem_adapt" type="range" min="0" max="0.6" step="0.05"></div>
+        <div class="field" title="0: horizontal strokes keep the thickness the weight has at the regular width. 1: they thin and thicken with the stems, so a narrow letter is not heavier across than down."><label><span class="name">Horizontals follow stems</span><output></output></label><input class="design" data-key="contrast_follow" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field"><label><span class="name">Horizontal strokes, thicker or thinner</span><output></output></label><input class="design" data-key="contrast" type="range" min="-160" max="60" step="5"></div>
+      </div>
+    </details>
+
+    <details data-section="spacing">
+      <summary>Spacing</summary>
+      <div class="body">
+        <div class="field"><label><span class="name">Room around every letter</span><output></output></label><input class="design" data-key="spacing" type="range" min="-30" max="30" step="1"></div>
+        <div title="Two letters never come closer than this, in stems. Applies at every width." class="field"><label><span class="name">Smallest gap between letters</span><output></output></label><input class="global" data-key="kerning_floor.letters" type="range" min="0" max="0.3" step="0.01"></div>
+        <div title="The same for punctuation and symbols." class="field"><label><span class="name">Smallest gap at punctuation</span><output></output></label><input class="global" data-key="kerning_floor.punctuation" type="range" min="0" max="0.5" step="0.01"></div>
+      </div>
+    </details>
+
+    <details data-section="letters">
+      <summary>The r and the a</summary>
+      <div class="body">
+        <div class="field"><label><span class="name">Long arm on the r</span><output></output></label><input class="design" data-key="logo_r" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field" title="How much of its extra length the r's arm may reach over a round letter after it (o, e, a). 0 keeps the arm's tip as far away as Raveo's shorter arm was. Set separately for the headline and the text size."><label><span class="name">The r’s arm reaches over round letters</span><output></output></label><input class="sized" data-key="logo_r_over" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field"><label><span class="name">Open bowl on the a</span><output></output></label><input class="design" data-key="logo_a" type="range" min="0" max="1" step="0.05"></div>
+      </div>
+    </details>
+
+    <details data-section="italic" id="italic-block" hidden>
+      <summary>Italic <small id="italic-summary"></small></summary>
+      <div class="body">
+        <p class="hint">The italic is Inter's drawn italic with Raveo's letters carried into it, leaned 9.4°. Three letters can be set either way: upright, as in the roman, or written, as Inter's italic has them. Everything built on them follows (á, é, æ …).</p>
+        <div class="seg forms" data-letter="a"><button data-form="upright">a with two storeys</button><button data-form="cursive">a with one storey</button></div>
+        <div class="seg forms" data-letter="e"><button data-form="upright">e with a level bar</button><button data-form="cursive">e with a curved bar</button></div>
+        <div class="seg forms" data-letter="f"><button data-form="upright">f on the line</button><button data-form="cursive">f with a tail</button></div>
+        <label class="check" title="Leaned over, a round dot becomes an oval tilted at 45 degrees. On: the dots of i, j, the full stop and their kin keep their round shape and only move with the slant."><input class="flag" data-key="italic_round_dots" type="checkbox"> Round dots stay round</label>
+        <div class="field" title="Leaning a letter over fattens a curved stroke where it runs from upper left to lower right and thins it the other way. A drawn italic takes that back. 0 leaves Raveo's own letters (a, the leg of R, the arm of r, upright e and f) as plainly slanted; 0.66 is what Inter's italic does to its rounds; 1 takes all of it back."><label><span class="name">Curves corrected for the slant</span><output></output></label><input class="global" data-key="slant_compensation" data-default="0.66" type="range" min="0" max="1.5" step="0.02"></div>
+      </div>
+    </details>
+    <details data-section="more">
+      <summary>Fine points</summary>
+      <div class="body">
+        <div title="1 keeps the strokes of K, V, W, X as heavy as the stems when a letter is squeezed or stretched." class="field"><label><span class="name">Diagonals keep their weight</span><output></output></label><input class="global" data-key="diagonals" data-default="0" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field"><label><span class="name">Tick of ď ť ľ: distance from the letter</span><output></output></label><input class="global" data-key="caron_gap" type="range" min="0.1" max="0.8" step="0.02"></div>
+        <div class="field" title="Smallest distance between the tick and the letter after it, in stems"><label><span class="name">Tick: distance to the next letter</span><output></output></label><input class="global" data-key="caron_floor" data-default="0" type="range" min="0" max="0.8" step="0.02"></div>
+        <div class="field"><label><span class="name">Tick: small letters slide under it</span><output></output></label><input class="global" data-key="caron_tuck" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field" title="How much of the Spacing setting the Thin takes: 0 leaves the Thin as Raveo spaces it, 1 gives it the full change. It grows to the full change at Regular."><label><span class="name">Lightest weight follows the spacing</span><output></output></label><input class="global" data-key="light_spacing" data-default="1" type="range" min="0" max="1" step="0.05"></div>
+        <div class="field"><label><span class="name">Punctuation follows the spacing</span><output></output></label><input class="global" data-key="punctuation_spacing" type="range" min="0" max="1" step="0.05"></div>
+      </div>
+    </details>
+
+  </div>
+</aside>
+
+<div id="export-panel" hidden>
+  <h4><span id="export-title">Exported fonts</span><button id="export-close" aria-label="Close">×</button></h4>
+  <form id="export-form">
+    <label>Version <input id="export-version" inputmode="decimal" pattern="\d{1,2}(\.\d{1,3})?" required></label>
+    <button class="primary" id="export-go">Export</button>
+  </form>
+  <p id="export-note"></p>
+  <div id="export-body"></div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const $ = (id) => document.getElementById(id);
+  const POLES = ["condensed", "normal", "wide"];
+  const POLE_LABEL = { condensed: "Narrowest", normal: "Regular", wide: "Widest" };
+  const NAMED_WEIGHTS = [[100, "Thin"], [200, "ExtraLight"], [300, "Light"], [400, "Regular"], [520, "Medium"], [630, "SemiBold"], [730, "Bold"], [850, "ExtraBold"], [900, "Black"]];
+  const VIEW_DEFAULT = { wght: 630, wdth: 75, size: 120, track: 0 };
+  const view = { ...VIEW_DEFAULT, kern: true, text: "Raveo sets every headline" };
+  const lab = { text: "Races", points: false, comb: false, ghost: false, busy: false, dirty: false };
+  const ui = Object.assign({ tab: "letters", open: {} }, JSON.parse(localStorage.getItem("raveo-workbench") || "{}"));
+  const proof = Object.assign({ sample: "Around a letter", letter: "r", size: 64, compare: "", text: "Praha „a“ KVĚTY 3,14\nYour own lines go here.", pair: null }, ui.proof || {}, { pair: null });
+  const saveUi = () => localStorage.setItem("raveo-workbench", JSON.stringify(ui));
+  let recipe = null;      // design settings currently shown
+  let saved = null;       // design settings in recipe.json
+  let pole = "condensed"; // which width the design sliders edit
+  let size = 32;          // which drawing they edit: 32 = headline size, 14 = text size
+  let italic = !!ui.italic; // which of the family's two fonts is shown and built
+  let picked = null;      // { base, char, middle } of the letter being adjusted
+  let buildNo = 0;
+
+  const widthOf = (p) => recipe.widths[POLES.indexOf(p)];
+  const ends = (list) => [list[0], list[list.length - 1]];
+
+  // --- settings per optical size: the text size starts from the headline values, and "text" holds what differs ---
+  const textOf = (r) => (size === 14 && r.text) || {};
+  const setting = (r, key) => textOf(r)[key] ?? r[key];                     // a per-width setting, as it applies now
+  const lettersOf = (r, base) => ({ ...((r.glyphs || {})[base] || {}), ...((textOf(r).glyphs || {})[base] || {}) });
+  function setSetting(key, p, value) {
+    if (size === 14) {
+      recipe.text = { ...recipe.text, [key]: { ...setting(recipe, key), [p]: value } };
+    } else { recipe[key][p] = value; }
+  }
+  function letterStore() {                                                   // where a letter's own values are written
+    if (size !== 14) { return recipe.glyphs; }
+    recipe.text = { ...recipe.text, glyphs: { ...((recipe.text || {}).glyphs || {}) } };
+    return recipe.text.glyphs;
+  }
+  function prune() {                                                         // drop text values equal to the headline's
+    const text = recipe.text || {};
+    for (const key of Object.keys(text)) {
+      if (key !== "glyphs" && JSON.stringify(text[key]) === JSON.stringify(recipe[key])) { delete text[key]; }
+    }
+    for (const [base, own] of Object.entries(text.glyphs || {})) { if (!Object.keys(own).length) { delete text.glyphs[base]; } }
+    if (text.glyphs && !Object.keys(text.glyphs).length) { delete text.glyphs; }
+  }
+  const clampTo = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const dig = (obj, path) => path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
+  function rows(el, values, axis) {
+    el.innerHTML = values.map(([v, label]) => `<div class="row"><span>${label}</span><span class="t" data-${axis}="${v}"></span></div>`).join("");
+  }
+
+  function render(fromSpecimen) {
+    root.style.setProperty("--wght", view.wght);
+    root.style.setProperty("--wdth", view.wdth);
+    root.style.setProperty("--size", view.size + "px");
+    root.style.setProperty("--track", view.track / 1000 + "em");
+    root.style.setProperty("--kern", view.kern ? "normal" : "none");
+    root.style.setProperty("--opsz", size);
+    for (const k of ["wght", "wdth", "size", "track"]) { $(k).value = view[k]; }
+    $("kern").checked = view.kern;
+    $("o-wght").textContent = view.wght;
+    $("o-wdth").textContent = view.wdth;
+    $("o-size").textContent = view.size + " px";
+    $("o-track").textContent = view.track;
+    root.style.setProperty("--psize", proof.size + "px");
+    $("p-wdth").value = view.wdth; $("o-p-wdth").textContent = view.wdth;
+    $("p-size").value = proof.size; $("o-p-size").textContent = proof.size + " px";
+    $("p-kern").checked = view.kern;
+    proofSoon();
+    if (!fromSpecimen) { $("specimen").textContent = view.text; $("text").value = view.text; }
+    $("specimen-ref").textContent = view.text;
+    document.querySelectorAll("#widths .t").forEach((n) => { n.textContent = view.text; n.style.fontVariationSettings = `"wght" ${view.wght}, "wdth" ${n.dataset.wdth}`; });
+    document.querySelectorAll("#weights .t").forEach((n) => { n.textContent = view.text; n.style.fontVariationSettings = `"wght" ${n.dataset.wght}, "wdth" ${view.wdth}`; });
+  }
+
+  // --- axis ranges: width and weight ---
+  const RANGES = {
+    width: { key: "widths", lo: "wmin", hi: "wmax", outLo: "o-wmin", outHi: "o-wmax", min: 50, max: 160, centre: 100, loMax: 96, hiMin: 104 },
+    weight: { key: "weights", lo: "gmin", hi: "gmax", outLo: "o-gmin", outHi: "o-gmax", min: 100, max: 900, centre: 400, loMax: 380, hiMin: 420 },
+  };
+  function showRange() {
+    for (const [name, r] of Object.entries(RANGES)) {
+      const [low, high] = ends(recipe[r.key]), [savedLow, savedHigh] = ends(saved[r.key]);
+      const pct = (v) => ((v - r.min) / (r.max - r.min)) * 100;
+      $(r.lo).value = low; $(r.hi).value = high;
+      $(r.outLo).textContent = low; $(r.outHi).textContent = high;
+      $(r.outLo).classList.toggle("changed", low !== savedLow);
+      $(r.outHi).classList.toggle("changed", high !== savedHigh);
+      $(r.lo).title = `Saved: ${savedLow}. Double-click to return to it.`;
+      $(r.hi).title = `Saved: ${savedHigh}. Double-click to return to it.`;
+      $(name + "-fill").style.left = pct(low) + "%";
+      $(name + "-fill").style.width = pct(high) - pct(low) + "%";
+      $(name + "-centre").style.left = pct(r.centre) + "%";
+    }
+    const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights);
+    $("ranges-summary").textContent = `width ${narrow}–${wide} · weight ${light}–${heavy}`;
+    $("wdth").min = narrow; $("wdth").max = wide;
+    $("p-wdth").min = narrow; $("p-wdth").max = wide;
+    $("wght").min = light; $("wght").max = heavy;
+    view.wdth = clampTo(view.wdth, narrow, wide);
+    view.wght = clampTo(view.wght, light, heavy);
+    const steps = [0, 0.25, 0.5, 0.75].map((t) => Math.round(narrow + (100 - narrow) * t))
+      .concat([100], [0.25, 0.5, 0.75, 1].map((t) => Math.round(100 + (wide - 100) * t)));
+    rows($("widths"), steps.map((v) => [v, `width ${v}`]), "wdth");
+    const named = NAMED_WEIGHTS.filter(([v]) => v >= light && v <= heavy);
+    if (!named.some(([v]) => v === light)) { named.unshift([light, "Lightest"]); }
+    if (!named.some(([v]) => v === heavy)) { named.push([heavy, "Heaviest"]); }
+    rows($("weights"), named.map(([v, label]) => [v, `${v} ${label}`]), "wght");
+    document.querySelectorAll("#poles button").forEach((b) => {
+      b.textContent = `${POLE_LABEL[b.dataset.pole]} ${widthOf(b.dataset.pole)}`;
+      b.setAttribute("aria-pressed", b.dataset.pole === pole);
+    });
+    const twoSizes = (recipe.optical_sizes || []).includes(14);
+    if (!twoSizes) { size = 32; }
+    $("size-block").hidden = !twoSizes;
+    document.querySelectorAll("#sizes button").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.size) === size));
+    const own = Object.keys(recipe.text || {}).filter((k) => k !== "glyphs").length + Object.keys((recipe.text || {}).glyphs || {}).length;
+    $("size-hint").textContent = size === 14
+      ? `Text drawing: it follows the display settings, and a slider moved here changes the text drawing only${own ? ` (${own} setting${own > 1 ? "s differ" : " differs"} so far)` : ""}.`
+      : "";
+    $("design-summary").textContent = `Each width has its own settings. Read-outs show narrowest, regular, widest.`;
+    $("family").textContent = recipe.family;
+    $("ref-tag").textContent = `Raveo 1.1 ${size === 14 ? "text" : "Display"} at the same weight, for reference`;
+  }
+
+  // --- sliders: value, "differs from saved" mark, double-click to return ---
+  function mark(el, current, savedValue) {
+    const changed = savedValue !== undefined && Number(current) !== Number(savedValue);
+    el.closest(".field").classList.toggle("changed", changed);
+    el.title = savedValue === undefined ? "" : changed ? `Saved: ${savedValue}. Double-click to return to it.` : "Matches the saved recipe";
+  }
+  const out = (el) => el.closest(".field").querySelector("output");
+  const fmt = (key, value) => (key === "terminal_angle" || key === "angle" ? value + "°" : value);
+
+  function showDesign() {
+    document.querySelectorAll(".design").forEach((el) => {
+      const key = el.dataset.key, value = setting(recipe, key)[pole];
+      el.value = value;
+      const all = setting(recipe, key);                       // narrowest · regular · widest, the one being edited in ink
+      out(el).innerHTML = POLES.map((p) => (p === pole ? `<b>${fmt(key, all[p])}</b>` : `<i>${fmt(key, all[p])}</i>`)).join(" ");
+      mark(el, value, setting(saved, key)[pole]);
+      const unused = key === "stem_adapt" && pole === "normal";
+      el.disabled = unused;
+      el.closest(".field").classList.toggle("off", unused);
+    });
+    document.querySelectorAll(".flag").forEach((el) => { el.checked = !!recipe[el.dataset.key]; });
+    document.querySelectorAll("#slants button").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.italic === "1") === italic));
+    $("italic-block").hidden = !italic;
+    const forms = recipe.italic_forms || {};
+    document.querySelectorAll(".forms").forEach((seg) => seg.querySelectorAll("button").forEach((b) =>
+      b.setAttribute("aria-pressed", (forms[seg.dataset.letter] || "upright") === b.dataset.form)));
+    const written = ["a", "e", "f"].filter((letter) => forms[letter] === "cursive");
+    $("italic-summary").textContent = written.length ? `written ${written.join(", ")}` : "upright a, e, f";
+    document.querySelectorAll(".sized").forEach((el) => {            // one number per optical size
+      const value = textOf(recipe)[el.dataset.key] ?? recipe[el.dataset.key] ?? 0;
+      el.value = value; out(el).textContent = value;
+      mark(el, value, textOf(saved)[el.dataset.key] ?? saved[el.dataset.key] ?? 0);
+    });
+    document.querySelectorAll(".global").forEach((el) => {
+      const value = dig(recipe, el.dataset.key) ?? Number(el.dataset.default ?? 0);
+      el.value = value;
+      out(el).textContent = value;
+      mark(el, value, dig(saved, el.dataset.key) ?? Number(el.dataset.default ?? 0));
+    });
+    showLetter();
+    $("save").classList.toggle("dirty", JSON.stringify(recipe) !== JSON.stringify(saved));
+  }
+
+  // --- one letter: values may be a number (all widths) or one per width ---
+  const letterDefault = (key, p) => ({ smoothing: setting(recipe, "smoothing")[p], angle: setting(recipe, "terminal_angle")[p], corners: setting(recipe, "terminal_soften")[p], leg_curl: 1 })[key] ?? 0;
+  const atPole = (value, p) => (value !== null && typeof value === "object" ? value[p] : value);
+  function setLetter(key, value) {
+    const store = letterStore();
+    const own = (store[picked.base] = { ...(store[picked.base] || {}) });
+    const current = lettersOf(recipe, picked.base)[key];
+    own[key] = current !== null && typeof current === "object" ? { ...current }
+      : Object.fromEntries(POLES.map((p) => [p, typeof current === "number" ? current : letterDefault(key, p)]));
+    own[key][pole] = value;
+  }
+  function showLetter() {
+    $("letter-controls").hidden = !picked;
+    $("letter-empty").hidden = !!picked;
+    $("letter-name").textContent = picked ? `${picked.char} · ${picked.base}` : "none picked";
+    if (!picked) { return; }
+    const own = lettersOf(recipe, picked.base), was = lettersOf(saved, picked.base);
+    $("letter-hint").textContent = `Editing “${picked.char}” at ${size === 14 ? "text size, " : ""}${POLE_LABEL[pole]} ${widthOf(pole)}. A change applies to this width only until you press “Same at all widths”.`;
+    $("f-middle").style.display = picked.middle ? "" : "none";
+    const hasEnds = recipe.terminal_glyphs.includes(picked.base);
+    document.querySelectorAll("#letter-controls .bowl").forEach((el) => (el.style.display = picked.base === "a" ? "" : "none"));
+    document.querySelectorAll("#letter-controls .ends").forEach((el) => (el.style.display = hasEnds ? "" : "none"));
+    document.querySelectorAll("#letter-controls .leg").forEach((el) => (el.style.display = picked.base === "R" && recipe.leg ? "" : "none"));
+    document.querySelectorAll(".letter").forEach((el) => {
+      const key = el.dataset.key, mine = own[key];
+      const value = key in own ? atPole(mine, pole) : letterDefault(key, pole);
+      const perWidth = mine !== null && typeof mine === "object" && new Set(POLES.map((p) => mine[p])).size > 1;
+      el.value = value;
+      out(el).innerHTML = `${fmt(key, value)} <i>${!(key in own) ? "default" : perWidth ? "this width" : "all widths"}</i>`;
+      mark(el, value, key in was ? atPole(was[key], pole) : letterDefault(key, pole));
+    });
+  }
+
+  // --- styles: which positions on the two axes get a name ---
+  const DEFAULT_WEIGHTS = (r) => {
+    const [lo, hi] = ends(r.weights), list = NAMED_WEIGHTS.filter(([v]) => v >= lo && v <= hi).map(([v, n]) => [v, n]);
+    return hi < 850 ? [...list.filter(([v]) => v !== hi), [hi, "ExtraBold"]] : list;
+  };
+  const DEFAULT_WIDTHS = (r) => [[r.widths[0], "Narrow"], [ends(r.widths)[1], "Wide"]];
+  const namedWeights = (r = recipe) => (r.named_weights || DEFAULT_WEIGHTS(r)).slice().sort((a, b) => a[0] - b[0]);
+  const namedWidths = (r = recipe) => (r.named_widths || DEFAULT_WIDTHS(r)).filter(([v]) => v !== 100).sort((a, b) => a[0] - b[0]);
+  const inAxis = (key, v) => v >= ends(recipe[key])[0] && v <= ends(recipe[key])[1];
+  let space = null, drag = null, spaceBusy = false, spaceDirty = false;
+  const MAP = { w: 640, h: 600, left: 118, right: 22, top: 44, bottom: 40 };
+  const mapDomain = () => {
+    const [narrow, wide] = ends(recipe.widths);
+    return { x0: Math.min(48, narrow - 6), x1: Math.max(134, wide + 8), y0: 60, y1: 940 };
+  };
+  const mapX = (v) => { const d = mapDomain(); return MAP.left + (v - d.x0) / (d.x1 - d.x0) * (MAP.w - MAP.left - MAP.right); };
+  const mapY = (v) => { const d = mapDomain(); return MAP.h - MAP.bottom - (v - d.y0) / (d.y1 - d.y0) * (MAP.h - MAP.top - MAP.bottom); };
+
+  function setRange(r, lo, hi) {                             // masters between the two ends stay where they were saved
+    const between = saved[r.key].slice(1, -1).filter((v) => v > lo && v < hi && v !== r.centre);
+    recipe[r.key] = [lo, ...[...between, r.centre].sort((a, b) => a - b), hi];
+  }
+
+  function drawMap() {
+    if (ui.tab !== "styles" || !recipe) { return; }
+    const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights), d = mapDomain();
+    const weights = [...namedWeights().filter(([v]) => v !== 400), [400, "Regular", true]].sort((a, b) => a[0] - b[0]);
+    const widths = [...namedWidths(), [100, "", true]].sort((a, b) => a[0] - b[0]);
+    const x0 = mapX(narrow), x1 = mapX(wide), y0 = mapY(heavy), y1 = mapY(light);
+    let html = "";
+    for (let v = Math.ceil(d.x0 / 10) * 10; v <= d.x1; v += 10) { html += `<text x="${mapX(v)}" y="${MAP.h - 14}" text-anchor="middle">${v}</text>`; }
+    html += `<text x="${MAP.w - MAP.right}" y="${MAP.h - 14}" text-anchor="end" dx="0" dy="14" style="font-size:10px">width</text>`;
+    html += `<rect class="space" x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}"/>`;
+    if (space && space.limit.length) {                       // the part of the box narrow widths cannot fill
+      const pts = space.limit.filter(([w]) => w >= narrow && w <= 100).map(([w, g]) => [mapX(w), mapY(Math.min(heavy, g))]);
+      if (pts.some(([, y]) => y > y0 + 0.5)) {
+        html += `<path class="cap" d="M${pts.map((q) => q.join(" ")).join("L")}L${pts.at(-1)[0]} ${y0}L${x0} ${y0}Z"/>`;
+        html += `<path class="capline" d="M${pts.map((q) => q.join(" ")).join("L")}"/>`;
+      }
+    }
+    html += `<line class="raveo" x1="${mapX(100)}" x2="${mapX(100)}" y1="${y0}" y2="${y1}"/><line class="raveo" x1="${x0}" x2="${x1}" y1="${mapY(400)}" y2="${mapY(400)}"/>`;
+    weights.forEach(([v, name, fixed], i) => {
+      const out = !inAxis("weights", v), y = mapY(v), live = drag && drag.kind === "weight" && drag.name === name;
+      html += `<text class="${out ? "out" : "name"}" x="${MAP.left - 46}" y="${y + 4}" text-anchor="end">${name}</text><text class="${out ? "out" : ""}" x="${MAP.left - 12}" y="${y + 4}" text-anchor="end">${v}</text>`;
+      if (!fixed) { html += `<line class="grab y" data-drag="weight" data-name="${name}" x1="${MAP.left - 8}" x2="${x1}" y1="${y}" y2="${y}"/>`; }
+      html += `<line class="named${out ? " out" : ""}${live ? " live" : ""}" x1="${out ? MAP.left - 8 : x0}" x2="${x1}" y1="${y}" y2="${y}" pointer-events="none"/>`;
+    });
+    widths.forEach(([v, name, fixed]) => {
+      const out = !inAxis("widths", v), x = mapX(v), live = drag && drag.kind === "width" && drag.name === name;
+      html += `<text class="${out ? "out" : "name"}" x="${x}" y="${MAP.top - 24}" text-anchor="middle">${name || "Regular"}</text><text class="${out ? "out" : ""}" x="${x}" y="${MAP.top - 10}" text-anchor="middle">${v}</text>`;
+      if (!fixed) { html += `<line class="grab x" data-drag="width" data-name="${name}" x1="${x}" x2="${x}" y1="${MAP.top - 6}" y2="${y1}"/>`; }
+      html += `<line class="named${out ? " out" : ""}${live ? " live" : ""}" x1="${x}" x2="${x}" y1="${out ? MAP.top - 6 : y0}" y2="${y1}" pointer-events="none"/>`;
+    });
+    for (const [key, a, b, c, e, cls] of [["wmin", x0, x0, y0, y1, "x"], ["wmax", x1, x1, y0, y1, "x"], ["gmax", x0, x1, y0, y0, "y"], ["gmin", x0, x1, y1, y1, "y"]]) {
+      html += `<line class="edge ${cls}" data-drag="edge" data-name="${key}" x1="${a}" x2="${b}" y1="${c}" y2="${e}"/>`;
+    }
+    for (const [wd, wg] of (space ? space.masters : [])) {
+      html += `<rect class="master" x="${mapX(wd) - 4.5}" y="${mapY(wg) - 4.5}" width="9" height="9" pointer-events="none"/>`;
+    }
+    for (const [wd, , ] of widths) {
+      for (const [wg] of weights) {
+        if (inAxis("widths", wd) && inAxis("weights", wg)) {
+          html += `<circle class="dot${view.wght === wg && view.wdth === wd ? " on" : ""}" data-wght="${wg}" data-wdth="${wd}" cx="${mapX(wd)}" cy="${mapY(wg)}" r="5"/>`;
+        }
+      }
+    }
+    if (!widths.some(([wd]) => wd === view.wdth) || !weights.some(([wg]) => wg === view.wght)) {
+      html += `<circle class="here" cx="${mapX(view.wdth)}" cy="${mapY(view.wght)}" r="7" pointer-events="none"/>`;
+    }
+    $("map").innerHTML = html;
+  }
+
+  function showStyles() {
+    if (ui.tab !== "styles" || !recipe) { return; }
+    const weights = namedWeights(), widths = namedWidths();
+    const row = (kind, [v, name], fixed) => `<tr class="${inAxis(kind === "weight" ? "weights" : "widths", v) ? "" : "out"}" data-kind="${kind}" data-name="${name}">
+      <td><input type="text" value="${fixed && !name ? "Regular (no name)" : name}" ${fixed ? "disabled" : ""} maxlength="24" aria-label="Name"></td>
+      <td><input type="number" value="${v}" ${fixed ? "disabled" : ""} step="${kind === "weight" ? 5 : 1}" aria-label="Position"></td>
+      <td>${fixed ? "" : `<button title="Remove this name" aria-label="Remove">×</button>`}</td></tr>`;
+    if (!$("nw").contains(document.activeElement)) {
+      $("nw").innerHTML = [...weights.filter(([v]) => v !== 400), [400, "Regular"]].sort((a, b) => b[0] - a[0]).map((w) => row("weight", w, w[0] === 400)).join("");
+    }
+    if (!$("nd").contains(document.activeElement)) {
+      $("nd").innerHTML = [...widths, [100, ""]].sort((a, b) => a[0] - b[0]).map((w) => row("width", w, w[0] === 100)).join("");
+    }
+    const live = [...weights.filter(([v]) => v !== 400), [400]].filter(([v]) => inAxis("weights", v)).length;
+    const across = widths.filter(([v]) => inAxis("widths", v)).length + 1, sizes = (recipe.optical_sizes || [32]).length;
+    const hidden = weights.filter(([v]) => !inAxis("weights", v)).length + widths.filter(([v]) => !inAxis("widths", v)).length;
+    $("styles-count").textContent = `${live} weights × ${across} widths${sizes > 1 ? ` × ${sizes} optical sizes` : ""} = ${live * across * sizes} named styles` +
+      (hidden ? `. ${hidden} name${hidden > 1 ? "s are" : " is"} outside the axis and will not be exported.` : ".");
+    const wn = [...widths, [100, ""]].find(([v]) => v === view.wdth), gn = [...weights, [400, "Regular"]].find(([v]) => v === view.wght);
+    $("style-label").innerHTML = `<b>${wn && gn ? `${wn[1]} ${gn[1]}`.trim() : "Between named styles"}</b> · weight ${view.wght} · width ${view.wdth}`;
+    $("style-preview").textContent = view.text;
+    drawMap();
+  }
+
+  async function loadSpace() {
+    if (!recipe || ui.tab !== "styles") { return; }
+    if (spaceBusy) { spaceDirty = true; return; }
+    spaceBusy = true;
+    try {
+      const res = await fetch("/api/space", { method: "POST", body: JSON.stringify({ ...recipe, opsz: size, italic }) });
+      if (res.ok) { space = await res.json(); drawMap(); }
+    } finally {
+      spaceBusy = false;
+      if (spaceDirty) { spaceDirty = false; loadSpace(); }
+    }
+  }
+
+  function status(text, kind) { $("status").textContent = text; $("status").className = kind || ""; }
+  function sync() { showRange(); showDesign(); render(); showStyles(); }
+
+  // --- live letters: outlines computed by the engine for the exact weight and widths ---
+  async function live() {
+    if (!recipe || ui.tab !== "letters") { return; }
+    if (lab.busy) { lab.dirty = true; return; }
+    lab.busy = true;
+    try {
+      const res = await fetch("/api/outline", { method: "POST", body: JSON.stringify(
+        { ...recipe, sample: lab.text, wght: view.wght, opsz: size, italic, row_widths: recipe.widths, comb: lab.comb }) });
+      if (res.ok) { drawLab(await res.json()); }
+    } finally {
+      lab.busy = false;
+      if (lab.dirty) { lab.dirty = false; live(); }
+    }
+  }
+
+  function drawLab(data) {
+    const svg = $("lab"), pad = 150, top = 1620, bottom = 520, rowH = top + bottom;
+    if (!svg.clientWidth) { return; }
+    const widest = Math.max(600, ...data.rows.map((r) => r.advance));
+    const w = widest + pad * 2, h = rowH * data.rows.length;
+    svg.setAttribute("viewBox", `${-pad} 0 ${w} ${h}`);
+    svg.classList.toggle("inspect", lab.points || lab.comb);
+    const unit = Math.max(w / svg.clientWidth, h / svg.clientHeight);     // font units per screen pixel
+    const full = svg.clientWidth * unit;                                  // row bands span the whole box
+    let html = "";
+    data.rows.forEach((row, i) => {
+      const p = POLES[i], base = rowH * i + top, editing = p === pole;
+      html += `<rect class="band${editing ? " on" : ""}" data-pole="${p}" x="${-pad}" y="${rowH * i}" width="${full}" height="${rowH}"/>`;
+      if (editing) { html += `<rect class="edge" x="${-pad}" y="${rowH * i}" width="${4 * unit}" height="${rowH}"/>`; }
+      html += `<text class="${editing ? "editing" : ""}" x="${full - pad - 14 * unit}" y="${rowH * i + 22 * unit}" text-anchor="end" font-size="${12 * unit}">` +
+        `${POLE_LABEL[p]} ${row.width}` +
+        (row.drawn_weight < view.wght ? ` · drawn at weight ${row.drawn_weight}, the heaviest this width carries` : "") + `</text>`;
+      html += `<g data-pole="${p}" transform="translate(0,${base}) scale(1,-1)">`;
+      html += [0, data.metrics.x, data.metrics.cap].map((y) => `<line class="guide" x1="${-pad}" x2="${full - pad}" y1="${y}" y2="${y}"/>`).join("");
+      for (const g of row.glyphs) {
+        const on = picked && picked.base === g.base ? " picked" : "";
+        html += `<g transform="translate(${g.x},0)">`;
+        html += `<path class="ink${on}" data-base="${g.base}" data-char="${g.char}" data-middle="${g.middle ? 1 : ""}" d="${g.d}"><title>Adjust “${g.char}” on its own</title></path>`;
+        if (lab.ghost) { html += `<path class="ghost" d="${g.ghost}"/>`; }
+        if (lab.comb && g.comb) { html += `<path class="comb" d="${g.comb}"/>`; }
+        if (lab.points) {
+          html += `<path class="handle" d="${g.handles}"/>`;
+          html += g.nodes.map(([x, y, isOn]) => `<circle class="${isOn ? "on" : "off"}" cx="${x}" cy="${y}" r="${(isOn ? 3.2 : 2.6) * unit}"/>`).join("");
+        }
+        html += "</g>";
+      }
+      html += "</g>";
+    });
+    svg.innerHTML = html;
+  }
+
+  async function rebuild() {
+    const mine = ++buildNo;
+    status("Building…", "busy");
+    const started = performance.now();
+    let res, report;
+    try {
+      res = await fetch("/api/build", { method: "POST", body: JSON.stringify({ ...recipe, opsz: size, italic }) });
+      report = await res.json();
+    } catch (error) {
+      if (mine === buildNo) { status("The build server did not answer. It may be restarting; change any slider to try again.", "error"); }
+      return;
+    }
+    if (mine !== buildNo) { return; }                       // a newer build is on its way
+    if (!res.ok) { status(report.error || "Build failed", "error"); return; }
+    const family = "Headline" + mine;
+    const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights);
+    const face = new FontFace(family, `url(${report.url})`, { weight: `${light} ${heavy}`, stretch: `${narrow}% ${wide}%` });
+    await face.load();
+    document.fonts.add(face);
+    root.style.setProperty("--headline", `"${family}"`);
+    if (size === 32) { fontChannel.postMessage({ url: report.url, widths: recipe.widths, weights: recipe.weights }); }
+    const capped = report.masters.filter((m) => m.drawn_weight < m.weight).map((m) => `${m.weight} is drawn as ${m.drawn_weight}`);
+    const dirty = JSON.stringify(recipe) !== JSON.stringify(saved);
+    const built = `Built in ${((performance.now() - started) / 1000).toFixed(1)} s · ${report.glyphs} glyphs` +
+      ` · ${report.guarded_pairs ?? 0} pairs kept apart` +
+      (capped.length ? ` · narrowest width: ${capped.join(", ")}` : "") + (dirty ? " · not saved" : "");
+    status(built);
+    measurePair();
+    try {
+      const quality = await (await fetch("/api/quality", { method: "POST", body: JSON.stringify({ ...recipe, opsz: size, italic }) })).json();
+      if (mine !== buildNo || !quality.rows) { return; }
+      const kinks = quality.rows.reduce((n, r) => n + r.kinks, 0);
+      const worst = quality.rows.reduce((a, r) => (r.jumps / r.joins > a.jumps / a.joins ? r : a));
+      status(`${built} · kinked joins: ${kinks} · uneven curvature: up to ${worst.jumps} of ${worst.joins} joins (${worst.weight}/${worst.width})`);
+    } catch (error) { /* the build line stays */ }
+  }
+
+  // --- proofs: strings to read the spacing by. Click between two letters to measure that pair. ---
+  const LOWER = "abcdefghijklmnopqrstuvwxyz", UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", FIGURES = "0123456789";
+  const each = (set, make) => [...set].map(make).join(" ");
+  const between = (side, set) => [...set].map((c) => side + c).join("") + side;
+  const TEXTS = {
+    English: "The 07:42 leaves Prague from platform three and is in Vienna by ten to twelve. “You could fly it in fifty minutes,” says the guard, “but almost nobody on this train would.” There’s a dining car, a river that keeps turning up on the left, and four hours in which nothing is asked of you. Tickets from €19; children under 6 travel free. Wayward vowels, awkward gaps: Type, Avery, Yvonne, Rotary, Kraków, 1974–2026.",
+    "Čeština": "Rychlík do Vídně odjíždí v 7.42 ze třetího nástupiště. „Letadlem by to trvalo padesát minut,“ říká průvodčí, „ale v tomhle vlaku by neletěl skoro nikdo.“ Je tu jídelní vůz, řeka, která se pořád vrací po levé straně, a čtyři hodiny, kdy po vás nikdo nic nechce. Příliš žluťoučký kůň úpěl ďábelské ódy. Jízdenky od 490 Kč; děti do 6 let zdarma. Břeclav, Třebíč, Ždár, Ľubovňa, loďka, veľký, sťatý.",
+    Deutsch: "Der Zug nach Wien fährt um 7.42 Uhr von Gleis drei. „Mit dem Flugzeug wären es fünfzig Minuten“, sagt der Schaffner, „aber in diesem Zug würde kaum jemand fliegen.“ Es gibt einen Speisewagen, einen Fluss, der immer wieder links auftaucht, und vier Stunden, in denen niemand etwas von Ihnen will. Fahrkarten ab 19 €; Kinder unter 6 Jahren fahren frei. Würzburg, Straße, Auffahrt, Wolfgang, Vorverkauf, Typografie.",
+    Polski: "Pociąg do Wiednia odjeżdża o 7.42 z peronu trzeciego. „Samolotem trwałoby to pięćdziesiąt minut — mówi konduktor — ale w tym pociągu prawie nikt by nie poleciał”. Jest wagon restauracyjny, rzeka, która wciąż wraca po lewej stronie, i cztery godziny, w których nikt niczego od ciebie nie chce. Bilety od 79 zł; dzieci do lat 6 jadą za darmo. Kraków Główny, Łódź, Żywiec, Świnoujście, źdźbło.",
+    "Français": "Le train de Vienne part à 7 h 42, voie trois. « En avion, cela prendrait cinquante minutes, dit le contrôleur, mais presque personne dans ce train ne le ferait. » Il y a une voiture-restaurant, une rivière qui revient toujours sur la gauche, et quatre heures pendant lesquelles on ne vous demande rien. Billets à partir de 19 € ; les enfants de moins de 6 ans voyagent gratuitement. L’aller, d’où, qu’à, aujourd’hui, Yaoundé.",
+    Capitals: "NIGHT TRAINS ARE BACK, AND FULL. WAVY TYPE, AVATAR, KYOTO, LAYOUT, RAILWAY, VOLTA, TOKYO, FJORD, PRAHA HLAVNÍ NÁDRAŽÍ, WIEN HAUPTBAHNHOF, KRAKÓW GŁÓWNY, ŽĎÁR NAD SÁZAVOU, ĽUBOVŇA, ŤAŽKÝ, TYPOGRAFIE, PLATFORM 3, 07:42.",
+  };
+  const wordsWith = (letter) => {
+    const found = new Set();
+    for (const text of Object.values(TEXTS)) {
+      for (const word of text.split(/[\s—]+/)) { if (word.includes(letter) && word.length > 2) { found.add(word.replace(/^[„“«(]+|[.,;:!?”“»)]+$/g, "")); } }
+    }
+    return [...found].slice(0, 48).join(" ");
+  };
+  const PROOFS = [
+    ["Pairs", {
+      "Around a letter": () => { const c = proof.letter; return [
+        `n${c}n o${c}o H${c}H O${c}O 0${c}0`,
+        "# After it", each(LOWER, (x) => c + x), each(UPPER, (x) => c + x), each(FIGURES, (x) => c + x), each(".,:;!?’”“‘)]-–/", (x) => c + x),
+        "# Before it", each(LOWER, (x) => x + c), each(UPPER, (x) => x + c), each(FIGURES, (x) => x + c), each("„“‘«([-–/", (x) => x + c),
+        "# In words", wordsWith(c) || "No word in the sample texts has this letter."]; },
+      "Lowercase between n and o": () => [between("n", LOWER), between("o", LOWER), "# Each letter doubled", each(LOWER, (x) => x + x)],
+      "Capitals between H and O": () => [between("H", UPPER), between("O", UPPER), "# Each letter doubled", each(UPPER, (x) => x + x)],
+      "Capitals that lean and overhang": () => [..."AKLTVWYFPRXZ"].map((a) => each(UPPER, (x) => a + x)),
+      "Capital, then lowercase": () => [..."TVWYFPKRAL"].map((a) => each("aceorsuvwyáéíóúůě", (x) => a + x)),
+      "Figures": () => [...[...FIGURES].map((a) => each(FIGURES, (b) => a + b)), "# In use",
+        "1 234 567,89 Kč  3,14  12:30  7/8  (1984)  50 %  €19  $7  №5  2×3  −1 °C  +420 777 123 456  R2-D2  A4  v2.0"],
+      "Stops after every letter": () => [each(LOWER, (x) => x + "."), each(LOWER, (x) => x + ","), each(UPPER, (x) => x + "."), each(UPPER, (x) => x + ","),
+        each(LOWER, (x) => x + ":"), each(LOWER, (x) => x + ";"), each("flrtyvwkTVWYPF", (x) => x + "!" + " " + x + "?")],
+      "Quotes around every letter": () => [each(LOWER, (x) => `„${x}“`), each(UPPER, (x) => `„${x}“`), each(LOWER, (x) => `“${x}”`), each(UPPER, (x) => `“${x}”`),
+        each(LOWER, (x) => `‘${x}’`), each(LOWER, (x) => `«${x}»`), each(LOWER, (x) => `»${x}«`), "# Apostrophes", "it’s don’t l’aller d’où qu’à rock’n’roll O’Hara ’90 ’twas J’y"],
+      "Dashes and brackets": () => [each(LOWER, (x) => `(${x})`), each(UPPER, (x) => `[${x}]`), each("aehnorTAVWY07", (x) => `${x}–${x} ${x}—${x} ${x}-${x}`),
+        "–– —— -- __ ==  1984–2026  Praha — Wien  re-enter  T-shirt  A/B  km/h  e.g.  i.e."],
+    }],
+    ["Text", { ...Object.fromEntries(Object.entries(TEXTS).map(([name, text]) => [name, () => [text]])), "Your text": () => proof.text.split("\n") }],
+    ["From the last review", { "Moved most by the recipe": "moved", "Letters standing closest": "closest" }],
+  ];
+  $("proof").append(...PROOFS.map(([group, list]) => {
+    const g = document.createElement("optgroup"); g.label = group;
+    g.append(...Object.keys(list).map((name) => new Option(name)));
+    return g;
+  }));
+  const COMPARED = { source: "Blue: the source with every design operation off (Inter's letters, spacing and kerning, scaled to the width).",
+    old: "Blue: Raveo 1.1 as shipped. It has no width axis, so it stays at the regular width.",
+    inter: "Blue: Inter, if it is installed on this computer. It has no width axis, so it stays at the regular width." };
+  let proofTimer = 0, proofNo = 0;
+  const saveProof = () => { ui.proof = proof; saveUi(); };
+  function proofSoon() { clearTimeout(proofTimer); proofTimer = setTimeout(() => { if (ui.tab === "proofs") { showProof(true); measurePair(); } }, 180); }
+  async function reviewed(kind) {
+    const res = await fetch(`/api/findings?italic=${italic ? 1 : 0}&opsz=${size}&wght=${view.wght}&wdth=${view.wdth}`);
+    const found = await res.json();
+    if (!res.ok) { return ["# " + found.error]; }
+    const s = found.style, lines = [];
+    const head = kind === "moved" ? "The pairs the recipe moved most against the source" : "The letters and figures that stand closest, in stems";
+    lines.push(`# ${head}. Measured at ${s.opsz === 14 ? "text" : "Display"} ${s.wght}, width ${s.wdth}${s.italic ? ", italic" : ""}, in the font exported last. Click a pair for today's numbers.`);
+    for (let k = 0; k < found[kind].length; k += 12) { lines.push(found[kind].slice(k, k + 12).map((f) => f.pair).join("  ")); }
+    return lines;
+  }
+  async function showProof(quiet) {
+    if (!recipe || ui.tab !== "proofs") { return; }
+    const list = Object.assign({}, ...PROOFS.map(([, l]) => l));
+    if (!(proof.sample in list)) { proof.sample = "Around a letter"; }
+    const make = list[proof.sample], mine = ++proofNo;
+    if (quiet && typeof make !== "string") { return; }           // only the review lists follow the weight and width
+    $("proof").value = proof.sample; $("proof-letter").value = proof.letter; $("proof-text").value = proof.text;
+    $("proof-letter-field").hidden = proof.sample !== "Around a letter";
+    $("proof-text-field").hidden = proof.sample !== "Your text";
+    document.querySelectorAll("#compare button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.compare === proof.compare));
+    const lines = typeof make === "string" ? await reviewed(make) : make();
+    if (mine !== proofNo) { return; }
+    const box = $("proofs");
+    box.classList.toggle("slanted", italic);
+    box.replaceChildren(...lines.flatMap((line) => {
+      const row = document.createElement("div");
+      if (line.startsWith("# ")) { row.className = "pt"; row.textContent = line.slice(2); return [row]; }
+      row.className = "pl hl"; row.textContent = line;
+      if (!proof.compare) { return [row]; }
+      const other = document.createElement("div");
+      other.className = "pl cmp cmp-" + proof.compare; other.textContent = line;
+      return [row, other];
+    }));
+    if (!quiet) { pairNote(); }
+  }
+  function pairNote(text) {
+    $("pairline").textContent = text || [proof.compare ? COMPARED[proof.compare] : "", "Click between two letters to measure the pair."].filter(Boolean).join(" ");
+  }
+  async function measurePair() {
+    if (!proof.pair || !recipe || ui.tab !== "proofs") { return; }
+    const pair = proof.pair;
+    const res = await fetch("/api/pair", { method: "POST", body: JSON.stringify({ ...recipe, pair, wght: view.wght, wdth: view.wdth, opsz: size, italic }) });
+    const d = await res.json();
+    if (pair !== proof.pair) { return; }
+    if (!res.ok) { pairNote(d.error); return; }
+    const show = (v) => (v === null ? "none" : v);
+    const part = (m) => `kerning <b>${m.kern}</b> · gap <b>${show(m.gap)}</b> · nearest <b>${show(m.nearest)}</b>`;
+    const line = $("pairline");
+    line.innerHTML = `<b class="pp hl"></b><span>${part(d.now)}${d.now.nearest === null ? "" : ` (${(d.now.nearest / d.stem).toFixed(2)} of a stem)`}</span>` +
+      `<span class="src">In the source: ${part(d.source)}</span><span>Thousandths of the em, at weight ${view.wght} and width ${view.wdth}.</span>`;
+    line.querySelector(".pp").textContent = pair;
+  }
+  $("proofs").addEventListener("click", (e) => {
+    if (!e.target.closest(".pl:not(.cmp)")) { return; }
+    const at = document.caretPositionFromPoint ? document.caretPositionFromPoint(e.clientX, e.clientY) : null;
+    const range = at ? null : document.caretRangeFromPoint(e.clientX, e.clientY);
+    const node = at ? at.offsetNode : range && range.startContainer, offset = at ? at.offset : range && range.startOffset;
+    if (!node || node.nodeType !== 3) { return; }
+    const chars = [...node.textContent];                        // by character, not by UTF-16 unit
+    let k = [...node.textContent.slice(0, offset)].length;
+    k = Math.max(1, Math.min(chars.length - 1, k));
+    if (/\s/.test(chars[k - 1]) && k + 1 < chars.length) { k += 1; }
+    if (/\s/.test(chars[k]) && k > 1) { k -= 1; }
+    if (/\s/.test(chars[k - 1]) || /\s/.test(chars[k])) { return; }
+    const start = chars.slice(0, k - 1).join("").length, picked = document.createRange();
+    picked.setStart(node, start); picked.setEnd(node, start + chars[k - 1].length + chars[k].length);
+    const selection = getSelection(); selection.removeAllRanges(); selection.addRange(picked);
+    proof.pair = chars[k - 1] + chars[k];
+    measurePair();
+  });
+  $("proof").addEventListener("change", (e) => { proof.sample = e.target.value; proof.pair = null; saveProof(); showProof(); });
+  $("proof-letter").addEventListener("input", (e) => { if (e.target.value) { proof.letter = [...e.target.value].pop(); e.target.value = proof.letter; saveProof(); showProof(); } });
+  $("proof-letter").addEventListener("focus", (e) => e.target.select());
+  $("proof-text").addEventListener("input", (e) => { proof.text = e.target.value; saveProof(); showProof(); });
+  $("p-wdth").addEventListener("input", (e) => { view.wdth = Number(e.target.value); render(); });
+  $("p-size").addEventListener("input", (e) => { proof.size = Number(e.target.value); saveProof(); render(); });
+  $("p-kern").addEventListener("change", (e) => { view.kern = e.target.checked; render(); });
+  $("compare").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) { return; }
+    proof.compare = b.dataset.compare; saveProof(); showProof();
+    if (proof.compare === "inter") { document.fonts.load('16px "Proof Inter"').then((faces) => { if (!faces.length) { pairNote("Inter is not installed on this computer, so there is nothing to compare with."); } }); }
+    if (proof.compare === "source") { document.fonts.load(`16px "Proof source${italic ? " italic" : ""}"`).catch(() => pairNote("The source build is missing. Run: python tools/kerning_review.py measure")); }
+  });
+
+  // --- other pages open on this server (the comparison with Raveo 1.1) are told about each new build ---
+  const fontChannel = new BroadcastChannel("raveo-font");
+
+  function refresh() { sync(); live(); }
+
+  // --- tabs and collapsible groups, remembered ---
+  function showTab(name) {
+    if (!document.querySelector(`.panel[data-panel="${name}"]`)) { name = "letters"; }
+    ui.tab = name; saveUi();
+    document.querySelectorAll(".tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === name));
+    document.querySelectorAll(".panel").forEach((p) => (p.hidden = p.dataset.panel !== name));
+    if (name === "letters") { live(); }
+    if (name === "styles") { showStyles(); loadSpace(); }
+    if (name === "proofs") { showProof(); }
+    window.scrollTo(0, 0);
+  }
+  document.querySelector(".tabs").addEventListener("click", (e) => { if (e.target.dataset.tab) { showTab(e.target.dataset.tab); } });
+  document.querySelectorAll("details[data-section]").forEach((d) => {
+    if (d.dataset.section in ui.open) { d.open = ui.open[d.dataset.section]; }
+    d.addEventListener("toggle", () => { ui.open[d.dataset.section] = d.open; saveUi(); });
+  });
+
+  // --- events ---
+  for (const k of ["wght", "wdth", "size", "track"]) {
+    $(k).addEventListener("input", (e) => { view[k] = Number(e.target.value); render(); if (k === "wght") { live(); } });
+    $(k).addEventListener("dblclick", () => { view[k] = VIEW_DEFAULT[k]; sync(); live(); });
+    $(k).title = `Double-click to return to ${VIEW_DEFAULT[k]}`;
+  }
+  $("kern").addEventListener("change", (e) => { view.kern = e.target.checked; render(); });
+  $("text").addEventListener("input", (e) => { view.text = e.target.value; render(); });
+  $("specimen").addEventListener("input", (e) => { view.text = e.target.textContent; $("text").value = view.text; render(true); });
+  $("presets").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) { return; }
+    const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights);
+    view.wght = clampTo(Number(b.dataset.wght), light, heavy);
+    view.wdth = b.dataset.wdth === "min" ? narrow : b.dataset.wdth === "max" ? wide : clampTo(Number(b.dataset.wdth), narrow, wide);
+    render(); live();
+  });
+
+  for (const r of Object.values(RANGES)) {
+    for (const [id, end] of [[r.lo, 0], [r.hi, 1]]) {
+      $(id).addEventListener("input", () => {
+        setRange(r, Math.min(r.loMax, Number($(r.lo).value)), Math.max(r.hiMin, Number($(r.hi).value)));
+        sync(); live();
+      });
+      $(id).addEventListener("change", rebuild);
+      $(id).addEventListener("dblclick", () => {
+        const now = ends(recipe[r.key]);
+        now[end] = ends(saved[r.key])[end];
+        setRange(r, ...now); sync(); live(); rebuild();
+      });
+    }
+  }
+  // --- the map of styles: drag lines and edges, click dots ---
+  const explicit = () => { recipe.named_weights = namedWeights(); recipe.named_widths = namedWidths(); };
+  const relax = () => {                                      // names that equal Raveo's defaults are not written to the recipe
+    if (recipe.named_weights && JSON.stringify(namedWeights()) === JSON.stringify(DEFAULT_WEIGHTS(recipe).sort((a, b) => a[0] - b[0]))) { recipe.named_weights = saved.named_weights ? recipe.named_weights : null; }
+    if (recipe.named_widths && JSON.stringify(namedWidths()) === JSON.stringify(DEFAULT_WIDTHS(recipe))) { recipe.named_widths = saved.named_widths ? recipe.named_widths : null; }
+  };
+  function mapValue(e, axis) {
+    const box = $("map").getBoundingClientRect(), d = mapDomain();
+    const px = (e.clientX - box.left) / box.width * MAP.w, py = (e.clientY - box.top) / box.height * MAP.h;
+    return axis === "x" ? d.x0 + (px - MAP.left) / (MAP.w - MAP.left - MAP.right) * (d.x1 - d.x0)
+      : d.y0 + (MAP.h - MAP.bottom - py) / (MAP.h - MAP.top - MAP.bottom) * (d.y1 - d.y0);
+  }
+  $("map").addEventListener("pointerdown", (e) => {
+    const dot = e.target.closest(".dot");
+    if (dot) { view.wght = Number(dot.dataset.wght); view.wdth = Number(dot.dataset.wdth); sync(); return; }
+    const grab = e.target.closest("[data-drag]");
+    if (!grab) { return; }
+    explicit();
+    drag = { kind: grab.dataset.drag, name: grab.dataset.name, range: false };
+    try { $("map").setPointerCapture(e.pointerId); } catch (error) { /* a synthetic pointer has nothing to capture */ }
+    e.preventDefault();
+  });
+  $("map").addEventListener("pointermove", (e) => {
+    if (!drag) { return; }
+    const snap = (v, step) => Math.round(v / (e.altKey ? 1 : step)) * (e.altKey ? 1 : step);
+    if (drag.kind === "weight") {
+      const v = clampTo(snap(mapValue(e, "y"), 10), 100, 900), item = recipe.named_weights.find(([, n]) => n === drag.name);
+      if (item && v !== 400 && !recipe.named_weights.some(([w, n]) => w === v && n !== drag.name)) { item[0] = v; view.wght = v; }
+    } else if (drag.kind === "width") {
+      const v = clampTo(snap(mapValue(e, "x"), 1), 50, 160), item = recipe.named_widths.find(([, n]) => n === drag.name);
+      if (item && v !== 100 && !recipe.named_widths.some(([w, n]) => w === v && n !== drag.name)) { item[0] = v; view.wdth = v; }
+    } else {
+      const [narrow, wide] = ends(recipe.widths), [light, heavy] = ends(recipe.weights);
+      if (drag.name === "wmin") { setRange(RANGES.width, clampTo(snap(mapValue(e, "x"), 1), 50, 96), wide); }
+      if (drag.name === "wmax") { setRange(RANGES.width, narrow, clampTo(snap(mapValue(e, "x"), 1), 104, 160)); }
+      if (drag.name === "gmin") { setRange(RANGES.weight, clampTo(snap(mapValue(e, "y"), 10), 100, 380), heavy); }
+      if (drag.name === "gmax") { setRange(RANGES.weight, light, clampTo(snap(mapValue(e, "y"), 10), 420, 900)); }
+      drag.range = true;
+    }
+    sync();
+  });
+  const dropMap = () => {
+    if (!drag) { return; }
+    const moved = drag.range;
+    drag = null;
+    relax();
+    sync();
+    if (moved) { live(); rebuild(); loadSpace(); }
+  };
+  $("map").addEventListener("pointerup", dropMap);
+  $("map").addEventListener("pointercancel", dropMap);
+  for (const [table, key] of [["nw", "named_weights"], ["nd", "named_widths"]]) {
+    $(table).addEventListener("change", (e) => {
+      const tr = e.target.closest("tr");
+      if (!tr) { return; }
+      explicit();
+      const item = recipe[key].find(([, n]) => n === tr.dataset.name);
+      if (!item) { return; }
+      if (e.target.type === "number") {
+        const v = Math.round(Number(e.target.value)), centre = key === "named_weights" ? 400 : 100;
+        if (Number.isFinite(v) && v !== centre && !recipe[key].some(([w]) => w === v)) { item[0] = clampTo(v, key === "named_weights" ? 100 : 50, key === "named_weights" ? 900 : 160); }
+      } else {
+        const name = e.target.value.trim();
+        if (name && !recipe[key].some(([, n]) => n === name)) { item[1] = name; }
+      }
+      document.activeElement.blur();
+      relax();
+      sync();
+    });
+    $(table).addEventListener("click", (e) => {
+      if (e.target.tagName !== "BUTTON") { return; }
+      explicit();
+      recipe[key] = recipe[key].filter(([, n]) => n !== e.target.closest("tr").dataset.name);
+      sync();
+    });
+  }
+  function addNamed(key, lo, hi, centre, names) {
+    explicit();
+    const taken = new Set(recipe[key].map(([v]) => v)), used = new Set(recipe[key].map(([, n]) => n));
+    const stops = [lo, ...recipe[key].map(([v]) => v), centre, hi].filter((v) => v >= lo && v <= hi).sort((a, b) => a - b);
+    let best = [0, lo];                                      // the middle of the widest gap between existing names
+    for (let i = 1; i < stops.length; i++) { if (stops[i] - stops[i - 1] > best[0]) { best = [stops[i] - stops[i - 1], Math.round((stops[i] + stops[i - 1]) / 2)]; } }
+    let value = best[1];
+    while (taken.has(value) || value === centre) { value += 1; }
+    recipe[key].push([value, names.find((n) => !used.has(n)) || `Style ${recipe[key].length + 1}`]);
+    sync();
+  }
+  $("nw-add").addEventListener("click", () => addNamed("named_weights", ...ends(recipe.weights), 400, NAMED_WEIGHTS.map(([, n]) => n).concat(["Book", "Heavy", "Hairline"])));
+  $("nd-add").addEventListener("click", () => addNamed("named_widths", ...ends(recipe.widths), 100, ["Narrow", "Wide", "Condensed", "Extended", "Compressed", "Expanded"]));
+  $("named-reset").addEventListener("click", () => { recipe.named_weights = null; recipe.named_widths = null; sync(); });
+
+  $("poles").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) { pole = b.dataset.pole; sync(); live(); }
+  });
+  $("slants").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b && (b.dataset.italic === "1") !== italic) { italic = b.dataset.italic === "1"; ui.italic = italic; saveUi(); sync(); live(); rebuild(); }
+  });
+  document.querySelectorAll(".forms").forEach((seg) => seg.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) { return; }
+    recipe.italic_forms = { a: "upright", e: "upright", f: "upright", ...(recipe.italic_forms || {}), [seg.dataset.letter]: b.dataset.form };
+    sync(); live(); rebuild();
+  }));
+  $("sizes").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b && Number(b.dataset.size) !== size) { size = Number(b.dataset.size); sync(); live(); rebuild(); }
+  });
+  document.querySelectorAll(".design").forEach((el) => {
+    el.addEventListener("input", () => { setSetting(el.dataset.key, pole, Number(el.value)); prune(); sync(); live(); });
+    el.addEventListener("change", rebuild);       // rebuild the font when the slider is released
+    el.addEventListener("dblclick", () => {
+      const was = setting(saved, el.dataset.key)[pole];
+      if (was !== undefined) { setSetting(el.dataset.key, pole, was); prune(); sync(); live(); rebuild(); }
+    });
+  });
+  function setGlobal(el, value) {
+    const keys = el.dataset.key.split(".");
+    keys.slice(0, -1).reduce((o, k) => o[k], recipe)[keys.at(-1)] = value;
+  }
+  document.querySelectorAll(".global").forEach((el) => {
+    el.addEventListener("input", () => { setGlobal(el, Number(el.value)); showDesign(); live(); });
+    el.addEventListener("change", rebuild);
+    el.addEventListener("dblclick", () => {
+      setGlobal(el, dig(saved, el.dataset.key) ?? Number(el.dataset.default ?? 0)); showDesign(); live(); rebuild();
+    });
+  });
+  $("copy-all").addEventListener("click", () => {
+    document.querySelectorAll(".design").forEach((el) => {
+      const value = setting(recipe, el.dataset.key)[pole];
+      for (const p of POLES) { setSetting(el.dataset.key, p, value); }
+    });
+    prune(); sync(); live(); rebuild();
+  });
+  document.querySelectorAll(".letter").forEach((el) => {
+    el.addEventListener("input", () => { setLetter(el.dataset.key, Number(el.value)); showDesign(); live(); });
+    el.addEventListener("change", rebuild);
+    el.addEventListener("dblclick", () => {                 // back to what the saved recipe has for this letter
+      const store = letterStore();
+      const own = (store[picked.base] = { ...(store[picked.base] || {}) });
+      const was = ((size === 14 ? (saved.text || {}).glyphs : saved.glyphs) || {})[picked.base]?.[el.dataset.key];
+      if (was === undefined) { delete own[el.dataset.key]; } else { own[el.dataset.key] = structuredClone(was); }
+      if (!Object.keys(own).length) { delete store[picked.base]; }
+      prune(); sync(); live(); rebuild();
+    });
+  });
+  $("letter-same").addEventListener("click", () => {
+    const store = letterStore(), own = store[picked.base];
+    if (!own) { return; }
+    store[picked.base] = Object.fromEntries(Object.entries(own).map(([k, v]) => [k, atPole(v, pole)]));
+    showDesign(); live(); rebuild();
+  });
+  $("letter-reset").addEventListener("click", () => { delete letterStore()[picked.base]; prune(); sync(); live(); rebuild(); });
+  $("letter-close").addEventListener("click", () => { picked = null; showDesign(); live(); });
+  document.querySelectorAll(".sized").forEach((el) => {
+    el.addEventListener("input", () => {
+      if (size === 14) { recipe.text = { ...recipe.text, [el.dataset.key]: Number(el.value) }; } else { recipe[el.dataset.key] = Number(el.value); }
+      showDesign(); live();
+    });
+    el.addEventListener("change", rebuild);
+  });
+  document.querySelectorAll(".flag").forEach((el) => el.addEventListener("change", () => { recipe[el.dataset.key] = el.checked; showDesign(); live(); rebuild(); }));
+
+  $("lab").addEventListener("click", (e) => {
+    const row = e.target.closest("[data-pole]");
+    if (row) { pole = row.dataset.pole; }
+    const glyph = e.target.closest("[data-base]");
+    if (glyph) {
+      picked = { base: glyph.dataset.base, char: glyph.dataset.char, middle: !!glyph.dataset.middle };
+      const group = document.querySelector('details[data-section="letter"]');
+      group.open = true;
+      requestAnimationFrame(() => group.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+    }
+    sync(); live();
+  });
+  $("labtext").addEventListener("input", (e) => { lab.text = e.target.value || "a"; live(); });
+  $("labchips").addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") { lab.text = e.target.textContent; $("labtext").value = lab.text; live(); }
+  });
+  for (const [id, key] of [["show-points", "points"], ["show-comb", "comb"], ["show-ghost", "ghost"]]) {
+    $(id).addEventListener("change", (e) => { lab[key] = e.target.checked; live(); });
+  }
+  window.addEventListener("resize", live);
+
+  $("save").addEventListener("click", async () => {
+    await fetch("/api/recipe", { method: "POST", body: JSON.stringify(recipe) });
+    saved = structuredClone(recipe);
+    sync();
+    status("Saved to recipe.json. Building the complete font for the specimen page…", "busy");
+    const res = await fetch("/api/build", { method: "POST", body: JSON.stringify({ ...recipe, complete: true }) });
+    status(res.ok ? "Saved to recipe.json; the specimen and comparison pages now show this font." : "Saved to recipe.json, but the complete font did not build.", res.ok ? "" : "error");
+  });
+  $("revert").addEventListener("click", () => { recipe = structuredClone(saved); picked = null; refresh(); rebuild(); });
+
+  // --- export the finished font files, one folder per version ---
+  let exported = [];
+  const exportNote = () => {
+    const version = $("export-version").value.trim(), hit = exported.find((r) => Number(r.version) === Number(version));
+    $("export-note").textContent = hit ? `Version ${hit.version} was exported on ${hit.date}. Exporting it again replaces that folder; use a new number to keep it.`
+      : exported.length ? `Already exported: ${exported.map((r) => r.version).join(", ")}. This writes a new folder next to ${exported.length > 1 ? "them" : "it"}.`
+      : "Writes desktop and web fonts, the licence and these settings to a folder in releases/.";
+  };
+  $("export-version").addEventListener("input", exportNote);
+  $("export").addEventListener("click", async () => {
+    $("export-panel").hidden = false; $("export-title").textContent = "Export fonts"; $("export-body").innerHTML = "";
+    try {
+      const info = await (await fetch("/api/releases")).json();
+      exported = info.releases || [];
+      $("export-title").textContent = `Export ${info.family}`;
+      if (!$("export-version").value) $("export-version").value = info.version;
+    } catch (error) { exported = []; }
+    exportNote();
+    $("export-version").focus();
+  });
+  $("export-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = $("export-go"), body = $("export-body"), version = $("export-version").value.trim();
+    button.disabled = true; button.textContent = "Exporting…";
+    body.innerHTML = `<p>Building every file from the settings shown. This takes a few minutes: every named style is cut out as its own file.</p>`;
+    try {
+      const res = await fetch("/api/export", { method: "POST", body: JSON.stringify({ ...recipe, version }) });
+      let data = null;
+      try { data = await res.json(); } catch (error) { /* not JSON */ }
+      if (!res.ok || !data || data.error || !data.files) {
+        throw new Error(res.status === 404 ? "This server has no export yet. Restart the workbench server and try again."
+          : (data && data.error) || `The server answered ${res.status}.`);
+      }
+      $("export-title").textContent = `Version ${data.version} ${data.replaced ? "replaced" : "exported"}`;
+      const shown = data.files.filter((f) => !f.kind.startsWith("Static"));
+      const statics = data.files.filter((f) => f.kind.startsWith("Static"));
+      const rows = shown.map((f) => `<tr><td>${f.kind}<br><a href="/${f.path}" target="_blank">${f.path.split("/").slice(2).join("/") || f.path}</a></td><td>${f.kb.toFixed(1)} KB</td></tr>`);
+      if (statics.length) rows.push(`<tr><td>Static styles, desktop and web<br>${statics.length} files in desktop/static and web/static</td><td>${statics.reduce((n, f) => n + f.kb, 0).toFixed(1)} KB</td></tr>`);
+      body.innerHTML = `<table>${rows.join("")}</table><p>Everything is in <b>${data.folder}/</b> in the project folder${data.seconds ? `, built in ${data.seconds.toFixed(0)} s` : ""}.</p>`;
+      exported = (await (await fetch("/api/releases")).json()).releases || exported;
+      exportNote();
+    } catch (error) {
+      $("export-title").textContent = "Export did not finish";
+      body.innerHTML = `<p class="error"></p>`;
+      body.firstChild.textContent = error.message;
+    } finally {
+      button.disabled = false; button.textContent = "Export";
+    }
+  });
+  $("export-close").addEventListener("click", () => { $("export-panel").hidden = true; });
+
+  (async () => {
+    saved = await (await fetch("/api/recipe")).json();
+    recipe = structuredClone(saved);
+    sync();
+    showTab(ui.tab);
+    rebuild();
+  })();
+</script>
+</body>
+</html>

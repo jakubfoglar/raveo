@@ -1,0 +1,9 @@
+.venv/
+build/
+__pycache__/
+.DS_Store
+*.pyc
+releases/*.zip
+
+# Glyphs keeps its window state here
+UIState.plist

@@ -1,0 +1,4569 @@
+{
+ "family": "Raveo",
+ "version": "2.0",
+ "date": "2026-11-13",
+ "axes": {
+  "opsz": [
+   14.0,
+   14.0,
+   32.0
+  ],
+  "wght": [
+   300.0,
+   400.0,
+   900.0
+  ],
+  "wdth": [
+   60.0,
+   100.0,
+   125.0
+  ]
+ },
+ "styles": [
+  {
+   "name": "Narrow Light",
+   "opsz": 14,
+   "wght": 300,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow Regular",
+   "opsz": 14,
+   "wght": 400,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow Medium",
+   "opsz": 14,
+   "wght": 520,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow SemiBold",
+   "opsz": 14,
+   "wght": 630,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow Bold",
+   "opsz": 14,
+   "wght": 730,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow ExtraBold",
+   "opsz": 14,
+   "wght": 850,
+   "wdth": 60
+  },
+  {
+   "name": "Narrow Black",
+   "opsz": 14,
+   "wght": 900,
+   "wdth": 60
+  },
+  {
+   "name": "Light",
+   "opsz": 14,
+   "wght": 300,
+   "wdth": 100
+  },
+  {
+   "name": "Regular",
+   "opsz": 14,
+   "wght": 400,
+   "wdth": 100
+  },
+  {
+   "name": "Medium",
+   "opsz": 14,
+   "wght": 520,
+   "wdth": 100
+  },
+  {
+   "name": "SemiBold",
+   "opsz": 14,
+   "wght": 630,
+   "wdth": 100
+  },
+  {
+   "name": "Bold",
+   "opsz": 14,
+   "wght": 730,
+   "wdth": 100
+  },
+  {
+   "name": "ExtraBold",
+   "opsz": 14,
+   "wght": 850,
+   "wdth": 100
+  },
+  {
+   "name": "Black",
+   "opsz": 14,
+   "wght": 900,
+   "wdth": 100
+  },
+  {
+   "name": "Wide Light",
+   "opsz": 14,
+   "wght": 300,
+   "wdth": 125
+  },
+  {
+   "name": "Wide Regular",
+   "opsz": 14,
+   "wght": 400,
+   "wdth": 125
+  },
+  {
+   "name": "Wide Medium",
+   "opsz": 14,
+   "wght": 520,
+   "wdth": 125
+  },
+  {
+   "name": "Wide SemiBold",
+   "opsz": 14,
+   "wght": 630,
+   "wdth": 125
+  },
+  {
+   "name": "Wide Bold",
+   "opsz": 14,
+   "wght": 730,
+   "wdth": 125
+  },
+  {
+   "name": "Wide ExtraBold",
+   "opsz": 14,
+   "wght": 850,
+   "wdth": 125
+  },
+  {
+   "name": "Wide Black",
+   "opsz": 14,
+   "wght": 900,
+   "wdth": 125
+  },
+  {
+   "name": "Display Narrow Light",
+   "opsz": 32,
+   "wght": 300,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow Regular",
+   "opsz": 32,
+   "wght": 400,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow Medium",
+   "opsz": 32,
+   "wght": 520,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow SemiBold",
+   "opsz": 32,
+   "wght": 630,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow Bold",
+   "opsz": 32,
+   "wght": 730,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow ExtraBold",
+   "opsz": 32,
+   "wght": 850,
+   "wdth": 60
+  },
+  {
+   "name": "Display Narrow Black",
+   "opsz": 32,
+   "wght": 900,
+   "wdth": 60
+  },
+  {
+   "name": "Display Light",
+   "opsz": 32,
+   "wght": 300,
+   "wdth": 100
+  },
+  {
+   "name": "Display Regular",
+   "opsz": 32,
+   "wght": 400,
+   "wdth": 100
+  },
+  {
+   "name": "Display Medium",
+   "opsz": 32,
+   "wght": 520,
+   "wdth": 100
+  },
+  {
+   "name": "Display SemiBold",
+   "opsz": 32,
+   "wght": 630,
+   "wdth": 100
+  },
+  {
+   "name": "Display Bold",
+   "opsz": 32,
+   "wght": 730,
+   "wdth": 100
+  },
+  {
+   "name": "Display ExtraBold",
+   "opsz": 32,
+   "wght": 850,
+   "wdth": 100
+  },
+  {
+   "name": "Display Black",
+   "opsz": 32,
+   "wght": 900,
+   "wdth": 100
+  },
+  {
+   "name": "Display Wide Light",
+   "opsz": 32,
+   "wght": 300,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide Regular",
+   "opsz": 32,
+   "wght": 400,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide Medium",
+   "opsz": 32,
+   "wght": 520,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide SemiBold",
+   "opsz": 32,
+   "wght": 630,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide Bold",
+   "opsz": 32,
+   "wght": 730,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide ExtraBold",
+   "opsz": 32,
+   "wght": 850,
+   "wdth": 125
+  },
+  {
+   "name": "Display Wide Black",
+   "opsz": 32,
+   "wght": 900,
+   "wdth": 125
+  }
+ ],
+ "features": [
+  "calt",
+  "case",
+  "ccmp",
+  "cpsp",
+  "dlig",
+  "kern",
+  "mark",
+  "mkmk",
+  "ordn",
+  "pnum",
+  "tnum"
+ ],
+ "characters": [
+  [
+   33,
+   "EXCLAMATION MARK",
+   "Po"
+  ],
+  [
+   34,
+   "QUOTATION MARK",
+   "Po"
+  ],
+  [
+   35,
+   "NUMBER SIGN",
+   "Po"
+  ],
+  [
+   36,
+   "DOLLAR SIGN",
+   "Sc"
+  ],
+  [
+   37,
+   "PERCENT SIGN",
+   "Po"
+  ],
+  [
+   38,
+   "AMPERSAND",
+   "Po"
+  ],
+  [
+   39,
+   "APOSTROPHE",
+   "Po"
+  ],
+  [
+   40,
+   "LEFT PARENTHESIS",
+   "Ps"
+  ],
+  [
+   41,
+   "RIGHT PARENTHESIS",
+   "Pe"
+  ],
+  [
+   42,
+   "ASTERISK",
+   "Po"
+  ],
+  [
+   43,
+   "PLUS SIGN",
+   "Sm"
+  ],
+  [
+   44,
+   "COMMA",
+   "Po"
+  ],
+  [
+   45,
+   "HYPHEN-MINUS",
+   "Pd"
+  ],
+  [
+   46,
+   "FULL STOP",
+   "Po"
+  ],
+  [
+   47,
+   "SOLIDUS",
+   "Po"
+  ],
+  [
+   48,
+   "DIGIT ZERO",
+   "Nd"
+  ],
+  [
+   49,
+   "DIGIT ONE",
+   "Nd"
+  ],
+  [
+   50,
+   "DIGIT TWO",
+   "Nd"
+  ],
+  [
+   51,
+   "DIGIT THREE",
+   "Nd"
+  ],
+  [
+   52,
+   "DIGIT FOUR",
+   "Nd"
+  ],
+  [
+   53,
+   "DIGIT FIVE",
+   "Nd"
+  ],
+  [
+   54,
+   "DIGIT SIX",
+   "Nd"
+  ],
+  [
+   55,
+   "DIGIT SEVEN",
+   "Nd"
+  ],
+  [
+   56,
+   "DIGIT EIGHT",
+   "Nd"
+  ],
+  [
+   57,
+   "DIGIT NINE",
+   "Nd"
+  ],
+  [
+   58,
+   "COLON",
+   "Po"
+  ],
+  [
+   59,
+   "SEMICOLON",
+   "Po"
+  ],
+  [
+   60,
+   "LESS-THAN SIGN",
+   "Sm"
+  ],
+  [
+   61,
+   "EQUALS SIGN",
+   "Sm"
+  ],
+  [
+   62,
+   "GREATER-THAN SIGN",
+   "Sm"
+  ],
+  [
+   63,
+   "QUESTION MARK",
+   "Po"
+  ],
+  [
+   64,
+   "COMMERCIAL AT",
+   "Po"
+  ],
+  [
+   65,
+   "LATIN CAPITAL LETTER A",
+   "Lu"
+  ],
+  [
+   66,
+   "LATIN CAPITAL LETTER B",
+   "Lu"
+  ],
+  [
+   67,
+   "LATIN CAPITAL LETTER C",
+   "Lu"
+  ],
+  [
+   68,
+   "LATIN CAPITAL LETTER D",
+   "Lu"
+  ],
+  [
+   69,
+   "LATIN CAPITAL LETTER E",
+   "Lu"
+  ],
+  [
+   70,
+   "LATIN CAPITAL LETTER F",
+   "Lu"
+  ],
+  [
+   71,
+   "LATIN CAPITAL LETTER G",
+   "Lu"
+  ],
+  [
+   72,
+   "LATIN CAPITAL LETTER H",
+   "Lu"
+  ],
+  [
+   73,
+   "LATIN CAPITAL LETTER I",
+   "Lu"
+  ],
+  [
+   74,
+   "LATIN CAPITAL LETTER J",
+   "Lu"
+  ],
+  [
+   75,
+   "LATIN CAPITAL LETTER K",
+   "Lu"
+  ],
+  [
+   76,
+   "LATIN CAPITAL LETTER L",
+   "Lu"
+  ],
+  [
+   77,
+   "LATIN CAPITAL LETTER M",
+   "Lu"
+  ],
+  [
+   78,
+   "LATIN CAPITAL LETTER N",
+   "Lu"
+  ],
+  [
+   79,
+   "LATIN CAPITAL LETTER O",
+   "Lu"
+  ],
+  [
+   80,
+   "LATIN CAPITAL LETTER P",
+   "Lu"
+  ],
+  [
+   81,
+   "LATIN CAPITAL LETTER Q",
+   "Lu"
+  ],
+  [
+   82,
+   "LATIN CAPITAL LETTER R",
+   "Lu"
+  ],
+  [
+   83,
+   "LATIN CAPITAL LETTER S",
+   "Lu"
+  ],
+  [
+   84,
+   "LATIN CAPITAL LETTER T",
+   "Lu"
+  ],
+  [
+   85,
+   "LATIN CAPITAL LETTER U",
+   "Lu"
+  ],
+  [
+   86,
+   "LATIN CAPITAL LETTER V",
+   "Lu"
+  ],
+  [
+   87,
+   "LATIN CAPITAL LETTER W",
+   "Lu"
+  ],
+  [
+   88,
+   "LATIN CAPITAL LETTER X",
+   "Lu"
+  ],
+  [
+   89,
+   "LATIN CAPITAL LETTER Y",
+   "Lu"
+  ],
+  [
+   90,
+   "LATIN CAPITAL LETTER Z",
+   "Lu"
+  ],
+  [
+   91,
+   "LEFT SQUARE BRACKET",
+   "Ps"
+  ],
+  [
+   92,
+   "REVERSE SOLIDUS",
+   "Po"
+  ],
+  [
+   93,
+   "RIGHT SQUARE BRACKET",
+   "Pe"
+  ],
+  [
+   94,
+   "CIRCUMFLEX ACCENT",
+   "Sk"
+  ],
+  [
+   95,
+   "LOW LINE",
+   "Pc"
+  ],
+  [
+   96,
+   "GRAVE ACCENT",
+   "Sk"
+  ],
+  [
+   97,
+   "LATIN SMALL LETTER A",
+   "Ll"
+  ],
+  [
+   98,
+   "LATIN SMALL LETTER B",
+   "Ll"
+  ],
+  [
+   99,
+   "LATIN SMALL LETTER C",
+   "Ll"
+  ],
+  [
+   100,
+   "LATIN SMALL LETTER D",
+   "Ll"
+  ],
+  [
+   101,
+   "LATIN SMALL LETTER E",
+   "Ll"
+  ],
+  [
+   102,
+   "LATIN SMALL LETTER F",
+   "Ll"
+  ],
+  [
+   103,
+   "LATIN SMALL LETTER G",
+   "Ll"
+  ],
+  [
+   104,
+   "LATIN SMALL LETTER H",
+   "Ll"
+  ],
+  [
+   105,
+   "LATIN SMALL LETTER I",
+   "Ll"
+  ],
+  [
+   106,
+   "LATIN SMALL LETTER J",
+   "Ll"
+  ],
+  [
+   107,
+   "LATIN SMALL LETTER K",
+   "Ll"
+  ],
+  [
+   108,
+   "LATIN SMALL LETTER L",
+   "Ll"
+  ],
+  [
+   109,
+   "LATIN SMALL LETTER M",
+   "Ll"
+  ],
+  [
+   110,
+   "LATIN SMALL LETTER N",
+   "Ll"
+  ],
+  [
+   111,
+   "LATIN SMALL LETTER O",
+   "Ll"
+  ],
+  [
+   112,
+   "LATIN SMALL LETTER P",
+   "Ll"
+  ],
+  [
+   113,
+   "LATIN SMALL LETTER Q",
+   "Ll"
+  ],
+  [
+   114,
+   "LATIN SMALL LETTER R",
+   "Ll"
+  ],
+  [
+   115,
+   "LATIN SMALL LETTER S",
+   "Ll"
+  ],
+  [
+   116,
+   "LATIN SMALL LETTER T",
+   "Ll"
+  ],
+  [
+   117,
+   "LATIN SMALL LETTER U",
+   "Ll"
+  ],
+  [
+   118,
+   "LATIN SMALL LETTER V",
+   "Ll"
+  ],
+  [
+   119,
+   "LATIN SMALL LETTER W",
+   "Ll"
+  ],
+  [
+   120,
+   "LATIN SMALL LETTER X",
+   "Ll"
+  ],
+  [
+   121,
+   "LATIN SMALL LETTER Y",
+   "Ll"
+  ],
+  [
+   122,
+   "LATIN SMALL LETTER Z",
+   "Ll"
+  ],
+  [
+   123,
+   "LEFT CURLY BRACKET",
+   "Ps"
+  ],
+  [
+   124,
+   "VERTICAL LINE",
+   "Sm"
+  ],
+  [
+   125,
+   "RIGHT CURLY BRACKET",
+   "Pe"
+  ],
+  [
+   126,
+   "TILDE",
+   "Sm"
+  ],
+  [
+   161,
+   "INVERTED EXCLAMATION MARK",
+   "Po"
+  ],
+  [
+   162,
+   "CENT SIGN",
+   "Sc"
+  ],
+  [
+   163,
+   "POUND SIGN",
+   "Sc"
+  ],
+  [
+   164,
+   "CURRENCY SIGN",
+   "Sc"
+  ],
+  [
+   165,
+   "YEN SIGN",
+   "Sc"
+  ],
+  [
+   166,
+   "BROKEN BAR",
+   "So"
+  ],
+  [
+   167,
+   "SECTION SIGN",
+   "Po"
+  ],
+  [
+   168,
+   "DIAERESIS",
+   "Sk"
+  ],
+  [
+   169,
+   "COPYRIGHT SIGN",
+   "So"
+  ],
+  [
+   170,
+   "FEMININE ORDINAL INDICATOR",
+   "Lo"
+  ],
+  [
+   171,
+   "LEFT-POINTING DOUBLE ANGLE QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   172,
+   "NOT SIGN",
+   "Sm"
+  ],
+  [
+   174,
+   "REGISTERED SIGN",
+   "So"
+  ],
+  [
+   175,
+   "MACRON",
+   "Sk"
+  ],
+  [
+   176,
+   "DEGREE SIGN",
+   "So"
+  ],
+  [
+   177,
+   "PLUS-MINUS SIGN",
+   "Sm"
+  ],
+  [
+   178,
+   "SUPERSCRIPT TWO",
+   "No"
+  ],
+  [
+   179,
+   "SUPERSCRIPT THREE",
+   "No"
+  ],
+  [
+   180,
+   "ACUTE ACCENT",
+   "Sk"
+  ],
+  [
+   181,
+   "MICRO SIGN",
+   "Ll"
+  ],
+  [
+   182,
+   "PILCROW SIGN",
+   "Po"
+  ],
+  [
+   183,
+   "MIDDLE DOT",
+   "Po"
+  ],
+  [
+   184,
+   "CEDILLA",
+   "Sk"
+  ],
+  [
+   185,
+   "SUPERSCRIPT ONE",
+   "No"
+  ],
+  [
+   186,
+   "MASCULINE ORDINAL INDICATOR",
+   "Lo"
+  ],
+  [
+   187,
+   "RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK",
+   "Pf"
+  ],
+  [
+   188,
+   "VULGAR FRACTION ONE QUARTER",
+   "No"
+  ],
+  [
+   189,
+   "VULGAR FRACTION ONE HALF",
+   "No"
+  ],
+  [
+   190,
+   "VULGAR FRACTION THREE QUARTERS",
+   "No"
+  ],
+  [
+   191,
+   "INVERTED QUESTION MARK",
+   "Po"
+  ],
+  [
+   192,
+   "LATIN CAPITAL LETTER A WITH GRAVE",
+   "Lu"
+  ],
+  [
+   193,
+   "LATIN CAPITAL LETTER A WITH ACUTE",
+   "Lu"
+  ],
+  [
+   194,
+   "LATIN CAPITAL LETTER A WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   195,
+   "LATIN CAPITAL LETTER A WITH TILDE",
+   "Lu"
+  ],
+  [
+   196,
+   "LATIN CAPITAL LETTER A WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   197,
+   "LATIN CAPITAL LETTER A WITH RING ABOVE",
+   "Lu"
+  ],
+  [
+   198,
+   "LATIN CAPITAL LETTER AE",
+   "Lu"
+  ],
+  [
+   199,
+   "LATIN CAPITAL LETTER C WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   200,
+   "LATIN CAPITAL LETTER E WITH GRAVE",
+   "Lu"
+  ],
+  [
+   201,
+   "LATIN CAPITAL LETTER E WITH ACUTE",
+   "Lu"
+  ],
+  [
+   202,
+   "LATIN CAPITAL LETTER E WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   203,
+   "LATIN CAPITAL LETTER E WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   204,
+   "LATIN CAPITAL LETTER I WITH GRAVE",
+   "Lu"
+  ],
+  [
+   205,
+   "LATIN CAPITAL LETTER I WITH ACUTE",
+   "Lu"
+  ],
+  [
+   206,
+   "LATIN CAPITAL LETTER I WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   207,
+   "LATIN CAPITAL LETTER I WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   208,
+   "LATIN CAPITAL LETTER ETH",
+   "Lu"
+  ],
+  [
+   209,
+   "LATIN CAPITAL LETTER N WITH TILDE",
+   "Lu"
+  ],
+  [
+   210,
+   "LATIN CAPITAL LETTER O WITH GRAVE",
+   "Lu"
+  ],
+  [
+   211,
+   "LATIN CAPITAL LETTER O WITH ACUTE",
+   "Lu"
+  ],
+  [
+   212,
+   "LATIN CAPITAL LETTER O WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   213,
+   "LATIN CAPITAL LETTER O WITH TILDE",
+   "Lu"
+  ],
+  [
+   214,
+   "LATIN CAPITAL LETTER O WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   215,
+   "MULTIPLICATION SIGN",
+   "Sm"
+  ],
+  [
+   216,
+   "LATIN CAPITAL LETTER O WITH STROKE",
+   "Lu"
+  ],
+  [
+   217,
+   "LATIN CAPITAL LETTER U WITH GRAVE",
+   "Lu"
+  ],
+  [
+   218,
+   "LATIN CAPITAL LETTER U WITH ACUTE",
+   "Lu"
+  ],
+  [
+   219,
+   "LATIN CAPITAL LETTER U WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   220,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   221,
+   "LATIN CAPITAL LETTER Y WITH ACUTE",
+   "Lu"
+  ],
+  [
+   222,
+   "LATIN CAPITAL LETTER THORN",
+   "Lu"
+  ],
+  [
+   223,
+   "LATIN SMALL LETTER SHARP S",
+   "Ll"
+  ],
+  [
+   224,
+   "LATIN SMALL LETTER A WITH GRAVE",
+   "Ll"
+  ],
+  [
+   225,
+   "LATIN SMALL LETTER A WITH ACUTE",
+   "Ll"
+  ],
+  [
+   226,
+   "LATIN SMALL LETTER A WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   227,
+   "LATIN SMALL LETTER A WITH TILDE",
+   "Ll"
+  ],
+  [
+   228,
+   "LATIN SMALL LETTER A WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   229,
+   "LATIN SMALL LETTER A WITH RING ABOVE",
+   "Ll"
+  ],
+  [
+   230,
+   "LATIN SMALL LETTER AE",
+   "Ll"
+  ],
+  [
+   231,
+   "LATIN SMALL LETTER C WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   232,
+   "LATIN SMALL LETTER E WITH GRAVE",
+   "Ll"
+  ],
+  [
+   233,
+   "LATIN SMALL LETTER E WITH ACUTE",
+   "Ll"
+  ],
+  [
+   234,
+   "LATIN SMALL LETTER E WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   235,
+   "LATIN SMALL LETTER E WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   236,
+   "LATIN SMALL LETTER I WITH GRAVE",
+   "Ll"
+  ],
+  [
+   237,
+   "LATIN SMALL LETTER I WITH ACUTE",
+   "Ll"
+  ],
+  [
+   238,
+   "LATIN SMALL LETTER I WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   239,
+   "LATIN SMALL LETTER I WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   240,
+   "LATIN SMALL LETTER ETH",
+   "Ll"
+  ],
+  [
+   241,
+   "LATIN SMALL LETTER N WITH TILDE",
+   "Ll"
+  ],
+  [
+   242,
+   "LATIN SMALL LETTER O WITH GRAVE",
+   "Ll"
+  ],
+  [
+   243,
+   "LATIN SMALL LETTER O WITH ACUTE",
+   "Ll"
+  ],
+  [
+   244,
+   "LATIN SMALL LETTER O WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   245,
+   "LATIN SMALL LETTER O WITH TILDE",
+   "Ll"
+  ],
+  [
+   246,
+   "LATIN SMALL LETTER O WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   247,
+   "DIVISION SIGN",
+   "Sm"
+  ],
+  [
+   248,
+   "LATIN SMALL LETTER O WITH STROKE",
+   "Ll"
+  ],
+  [
+   249,
+   "LATIN SMALL LETTER U WITH GRAVE",
+   "Ll"
+  ],
+  [
+   250,
+   "LATIN SMALL LETTER U WITH ACUTE",
+   "Ll"
+  ],
+  [
+   251,
+   "LATIN SMALL LETTER U WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   252,
+   "LATIN SMALL LETTER U WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   253,
+   "LATIN SMALL LETTER Y WITH ACUTE",
+   "Ll"
+  ],
+  [
+   254,
+   "LATIN SMALL LETTER THORN",
+   "Ll"
+  ],
+  [
+   255,
+   "LATIN SMALL LETTER Y WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   256,
+   "LATIN CAPITAL LETTER A WITH MACRON",
+   "Lu"
+  ],
+  [
+   257,
+   "LATIN SMALL LETTER A WITH MACRON",
+   "Ll"
+  ],
+  [
+   258,
+   "LATIN CAPITAL LETTER A WITH BREVE",
+   "Lu"
+  ],
+  [
+   259,
+   "LATIN SMALL LETTER A WITH BREVE",
+   "Ll"
+  ],
+  [
+   260,
+   "LATIN CAPITAL LETTER A WITH OGONEK",
+   "Lu"
+  ],
+  [
+   261,
+   "LATIN SMALL LETTER A WITH OGONEK",
+   "Ll"
+  ],
+  [
+   262,
+   "LATIN CAPITAL LETTER C WITH ACUTE",
+   "Lu"
+  ],
+  [
+   263,
+   "LATIN SMALL LETTER C WITH ACUTE",
+   "Ll"
+  ],
+  [
+   264,
+   "LATIN CAPITAL LETTER C WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   265,
+   "LATIN SMALL LETTER C WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   266,
+   "LATIN CAPITAL LETTER C WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   267,
+   "LATIN SMALL LETTER C WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   268,
+   "LATIN CAPITAL LETTER C WITH CARON",
+   "Lu"
+  ],
+  [
+   269,
+   "LATIN SMALL LETTER C WITH CARON",
+   "Ll"
+  ],
+  [
+   270,
+   "LATIN CAPITAL LETTER D WITH CARON",
+   "Lu"
+  ],
+  [
+   271,
+   "LATIN SMALL LETTER D WITH CARON",
+   "Ll"
+  ],
+  [
+   272,
+   "LATIN CAPITAL LETTER D WITH STROKE",
+   "Lu"
+  ],
+  [
+   273,
+   "LATIN SMALL LETTER D WITH STROKE",
+   "Ll"
+  ],
+  [
+   274,
+   "LATIN CAPITAL LETTER E WITH MACRON",
+   "Lu"
+  ],
+  [
+   275,
+   "LATIN SMALL LETTER E WITH MACRON",
+   "Ll"
+  ],
+  [
+   276,
+   "LATIN CAPITAL LETTER E WITH BREVE",
+   "Lu"
+  ],
+  [
+   277,
+   "LATIN SMALL LETTER E WITH BREVE",
+   "Ll"
+  ],
+  [
+   278,
+   "LATIN CAPITAL LETTER E WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   279,
+   "LATIN SMALL LETTER E WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   280,
+   "LATIN CAPITAL LETTER E WITH OGONEK",
+   "Lu"
+  ],
+  [
+   281,
+   "LATIN SMALL LETTER E WITH OGONEK",
+   "Ll"
+  ],
+  [
+   282,
+   "LATIN CAPITAL LETTER E WITH CARON",
+   "Lu"
+  ],
+  [
+   283,
+   "LATIN SMALL LETTER E WITH CARON",
+   "Ll"
+  ],
+  [
+   284,
+   "LATIN CAPITAL LETTER G WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   285,
+   "LATIN SMALL LETTER G WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   286,
+   "LATIN CAPITAL LETTER G WITH BREVE",
+   "Lu"
+  ],
+  [
+   287,
+   "LATIN SMALL LETTER G WITH BREVE",
+   "Ll"
+  ],
+  [
+   288,
+   "LATIN CAPITAL LETTER G WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   289,
+   "LATIN SMALL LETTER G WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   290,
+   "LATIN CAPITAL LETTER G WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   291,
+   "LATIN SMALL LETTER G WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   292,
+   "LATIN CAPITAL LETTER H WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   293,
+   "LATIN SMALL LETTER H WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   294,
+   "LATIN CAPITAL LETTER H WITH STROKE",
+   "Lu"
+  ],
+  [
+   295,
+   "LATIN SMALL LETTER H WITH STROKE",
+   "Ll"
+  ],
+  [
+   296,
+   "LATIN CAPITAL LETTER I WITH TILDE",
+   "Lu"
+  ],
+  [
+   297,
+   "LATIN SMALL LETTER I WITH TILDE",
+   "Ll"
+  ],
+  [
+   298,
+   "LATIN CAPITAL LETTER I WITH MACRON",
+   "Lu"
+  ],
+  [
+   299,
+   "LATIN SMALL LETTER I WITH MACRON",
+   "Ll"
+  ],
+  [
+   300,
+   "LATIN CAPITAL LETTER I WITH BREVE",
+   "Lu"
+  ],
+  [
+   301,
+   "LATIN SMALL LETTER I WITH BREVE",
+   "Ll"
+  ],
+  [
+   302,
+   "LATIN CAPITAL LETTER I WITH OGONEK",
+   "Lu"
+  ],
+  [
+   303,
+   "LATIN SMALL LETTER I WITH OGONEK",
+   "Ll"
+  ],
+  [
+   304,
+   "LATIN CAPITAL LETTER I WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   305,
+   "LATIN SMALL LETTER DOTLESS I",
+   "Ll"
+  ],
+  [
+   306,
+   "LATIN CAPITAL LIGATURE IJ",
+   "Lu"
+  ],
+  [
+   307,
+   "LATIN SMALL LIGATURE IJ",
+   "Ll"
+  ],
+  [
+   308,
+   "LATIN CAPITAL LETTER J WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   309,
+   "LATIN SMALL LETTER J WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   310,
+   "LATIN CAPITAL LETTER K WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   311,
+   "LATIN SMALL LETTER K WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   312,
+   "LATIN SMALL LETTER KRA",
+   "Ll"
+  ],
+  [
+   313,
+   "LATIN CAPITAL LETTER L WITH ACUTE",
+   "Lu"
+  ],
+  [
+   314,
+   "LATIN SMALL LETTER L WITH ACUTE",
+   "Ll"
+  ],
+  [
+   315,
+   "LATIN CAPITAL LETTER L WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   316,
+   "LATIN SMALL LETTER L WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   317,
+   "LATIN CAPITAL LETTER L WITH CARON",
+   "Lu"
+  ],
+  [
+   318,
+   "LATIN SMALL LETTER L WITH CARON",
+   "Ll"
+  ],
+  [
+   319,
+   "LATIN CAPITAL LETTER L WITH MIDDLE DOT",
+   "Lu"
+  ],
+  [
+   320,
+   "LATIN SMALL LETTER L WITH MIDDLE DOT",
+   "Ll"
+  ],
+  [
+   321,
+   "LATIN CAPITAL LETTER L WITH STROKE",
+   "Lu"
+  ],
+  [
+   322,
+   "LATIN SMALL LETTER L WITH STROKE",
+   "Ll"
+  ],
+  [
+   323,
+   "LATIN CAPITAL LETTER N WITH ACUTE",
+   "Lu"
+  ],
+  [
+   324,
+   "LATIN SMALL LETTER N WITH ACUTE",
+   "Ll"
+  ],
+  [
+   325,
+   "LATIN CAPITAL LETTER N WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   326,
+   "LATIN SMALL LETTER N WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   327,
+   "LATIN CAPITAL LETTER N WITH CARON",
+   "Lu"
+  ],
+  [
+   328,
+   "LATIN SMALL LETTER N WITH CARON",
+   "Ll"
+  ],
+  [
+   330,
+   "LATIN CAPITAL LETTER ENG",
+   "Lu"
+  ],
+  [
+   331,
+   "LATIN SMALL LETTER ENG",
+   "Ll"
+  ],
+  [
+   332,
+   "LATIN CAPITAL LETTER O WITH MACRON",
+   "Lu"
+  ],
+  [
+   333,
+   "LATIN SMALL LETTER O WITH MACRON",
+   "Ll"
+  ],
+  [
+   334,
+   "LATIN CAPITAL LETTER O WITH BREVE",
+   "Lu"
+  ],
+  [
+   335,
+   "LATIN SMALL LETTER O WITH BREVE",
+   "Ll"
+  ],
+  [
+   336,
+   "LATIN CAPITAL LETTER O WITH DOUBLE ACUTE",
+   "Lu"
+  ],
+  [
+   337,
+   "LATIN SMALL LETTER O WITH DOUBLE ACUTE",
+   "Ll"
+  ],
+  [
+   338,
+   "LATIN CAPITAL LIGATURE OE",
+   "Lu"
+  ],
+  [
+   339,
+   "LATIN SMALL LIGATURE OE",
+   "Ll"
+  ],
+  [
+   340,
+   "LATIN CAPITAL LETTER R WITH ACUTE",
+   "Lu"
+  ],
+  [
+   341,
+   "LATIN SMALL LETTER R WITH ACUTE",
+   "Ll"
+  ],
+  [
+   342,
+   "LATIN CAPITAL LETTER R WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   343,
+   "LATIN SMALL LETTER R WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   344,
+   "LATIN CAPITAL LETTER R WITH CARON",
+   "Lu"
+  ],
+  [
+   345,
+   "LATIN SMALL LETTER R WITH CARON",
+   "Ll"
+  ],
+  [
+   346,
+   "LATIN CAPITAL LETTER S WITH ACUTE",
+   "Lu"
+  ],
+  [
+   347,
+   "LATIN SMALL LETTER S WITH ACUTE",
+   "Ll"
+  ],
+  [
+   348,
+   "LATIN CAPITAL LETTER S WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   349,
+   "LATIN SMALL LETTER S WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   350,
+   "LATIN CAPITAL LETTER S WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   351,
+   "LATIN SMALL LETTER S WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   352,
+   "LATIN CAPITAL LETTER S WITH CARON",
+   "Lu"
+  ],
+  [
+   353,
+   "LATIN SMALL LETTER S WITH CARON",
+   "Ll"
+  ],
+  [
+   354,
+   "LATIN CAPITAL LETTER T WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   355,
+   "LATIN SMALL LETTER T WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   356,
+   "LATIN CAPITAL LETTER T WITH CARON",
+   "Lu"
+  ],
+  [
+   357,
+   "LATIN SMALL LETTER T WITH CARON",
+   "Ll"
+  ],
+  [
+   358,
+   "LATIN CAPITAL LETTER T WITH STROKE",
+   "Lu"
+  ],
+  [
+   359,
+   "LATIN SMALL LETTER T WITH STROKE",
+   "Ll"
+  ],
+  [
+   360,
+   "LATIN CAPITAL LETTER U WITH TILDE",
+   "Lu"
+  ],
+  [
+   361,
+   "LATIN SMALL LETTER U WITH TILDE",
+   "Ll"
+  ],
+  [
+   362,
+   "LATIN CAPITAL LETTER U WITH MACRON",
+   "Lu"
+  ],
+  [
+   363,
+   "LATIN SMALL LETTER U WITH MACRON",
+   "Ll"
+  ],
+  [
+   364,
+   "LATIN CAPITAL LETTER U WITH BREVE",
+   "Lu"
+  ],
+  [
+   365,
+   "LATIN SMALL LETTER U WITH BREVE",
+   "Ll"
+  ],
+  [
+   366,
+   "LATIN CAPITAL LETTER U WITH RING ABOVE",
+   "Lu"
+  ],
+  [
+   367,
+   "LATIN SMALL LETTER U WITH RING ABOVE",
+   "Ll"
+  ],
+  [
+   368,
+   "LATIN CAPITAL LETTER U WITH DOUBLE ACUTE",
+   "Lu"
+  ],
+  [
+   369,
+   "LATIN SMALL LETTER U WITH DOUBLE ACUTE",
+   "Ll"
+  ],
+  [
+   370,
+   "LATIN CAPITAL LETTER U WITH OGONEK",
+   "Lu"
+  ],
+  [
+   371,
+   "LATIN SMALL LETTER U WITH OGONEK",
+   "Ll"
+  ],
+  [
+   372,
+   "LATIN CAPITAL LETTER W WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   373,
+   "LATIN SMALL LETTER W WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   374,
+   "LATIN CAPITAL LETTER Y WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   375,
+   "LATIN SMALL LETTER Y WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   376,
+   "LATIN CAPITAL LETTER Y WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   377,
+   "LATIN CAPITAL LETTER Z WITH ACUTE",
+   "Lu"
+  ],
+  [
+   378,
+   "LATIN SMALL LETTER Z WITH ACUTE",
+   "Ll"
+  ],
+  [
+   379,
+   "LATIN CAPITAL LETTER Z WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   380,
+   "LATIN SMALL LETTER Z WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   381,
+   "LATIN CAPITAL LETTER Z WITH CARON",
+   "Lu"
+  ],
+  [
+   382,
+   "LATIN SMALL LETTER Z WITH CARON",
+   "Ll"
+  ],
+  [
+   383,
+   "LATIN SMALL LETTER LONG S",
+   "Ll"
+  ],
+  [
+   384,
+   "LATIN SMALL LETTER B WITH STROKE",
+   "Ll"
+  ],
+  [
+   385,
+   "LATIN CAPITAL LETTER B WITH HOOK",
+   "Lu"
+  ],
+  [
+   387,
+   "LATIN SMALL LETTER B WITH TOPBAR",
+   "Ll"
+  ],
+  [
+   390,
+   "LATIN CAPITAL LETTER OPEN O",
+   "Lu"
+  ],
+  [
+   391,
+   "LATIN CAPITAL LETTER C WITH HOOK",
+   "Lu"
+  ],
+  [
+   393,
+   "LATIN CAPITAL LETTER AFRICAN D",
+   "Lu"
+  ],
+  [
+   394,
+   "LATIN CAPITAL LETTER D WITH HOOK",
+   "Lu"
+  ],
+  [
+   396,
+   "LATIN SMALL LETTER D WITH TOPBAR",
+   "Ll"
+  ],
+  [
+   398,
+   "LATIN CAPITAL LETTER REVERSED E",
+   "Lu"
+  ],
+  [
+   401,
+   "LATIN CAPITAL LETTER F WITH HOOK",
+   "Lu"
+  ],
+  [
+   403,
+   "LATIN CAPITAL LETTER G WITH HOOK",
+   "Lu"
+  ],
+  [
+   404,
+   "LATIN CAPITAL LETTER GAMMA",
+   "Lu"
+  ],
+  [
+   405,
+   "LATIN SMALL LETTER HV",
+   "Ll"
+  ],
+  [
+   406,
+   "LATIN CAPITAL LETTER IOTA",
+   "Lu"
+  ],
+  [
+   407,
+   "LATIN CAPITAL LETTER I WITH STROKE",
+   "Lu"
+  ],
+  [
+   408,
+   "LATIN CAPITAL LETTER K WITH HOOK",
+   "Lu"
+  ],
+  [
+   410,
+   "LATIN SMALL LETTER L WITH BAR",
+   "Ll"
+  ],
+  [
+   413,
+   "LATIN CAPITAL LETTER N WITH LEFT HOOK",
+   "Lu"
+  ],
+  [
+   414,
+   "LATIN SMALL LETTER N WITH LONG RIGHT LEG",
+   "Ll"
+  ],
+  [
+   415,
+   "LATIN CAPITAL LETTER O WITH MIDDLE TILDE",
+   "Lu"
+  ],
+  [
+   420,
+   "LATIN CAPITAL LETTER P WITH HOOK",
+   "Lu"
+  ],
+  [
+   427,
+   "LATIN SMALL LETTER T WITH PALATAL HOOK",
+   "Ll"
+  ],
+  [
+   428,
+   "LATIN CAPITAL LETTER T WITH HOOK",
+   "Lu"
+  ],
+  [
+   430,
+   "LATIN CAPITAL LETTER T WITH RETROFLEX HOOK",
+   "Lu"
+  ],
+  [
+   431,
+   "LATIN CAPITAL LETTER U WITH HORN",
+   "Lu"
+  ],
+  [
+   432,
+   "LATIN SMALL LETTER U WITH HORN",
+   "Ll"
+  ],
+  [
+   433,
+   "LATIN CAPITAL LETTER UPSILON",
+   "Lu"
+  ],
+  [
+   435,
+   "LATIN CAPITAL LETTER Y WITH HOOK",
+   "Lu"
+  ],
+  [
+   436,
+   "LATIN SMALL LETTER Y WITH HOOK",
+   "Ll"
+  ],
+  [
+   437,
+   "LATIN CAPITAL LETTER Z WITH STROKE",
+   "Lu"
+  ],
+  [
+   438,
+   "LATIN SMALL LETTER Z WITH STROKE",
+   "Ll"
+  ],
+  [
+   443,
+   "LATIN LETTER TWO WITH STROKE",
+   "Lo"
+  ],
+  [
+   444,
+   "LATIN CAPITAL LETTER TONE FIVE",
+   "Lu"
+  ],
+  [
+   448,
+   "LATIN LETTER DENTAL CLICK",
+   "Lo"
+  ],
+  [
+   449,
+   "LATIN LETTER LATERAL CLICK",
+   "Lo"
+  ],
+  [
+   451,
+   "LATIN LETTER RETROFLEX CLICK",
+   "Lo"
+  ],
+  [
+   453,
+   "LATIN CAPITAL LETTER D WITH SMALL LETTER Z WITH CARON",
+   "Lt"
+  ],
+  [
+   454,
+   "LATIN SMALL LETTER DZ WITH CARON",
+   "Ll"
+  ],
+  [
+   455,
+   "LATIN CAPITAL LETTER LJ",
+   "Lu"
+  ],
+  [
+   456,
+   "LATIN CAPITAL LETTER L WITH SMALL LETTER J",
+   "Lt"
+  ],
+  [
+   457,
+   "LATIN SMALL LETTER LJ",
+   "Ll"
+  ],
+  [
+   458,
+   "LATIN CAPITAL LETTER NJ",
+   "Lu"
+  ],
+  [
+   459,
+   "LATIN CAPITAL LETTER N WITH SMALL LETTER J",
+   "Lt"
+  ],
+  [
+   460,
+   "LATIN SMALL LETTER NJ",
+   "Ll"
+  ],
+  [
+   461,
+   "LATIN CAPITAL LETTER A WITH CARON",
+   "Lu"
+  ],
+  [
+   462,
+   "LATIN SMALL LETTER A WITH CARON",
+   "Ll"
+  ],
+  [
+   463,
+   "LATIN CAPITAL LETTER I WITH CARON",
+   "Lu"
+  ],
+  [
+   464,
+   "LATIN SMALL LETTER I WITH CARON",
+   "Ll"
+  ],
+  [
+   465,
+   "LATIN CAPITAL LETTER O WITH CARON",
+   "Lu"
+  ],
+  [
+   466,
+   "LATIN SMALL LETTER O WITH CARON",
+   "Ll"
+  ],
+  [
+   467,
+   "LATIN CAPITAL LETTER U WITH CARON",
+   "Lu"
+  ],
+  [
+   468,
+   "LATIN SMALL LETTER U WITH CARON",
+   "Ll"
+  ],
+  [
+   469,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS AND MACRON",
+   "Lu"
+  ],
+  [
+   470,
+   "LATIN SMALL LETTER U WITH DIAERESIS AND MACRON",
+   "Ll"
+  ],
+  [
+   471,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS AND ACUTE",
+   "Lu"
+  ],
+  [
+   472,
+   "LATIN SMALL LETTER U WITH DIAERESIS AND ACUTE",
+   "Ll"
+  ],
+  [
+   473,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS AND CARON",
+   "Lu"
+  ],
+  [
+   474,
+   "LATIN SMALL LETTER U WITH DIAERESIS AND CARON",
+   "Ll"
+  ],
+  [
+   475,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS AND GRAVE",
+   "Lu"
+  ],
+  [
+   476,
+   "LATIN SMALL LETTER U WITH DIAERESIS AND GRAVE",
+   "Ll"
+  ],
+  [
+   477,
+   "LATIN SMALL LETTER TURNED E",
+   "Ll"
+  ],
+  [
+   480,
+   "LATIN CAPITAL LETTER A WITH DOT ABOVE AND MACRON",
+   "Lu"
+  ],
+  [
+   481,
+   "LATIN SMALL LETTER A WITH DOT ABOVE AND MACRON",
+   "Ll"
+  ],
+  [
+   482,
+   "LATIN CAPITAL LETTER AE WITH MACRON",
+   "Lu"
+  ],
+  [
+   483,
+   "LATIN SMALL LETTER AE WITH MACRON",
+   "Ll"
+  ],
+  [
+   484,
+   "LATIN CAPITAL LETTER G WITH STROKE",
+   "Lu"
+  ],
+  [
+   485,
+   "LATIN SMALL LETTER G WITH STROKE",
+   "Ll"
+  ],
+  [
+   486,
+   "LATIN CAPITAL LETTER G WITH CARON",
+   "Lu"
+  ],
+  [
+   487,
+   "LATIN SMALL LETTER G WITH CARON",
+   "Ll"
+  ],
+  [
+   488,
+   "LATIN CAPITAL LETTER K WITH CARON",
+   "Lu"
+  ],
+  [
+   489,
+   "LATIN SMALL LETTER K WITH CARON",
+   "Ll"
+  ],
+  [
+   490,
+   "LATIN CAPITAL LETTER O WITH OGONEK",
+   "Lu"
+  ],
+  [
+   491,
+   "LATIN SMALL LETTER O WITH OGONEK",
+   "Ll"
+  ],
+  [
+   492,
+   "LATIN CAPITAL LETTER O WITH OGONEK AND MACRON",
+   "Lu"
+  ],
+  [
+   493,
+   "LATIN SMALL LETTER O WITH OGONEK AND MACRON",
+   "Ll"
+  ],
+  [
+   496,
+   "LATIN SMALL LETTER J WITH CARON",
+   "Ll"
+  ],
+  [
+   497,
+   "LATIN CAPITAL LETTER DZ",
+   "Lu"
+  ],
+  [
+   498,
+   "LATIN CAPITAL LETTER D WITH SMALL LETTER Z",
+   "Lt"
+  ],
+  [
+   499,
+   "LATIN SMALL LETTER DZ",
+   "Ll"
+  ],
+  [
+   500,
+   "LATIN CAPITAL LETTER G WITH ACUTE",
+   "Lu"
+  ],
+  [
+   501,
+   "LATIN SMALL LETTER G WITH ACUTE",
+   "Ll"
+  ],
+  [
+   502,
+   "LATIN CAPITAL LETTER HWAIR",
+   "Lu"
+  ],
+  [
+   504,
+   "LATIN CAPITAL LETTER N WITH GRAVE",
+   "Lu"
+  ],
+  [
+   505,
+   "LATIN SMALL LETTER N WITH GRAVE",
+   "Ll"
+  ],
+  [
+   506,
+   "LATIN CAPITAL LETTER A WITH RING ABOVE AND ACUTE",
+   "Lu"
+  ],
+  [
+   507,
+   "LATIN SMALL LETTER A WITH RING ABOVE AND ACUTE",
+   "Ll"
+  ],
+  [
+   508,
+   "LATIN CAPITAL LETTER AE WITH ACUTE",
+   "Lu"
+  ],
+  [
+   509,
+   "LATIN SMALL LETTER AE WITH ACUTE",
+   "Ll"
+  ],
+  [
+   510,
+   "LATIN CAPITAL LETTER O WITH STROKE AND ACUTE",
+   "Lu"
+  ],
+  [
+   511,
+   "LATIN SMALL LETTER O WITH STROKE AND ACUTE",
+   "Ll"
+  ],
+  [
+   516,
+   "LATIN CAPITAL LETTER E WITH DOUBLE GRAVE",
+   "Lu"
+  ],
+  [
+   517,
+   "LATIN SMALL LETTER E WITH DOUBLE GRAVE",
+   "Ll"
+  ],
+  [
+   520,
+   "LATIN CAPITAL LETTER I WITH DOUBLE GRAVE",
+   "Lu"
+  ],
+  [
+   521,
+   "LATIN SMALL LETTER I WITH DOUBLE GRAVE",
+   "Ll"
+  ],
+  [
+   524,
+   "LATIN CAPITAL LETTER O WITH DOUBLE GRAVE",
+   "Lu"
+  ],
+  [
+   525,
+   "LATIN SMALL LETTER O WITH DOUBLE GRAVE",
+   "Ll"
+  ],
+  [
+   528,
+   "LATIN CAPITAL LETTER R WITH DOUBLE GRAVE",
+   "Lu"
+  ],
+  [
+   529,
+   "LATIN SMALL LETTER R WITH DOUBLE GRAVE",
+   "Ll"
+  ],
+  [
+   532,
+   "LATIN CAPITAL LETTER U WITH DOUBLE GRAVE",
+   "Lu"
+  ],
+  [
+   533,
+   "LATIN SMALL LETTER U WITH DOUBLE GRAVE",
+   "Ll"
+  ],
+  [
+   536,
+   "LATIN CAPITAL LETTER S WITH COMMA BELOW",
+   "Lu"
+  ],
+  [
+   537,
+   "LATIN SMALL LETTER S WITH COMMA BELOW",
+   "Ll"
+  ],
+  [
+   538,
+   "LATIN CAPITAL LETTER T WITH COMMA BELOW",
+   "Lu"
+  ],
+  [
+   539,
+   "LATIN SMALL LETTER T WITH COMMA BELOW",
+   "Ll"
+  ],
+  [
+   542,
+   "LATIN CAPITAL LETTER H WITH CARON",
+   "Lu"
+  ],
+  [
+   543,
+   "LATIN SMALL LETTER H WITH CARON",
+   "Ll"
+  ],
+  [
+   545,
+   "LATIN SMALL LETTER D WITH CURL",
+   "Ll"
+  ],
+  [
+   548,
+   "LATIN CAPITAL LETTER Z WITH HOOK",
+   "Lu"
+  ],
+  [
+   549,
+   "LATIN SMALL LETTER Z WITH HOOK",
+   "Ll"
+  ],
+  [
+   550,
+   "LATIN CAPITAL LETTER A WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   551,
+   "LATIN SMALL LETTER A WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   552,
+   "LATIN CAPITAL LETTER E WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   553,
+   "LATIN SMALL LETTER E WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   554,
+   "LATIN CAPITAL LETTER O WITH DIAERESIS AND MACRON",
+   "Lu"
+  ],
+  [
+   555,
+   "LATIN SMALL LETTER O WITH DIAERESIS AND MACRON",
+   "Ll"
+  ],
+  [
+   556,
+   "LATIN CAPITAL LETTER O WITH TILDE AND MACRON",
+   "Lu"
+  ],
+  [
+   557,
+   "LATIN SMALL LETTER O WITH TILDE AND MACRON",
+   "Ll"
+  ],
+  [
+   558,
+   "LATIN CAPITAL LETTER O WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   559,
+   "LATIN SMALL LETTER O WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   560,
+   "LATIN CAPITAL LETTER O WITH DOT ABOVE AND MACRON",
+   "Lu"
+  ],
+  [
+   561,
+   "LATIN SMALL LETTER O WITH DOT ABOVE AND MACRON",
+   "Ll"
+  ],
+  [
+   562,
+   "LATIN CAPITAL LETTER Y WITH MACRON",
+   "Lu"
+  ],
+  [
+   563,
+   "LATIN SMALL LETTER Y WITH MACRON",
+   "Ll"
+  ],
+  [
+   564,
+   "LATIN SMALL LETTER L WITH CURL",
+   "Ll"
+  ],
+  [
+   565,
+   "LATIN SMALL LETTER N WITH CURL",
+   "Ll"
+  ],
+  [
+   566,
+   "LATIN SMALL LETTER T WITH CURL",
+   "Ll"
+  ],
+  [
+   567,
+   "LATIN SMALL LETTER DOTLESS J",
+   "Ll"
+  ],
+  [
+   570,
+   "LATIN CAPITAL LETTER A WITH STROKE",
+   "Lu"
+  ],
+  [
+   571,
+   "LATIN CAPITAL LETTER C WITH STROKE",
+   "Lu"
+  ],
+  [
+   572,
+   "LATIN SMALL LETTER C WITH STROKE",
+   "Ll"
+  ],
+  [
+   573,
+   "LATIN CAPITAL LETTER L WITH BAR",
+   "Lu"
+  ],
+  [
+   574,
+   "LATIN CAPITAL LETTER T WITH DIAGONAL STROKE",
+   "Lu"
+  ],
+  [
+   575,
+   "LATIN SMALL LETTER S WITH SWASH TAIL",
+   "Ll"
+  ],
+  [
+   576,
+   "LATIN SMALL LETTER Z WITH SWASH TAIL",
+   "Ll"
+  ],
+  [
+   579,
+   "LATIN CAPITAL LETTER B WITH STROKE",
+   "Lu"
+  ],
+  [
+   582,
+   "LATIN CAPITAL LETTER E WITH STROKE",
+   "Lu"
+  ],
+  [
+   583,
+   "LATIN SMALL LETTER E WITH STROKE",
+   "Ll"
+  ],
+  [
+   584,
+   "LATIN CAPITAL LETTER J WITH STROKE",
+   "Lu"
+  ],
+  [
+   585,
+   "LATIN SMALL LETTER J WITH STROKE",
+   "Ll"
+  ],
+  [
+   586,
+   "LATIN CAPITAL LETTER SMALL Q WITH HOOK TAIL",
+   "Lu"
+  ],
+  [
+   587,
+   "LATIN SMALL LETTER Q WITH HOOK TAIL",
+   "Ll"
+  ],
+  [
+   589,
+   "LATIN SMALL LETTER R WITH STROKE",
+   "Ll"
+  ],
+  [
+   590,
+   "LATIN CAPITAL LETTER Y WITH STROKE",
+   "Lu"
+  ],
+  [
+   591,
+   "LATIN SMALL LETTER Y WITH STROKE",
+   "Ll"
+  ],
+  [
+   607,
+   "LATIN SMALL LETTER DOTLESS J WITH STROKE",
+   "Ll"
+  ],
+  [
+   616,
+   "LATIN SMALL LETTER I WITH STROKE",
+   "Ll"
+  ],
+  [
+   619,
+   "LATIN SMALL LETTER L WITH MIDDLE TILDE",
+   "Ll"
+  ],
+  [
+   639,
+   "LATIN SMALL LETTER REVERSED R WITH FISHHOOK",
+   "Ll"
+  ],
+  [
+   647,
+   "LATIN SMALL LETTER TURNED T",
+   "Ll"
+  ],
+  [
+   648,
+   "LATIN SMALL LETTER T WITH RETROFLEX HOOK",
+   "Ll"
+  ],
+  [
+   666,
+   "LATIN SMALL LETTER CLOSED OPEN E",
+   "Ll"
+  ],
+  [
+   686,
+   "LATIN SMALL LETTER TURNED H WITH FISHHOOK",
+   "Ll"
+  ],
+  [
+   687,
+   "LATIN SMALL LETTER TURNED H WITH FISHHOOK AND TAIL",
+   "Ll"
+  ],
+  [
+   689,
+   "MODIFIER LETTER SMALL H WITH HOOK",
+   "Lm"
+  ],
+  [
+   692,
+   "MODIFIER LETTER SMALL TURNED R",
+   "Lm"
+  ],
+  [
+   693,
+   "MODIFIER LETTER SMALL TURNED R WITH HOOK",
+   "Lm"
+  ],
+  [
+   694,
+   "MODIFIER LETTER SMALL CAPITAL INVERTED R",
+   "Lm"
+  ],
+  [
+   697,
+   "MODIFIER LETTER PRIME",
+   "Lm"
+  ],
+  [
+   698,
+   "MODIFIER LETTER DOUBLE PRIME",
+   "Lm"
+  ],
+  [
+   699,
+   "MODIFIER LETTER TURNED COMMA",
+   "Lm"
+  ],
+  [
+   700,
+   "MODIFIER LETTER APOSTROPHE",
+   "Lm"
+  ],
+  [
+   701,
+   "MODIFIER LETTER REVERSED COMMA",
+   "Lm"
+  ],
+  [
+   702,
+   "MODIFIER LETTER RIGHT HALF RING",
+   "Lm"
+  ],
+  [
+   703,
+   "MODIFIER LETTER LEFT HALF RING",
+   "Lm"
+  ],
+  [
+   704,
+   "MODIFIER LETTER GLOTTAL STOP",
+   "Lm"
+  ],
+  [
+   705,
+   "MODIFIER LETTER REVERSED GLOTTAL STOP",
+   "Lm"
+  ],
+  [
+   706,
+   "MODIFIER LETTER LEFT ARROWHEAD",
+   "Sk"
+  ],
+  [
+   707,
+   "MODIFIER LETTER RIGHT ARROWHEAD",
+   "Sk"
+  ],
+  [
+   708,
+   "MODIFIER LETTER UP ARROWHEAD",
+   "Sk"
+  ],
+  [
+   709,
+   "MODIFIER LETTER DOWN ARROWHEAD",
+   "Sk"
+  ],
+  [
+   710,
+   "MODIFIER LETTER CIRCUMFLEX ACCENT",
+   "Lm"
+  ],
+  [
+   711,
+   "CARON",
+   "Lm"
+  ],
+  [
+   712,
+   "MODIFIER LETTER VERTICAL LINE",
+   "Lm"
+  ],
+  [
+   713,
+   "MODIFIER LETTER MACRON",
+   "Lm"
+  ],
+  [
+   714,
+   "MODIFIER LETTER ACUTE ACCENT",
+   "Lm"
+  ],
+  [
+   715,
+   "MODIFIER LETTER GRAVE ACCENT",
+   "Lm"
+  ],
+  [
+   716,
+   "MODIFIER LETTER LOW VERTICAL LINE",
+   "Lm"
+  ],
+  [
+   717,
+   "MODIFIER LETTER LOW MACRON",
+   "Lm"
+  ],
+  [
+   718,
+   "MODIFIER LETTER LOW GRAVE ACCENT",
+   "Lm"
+  ],
+  [
+   719,
+   "MODIFIER LETTER LOW ACUTE ACCENT",
+   "Lm"
+  ],
+  [
+   720,
+   "MODIFIER LETTER TRIANGULAR COLON",
+   "Lm"
+  ],
+  [
+   721,
+   "MODIFIER LETTER HALF TRIANGULAR COLON",
+   "Lm"
+  ],
+  [
+   722,
+   "MODIFIER LETTER CENTRED RIGHT HALF RING",
+   "Sk"
+  ],
+  [
+   723,
+   "MODIFIER LETTER CENTRED LEFT HALF RING",
+   "Sk"
+  ],
+  [
+   724,
+   "MODIFIER LETTER UP TACK",
+   "Sk"
+  ],
+  [
+   725,
+   "MODIFIER LETTER DOWN TACK",
+   "Sk"
+  ],
+  [
+   726,
+   "MODIFIER LETTER PLUS SIGN",
+   "Sk"
+  ],
+  [
+   727,
+   "MODIFIER LETTER MINUS SIGN",
+   "Sk"
+  ],
+  [
+   729,
+   "DOT ABOVE",
+   "Sk"
+  ],
+  [
+   730,
+   "RING ABOVE",
+   "Sk"
+  ],
+  [
+   731,
+   "OGONEK",
+   "Sk"
+  ],
+  [
+   732,
+   "SMALL TILDE",
+   "Sk"
+  ],
+  [
+   733,
+   "DOUBLE ACUTE ACCENT",
+   "Sk"
+  ],
+  [
+   734,
+   "MODIFIER LETTER RHOTIC HOOK",
+   "Sk"
+  ],
+  [
+   735,
+   "MODIFIER LETTER CROSS ACCENT",
+   "Sk"
+  ],
+  [
+   746,
+   "MODIFIER LETTER YIN DEPARTING TONE MARK",
+   "Sk"
+  ],
+  [
+   747,
+   "MODIFIER LETTER YANG DEPARTING TONE MARK",
+   "Sk"
+  ],
+  [
+   748,
+   "MODIFIER LETTER VOICING",
+   "Lm"
+  ],
+  [
+   749,
+   "MODIFIER LETTER UNASPIRATED",
+   "Sk"
+  ],
+  [
+   750,
+   "MODIFIER LETTER DOUBLE APOSTROPHE",
+   "Lm"
+  ],
+  [
+   751,
+   "MODIFIER LETTER LOW DOWN ARROWHEAD",
+   "Sk"
+  ],
+  [
+   752,
+   "MODIFIER LETTER LOW UP ARROWHEAD",
+   "Sk"
+  ],
+  [
+   753,
+   "MODIFIER LETTER LOW LEFT ARROWHEAD",
+   "Sk"
+  ],
+  [
+   754,
+   "MODIFIER LETTER LOW RIGHT ARROWHEAD",
+   "Sk"
+  ],
+  [
+   755,
+   "MODIFIER LETTER LOW RING",
+   "Sk"
+  ],
+  [
+   756,
+   "MODIFIER LETTER MIDDLE GRAVE ACCENT",
+   "Sk"
+  ],
+  [
+   757,
+   "MODIFIER LETTER MIDDLE DOUBLE GRAVE ACCENT",
+   "Sk"
+  ],
+  [
+   758,
+   "MODIFIER LETTER MIDDLE DOUBLE ACUTE ACCENT",
+   "Sk"
+  ],
+  [
+   759,
+   "MODIFIER LETTER LOW TILDE",
+   "Sk"
+  ],
+  [
+   760,
+   "MODIFIER LETTER RAISED COLON",
+   "Sk"
+  ],
+  [
+   761,
+   "MODIFIER LETTER BEGIN HIGH TONE",
+   "Sk"
+  ],
+  [
+   762,
+   "MODIFIER LETTER END HIGH TONE",
+   "Sk"
+  ],
+  [
+   763,
+   "MODIFIER LETTER BEGIN LOW TONE",
+   "Sk"
+  ],
+  [
+   764,
+   "MODIFIER LETTER END LOW TONE",
+   "Sk"
+  ],
+  [
+   765,
+   "MODIFIER LETTER SHELF",
+   "Sk"
+  ],
+  [
+   766,
+   "MODIFIER LETTER OPEN SHELF",
+   "Sk"
+  ],
+  [
+   767,
+   "MODIFIER LETTER LOW LEFT ARROW",
+   "Sk"
+  ],
+  [
+   768,
+   "COMBINING GRAVE ACCENT",
+   "Mn"
+  ],
+  [
+   769,
+   "COMBINING ACUTE ACCENT",
+   "Mn"
+  ],
+  [
+   771,
+   "COMBINING TILDE",
+   "Mn"
+  ],
+  [
+   772,
+   "COMBINING MACRON",
+   "Mn"
+  ],
+  [
+   783,
+   "COMBINING DOUBLE GRAVE ACCENT",
+   "Mn"
+  ],
+  [
+   806,
+   "COMBINING COMMA BELOW",
+   "Mn"
+  ],
+  [
+   7615,
+   "MODIFIER LETTER SMALL THETA",
+   "Lm"
+  ],
+  [
+   7629,
+   "COMBINING DOUBLE CIRCUMFLEX ABOVE",
+   "Mn"
+  ],
+  [
+   7630,
+   "COMBINING OGONEK ABOVE",
+   "Mn"
+  ],
+  [
+   7680,
+   "LATIN CAPITAL LETTER A WITH RING BELOW",
+   "Lu"
+  ],
+  [
+   7681,
+   "LATIN SMALL LETTER A WITH RING BELOW",
+   "Ll"
+  ],
+  [
+   7682,
+   "LATIN CAPITAL LETTER B WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7683,
+   "LATIN SMALL LETTER B WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7686,
+   "LATIN CAPITAL LETTER B WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7687,
+   "LATIN SMALL LETTER B WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7688,
+   "LATIN CAPITAL LETTER C WITH CEDILLA AND ACUTE",
+   "Lu"
+  ],
+  [
+   7689,
+   "LATIN SMALL LETTER C WITH CEDILLA AND ACUTE",
+   "Ll"
+  ],
+  [
+   7690,
+   "LATIN CAPITAL LETTER D WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7691,
+   "LATIN SMALL LETTER D WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7694,
+   "LATIN CAPITAL LETTER D WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7695,
+   "LATIN SMALL LETTER D WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7696,
+   "LATIN CAPITAL LETTER D WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   7697,
+   "LATIN SMALL LETTER D WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   7698,
+   "LATIN CAPITAL LETTER D WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7699,
+   "LATIN SMALL LETTER D WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7700,
+   "LATIN CAPITAL LETTER E WITH MACRON AND GRAVE",
+   "Lu"
+  ],
+  [
+   7701,
+   "LATIN SMALL LETTER E WITH MACRON AND GRAVE",
+   "Ll"
+  ],
+  [
+   7702,
+   "LATIN CAPITAL LETTER E WITH MACRON AND ACUTE",
+   "Lu"
+  ],
+  [
+   7703,
+   "LATIN SMALL LETTER E WITH MACRON AND ACUTE",
+   "Ll"
+  ],
+  [
+   7704,
+   "LATIN CAPITAL LETTER E WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7705,
+   "LATIN SMALL LETTER E WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7710,
+   "LATIN CAPITAL LETTER F WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7711,
+   "LATIN SMALL LETTER F WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7712,
+   "LATIN CAPITAL LETTER G WITH MACRON",
+   "Lu"
+  ],
+  [
+   7713,
+   "LATIN SMALL LETTER G WITH MACRON",
+   "Ll"
+  ],
+  [
+   7714,
+   "LATIN CAPITAL LETTER H WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7715,
+   "LATIN SMALL LETTER H WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7718,
+   "LATIN CAPITAL LETTER H WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   7719,
+   "LATIN SMALL LETTER H WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   7720,
+   "LATIN CAPITAL LETTER H WITH CEDILLA",
+   "Lu"
+  ],
+  [
+   7721,
+   "LATIN SMALL LETTER H WITH CEDILLA",
+   "Ll"
+  ],
+  [
+   7724,
+   "LATIN CAPITAL LETTER I WITH TILDE BELOW",
+   "Lu"
+  ],
+  [
+   7725,
+   "LATIN SMALL LETTER I WITH TILDE BELOW",
+   "Ll"
+  ],
+  [
+   7726,
+   "LATIN CAPITAL LETTER I WITH DIAERESIS AND ACUTE",
+   "Lu"
+  ],
+  [
+   7727,
+   "LATIN SMALL LETTER I WITH DIAERESIS AND ACUTE",
+   "Ll"
+  ],
+  [
+   7728,
+   "LATIN CAPITAL LETTER K WITH ACUTE",
+   "Lu"
+  ],
+  [
+   7729,
+   "LATIN SMALL LETTER K WITH ACUTE",
+   "Ll"
+  ],
+  [
+   7732,
+   "LATIN CAPITAL LETTER K WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7733,
+   "LATIN SMALL LETTER K WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7738,
+   "LATIN CAPITAL LETTER L WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7739,
+   "LATIN SMALL LETTER L WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7740,
+   "LATIN CAPITAL LETTER L WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7741,
+   "LATIN SMALL LETTER L WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7742,
+   "LATIN CAPITAL LETTER M WITH ACUTE",
+   "Lu"
+  ],
+  [
+   7743,
+   "LATIN SMALL LETTER M WITH ACUTE",
+   "Ll"
+  ],
+  [
+   7744,
+   "LATIN CAPITAL LETTER M WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7745,
+   "LATIN SMALL LETTER M WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7748,
+   "LATIN CAPITAL LETTER N WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7749,
+   "LATIN SMALL LETTER N WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7752,
+   "LATIN CAPITAL LETTER N WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7753,
+   "LATIN SMALL LETTER N WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7754,
+   "LATIN CAPITAL LETTER N WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7755,
+   "LATIN SMALL LETTER N WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7756,
+   "LATIN CAPITAL LETTER O WITH TILDE AND ACUTE",
+   "Lu"
+  ],
+  [
+   7757,
+   "LATIN SMALL LETTER O WITH TILDE AND ACUTE",
+   "Ll"
+  ],
+  [
+   7758,
+   "LATIN CAPITAL LETTER O WITH TILDE AND DIAERESIS",
+   "Lu"
+  ],
+  [
+   7759,
+   "LATIN SMALL LETTER O WITH TILDE AND DIAERESIS",
+   "Ll"
+  ],
+  [
+   7760,
+   "LATIN CAPITAL LETTER O WITH MACRON AND GRAVE",
+   "Lu"
+  ],
+  [
+   7761,
+   "LATIN SMALL LETTER O WITH MACRON AND GRAVE",
+   "Ll"
+  ],
+  [
+   7762,
+   "LATIN CAPITAL LETTER O WITH MACRON AND ACUTE",
+   "Lu"
+  ],
+  [
+   7763,
+   "LATIN SMALL LETTER O WITH MACRON AND ACUTE",
+   "Ll"
+  ],
+  [
+   7764,
+   "LATIN CAPITAL LETTER P WITH ACUTE",
+   "Lu"
+  ],
+  [
+   7765,
+   "LATIN SMALL LETTER P WITH ACUTE",
+   "Ll"
+  ],
+  [
+   7766,
+   "LATIN CAPITAL LETTER P WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7767,
+   "LATIN SMALL LETTER P WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7768,
+   "LATIN CAPITAL LETTER R WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7769,
+   "LATIN SMALL LETTER R WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7774,
+   "LATIN CAPITAL LETTER R WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7775,
+   "LATIN SMALL LETTER R WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7776,
+   "LATIN CAPITAL LETTER S WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7777,
+   "LATIN SMALL LETTER S WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7780,
+   "LATIN CAPITAL LETTER S WITH ACUTE AND DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7781,
+   "LATIN SMALL LETTER S WITH ACUTE AND DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7782,
+   "LATIN CAPITAL LETTER S WITH CARON AND DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7783,
+   "LATIN SMALL LETTER S WITH CARON AND DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7786,
+   "LATIN CAPITAL LETTER T WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7787,
+   "LATIN SMALL LETTER T WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7790,
+   "LATIN CAPITAL LETTER T WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7791,
+   "LATIN SMALL LETTER T WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7792,
+   "LATIN CAPITAL LETTER T WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7793,
+   "LATIN SMALL LETTER T WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7794,
+   "LATIN CAPITAL LETTER U WITH DIAERESIS BELOW",
+   "Lu"
+  ],
+  [
+   7795,
+   "LATIN SMALL LETTER U WITH DIAERESIS BELOW",
+   "Ll"
+  ],
+  [
+   7796,
+   "LATIN CAPITAL LETTER U WITH TILDE BELOW",
+   "Lu"
+  ],
+  [
+   7797,
+   "LATIN SMALL LETTER U WITH TILDE BELOW",
+   "Ll"
+  ],
+  [
+   7798,
+   "LATIN CAPITAL LETTER U WITH CIRCUMFLEX BELOW",
+   "Lu"
+  ],
+  [
+   7799,
+   "LATIN SMALL LETTER U WITH CIRCUMFLEX BELOW",
+   "Ll"
+  ],
+  [
+   7800,
+   "LATIN CAPITAL LETTER U WITH TILDE AND ACUTE",
+   "Lu"
+  ],
+  [
+   7801,
+   "LATIN SMALL LETTER U WITH TILDE AND ACUTE",
+   "Ll"
+  ],
+  [
+   7802,
+   "LATIN CAPITAL LETTER U WITH MACRON AND DIAERESIS",
+   "Lu"
+  ],
+  [
+   7803,
+   "LATIN SMALL LETTER U WITH MACRON AND DIAERESIS",
+   "Ll"
+  ],
+  [
+   7804,
+   "LATIN CAPITAL LETTER V WITH TILDE",
+   "Lu"
+  ],
+  [
+   7805,
+   "LATIN SMALL LETTER V WITH TILDE",
+   "Ll"
+  ],
+  [
+   7808,
+   "LATIN CAPITAL LETTER W WITH GRAVE",
+   "Lu"
+  ],
+  [
+   7809,
+   "LATIN SMALL LETTER W WITH GRAVE",
+   "Ll"
+  ],
+  [
+   7810,
+   "LATIN CAPITAL LETTER W WITH ACUTE",
+   "Lu"
+  ],
+  [
+   7811,
+   "LATIN SMALL LETTER W WITH ACUTE",
+   "Ll"
+  ],
+  [
+   7812,
+   "LATIN CAPITAL LETTER W WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   7813,
+   "LATIN SMALL LETTER W WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   7814,
+   "LATIN CAPITAL LETTER W WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7815,
+   "LATIN SMALL LETTER W WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7818,
+   "LATIN CAPITAL LETTER X WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7819,
+   "LATIN SMALL LETTER X WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7820,
+   "LATIN CAPITAL LETTER X WITH DIAERESIS",
+   "Lu"
+  ],
+  [
+   7821,
+   "LATIN SMALL LETTER X WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   7822,
+   "LATIN CAPITAL LETTER Y WITH DOT ABOVE",
+   "Lu"
+  ],
+  [
+   7823,
+   "LATIN SMALL LETTER Y WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7824,
+   "LATIN CAPITAL LETTER Z WITH CIRCUMFLEX",
+   "Lu"
+  ],
+  [
+   7825,
+   "LATIN SMALL LETTER Z WITH CIRCUMFLEX",
+   "Ll"
+  ],
+  [
+   7828,
+   "LATIN CAPITAL LETTER Z WITH LINE BELOW",
+   "Lu"
+  ],
+  [
+   7829,
+   "LATIN SMALL LETTER Z WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7830,
+   "LATIN SMALL LETTER H WITH LINE BELOW",
+   "Ll"
+  ],
+  [
+   7831,
+   "LATIN SMALL LETTER T WITH DIAERESIS",
+   "Ll"
+  ],
+  [
+   7832,
+   "LATIN SMALL LETTER W WITH RING ABOVE",
+   "Ll"
+  ],
+  [
+   7833,
+   "LATIN SMALL LETTER Y WITH RING ABOVE",
+   "Ll"
+  ],
+  [
+   7834,
+   "LATIN SMALL LETTER A WITH RIGHT HALF RING",
+   "Ll"
+  ],
+  [
+   7835,
+   "LATIN SMALL LETTER LONG S WITH DOT ABOVE",
+   "Ll"
+  ],
+  [
+   7838,
+   "LATIN CAPITAL LETTER SHARP S",
+   "Lu"
+  ],
+  [
+   7868,
+   "LATIN CAPITAL LETTER E WITH TILDE",
+   "Lu"
+  ],
+  [
+   7869,
+   "LATIN SMALL LETTER E WITH TILDE",
+   "Ll"
+  ],
+  [
+   7871,
+   "LATIN SMALL LETTER E WITH CIRCUMFLEX AND ACUTE",
+   "Ll"
+  ],
+  [
+   7873,
+   "LATIN SMALL LETTER E WITH CIRCUMFLEX AND GRAVE",
+   "Ll"
+  ],
+  [
+   7877,
+   "LATIN SMALL LETTER E WITH CIRCUMFLEX AND TILDE",
+   "Ll"
+  ],
+  [
+   7888,
+   "LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND ACUTE",
+   "Lu"
+  ],
+  [
+   7889,
+   "LATIN SMALL LETTER O WITH CIRCUMFLEX AND ACUTE",
+   "Ll"
+  ],
+  [
+   7890,
+   "LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND GRAVE",
+   "Lu"
+  ],
+  [
+   7891,
+   "LATIN SMALL LETTER O WITH CIRCUMFLEX AND GRAVE",
+   "Ll"
+  ],
+  [
+   7894,
+   "LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND TILDE",
+   "Lu"
+  ],
+  [
+   7895,
+   "LATIN SMALL LETTER O WITH CIRCUMFLEX AND TILDE",
+   "Ll"
+  ],
+  [
+   7912,
+   "LATIN CAPITAL LETTER U WITH HORN AND ACUTE",
+   "Lu"
+  ],
+  [
+   7913,
+   "LATIN SMALL LETTER U WITH HORN AND ACUTE",
+   "Ll"
+  ],
+  [
+   7914,
+   "LATIN CAPITAL LETTER U WITH HORN AND GRAVE",
+   "Lu"
+  ],
+  [
+   7915,
+   "LATIN SMALL LETTER U WITH HORN AND GRAVE",
+   "Ll"
+  ],
+  [
+   7918,
+   "LATIN CAPITAL LETTER U WITH HORN AND TILDE",
+   "Lu"
+  ],
+  [
+   7919,
+   "LATIN SMALL LETTER U WITH HORN AND TILDE",
+   "Ll"
+  ],
+  [
+   7922,
+   "LATIN CAPITAL LETTER Y WITH GRAVE",
+   "Lu"
+  ],
+  [
+   7923,
+   "LATIN SMALL LETTER Y WITH GRAVE",
+   "Ll"
+  ],
+  [
+   7928,
+   "LATIN CAPITAL LETTER Y WITH TILDE",
+   "Lu"
+  ],
+  [
+   7929,
+   "LATIN SMALL LETTER Y WITH TILDE",
+   "Ll"
+  ],
+  [
+   8192,
+   "EN QUAD",
+   "Zs"
+  ],
+  [
+   8193,
+   "EM QUAD",
+   "Zs"
+  ],
+  [
+   8194,
+   "EN SPACE",
+   "Zs"
+  ],
+  [
+   8195,
+   "EM SPACE",
+   "Zs"
+  ],
+  [
+   8196,
+   "THREE-PER-EM SPACE",
+   "Zs"
+  ],
+  [
+   8197,
+   "FOUR-PER-EM SPACE",
+   "Zs"
+  ],
+  [
+   8198,
+   "SIX-PER-EM SPACE",
+   "Zs"
+  ],
+  [
+   8199,
+   "FIGURE SPACE",
+   "Zs"
+  ],
+  [
+   8200,
+   "PUNCTUATION SPACE",
+   "Zs"
+  ],
+  [
+   8201,
+   "THIN SPACE",
+   "Zs"
+  ],
+  [
+   8202,
+   "HAIR SPACE",
+   "Zs"
+  ],
+  [
+   8203,
+   "ZERO WIDTH SPACE",
+   "Cf"
+  ],
+  [
+   8208,
+   "HYPHEN",
+   "Pd"
+  ],
+  [
+   8209,
+   "NON-BREAKING HYPHEN",
+   "Pd"
+  ],
+  [
+   8210,
+   "FIGURE DASH",
+   "Pd"
+  ],
+  [
+   8211,
+   "EN DASH",
+   "Pd"
+  ],
+  [
+   8212,
+   "EM DASH",
+   "Pd"
+  ],
+  [
+   8213,
+   "HORIZONTAL BAR",
+   "Pd"
+  ],
+  [
+   8214,
+   "DOUBLE VERTICAL LINE",
+   "Po"
+  ],
+  [
+   8215,
+   "DOUBLE LOW LINE",
+   "Po"
+  ],
+  [
+   8216,
+   "LEFT SINGLE QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   8217,
+   "RIGHT SINGLE QUOTATION MARK",
+   "Pf"
+  ],
+  [
+   8218,
+   "SINGLE LOW-9 QUOTATION MARK",
+   "Ps"
+  ],
+  [
+   8219,
+   "SINGLE HIGH-REVERSED-9 QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   8220,
+   "LEFT DOUBLE QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   8221,
+   "RIGHT DOUBLE QUOTATION MARK",
+   "Pf"
+  ],
+  [
+   8222,
+   "DOUBLE LOW-9 QUOTATION MARK",
+   "Ps"
+  ],
+  [
+   8223,
+   "DOUBLE HIGH-REVERSED-9 QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   8224,
+   "DAGGER",
+   "Po"
+  ],
+  [
+   8225,
+   "DOUBLE DAGGER",
+   "Po"
+  ],
+  [
+   8226,
+   "BULLET",
+   "Po"
+  ],
+  [
+   8227,
+   "TRIANGULAR BULLET",
+   "Po"
+  ],
+  [
+   8228,
+   "ONE DOT LEADER",
+   "Po"
+  ],
+  [
+   8229,
+   "TWO DOT LEADER",
+   "Po"
+  ],
+  [
+   8230,
+   "HORIZONTAL ELLIPSIS",
+   "Po"
+  ],
+  [
+   8231,
+   "HYPHENATION POINT",
+   "Po"
+  ],
+  [
+   8239,
+   "NARROW NO-BREAK SPACE",
+   "Zs"
+  ],
+  [
+   8240,
+   "PER MILLE SIGN",
+   "Po"
+  ],
+  [
+   8241,
+   "PER TEN THOUSAND SIGN",
+   "Po"
+  ],
+  [
+   8242,
+   "PRIME",
+   "Po"
+  ],
+  [
+   8243,
+   "DOUBLE PRIME",
+   "Po"
+  ],
+  [
+   8244,
+   "TRIPLE PRIME",
+   "Po"
+  ],
+  [
+   8245,
+   "REVERSED PRIME",
+   "Po"
+  ],
+  [
+   8246,
+   "REVERSED DOUBLE PRIME",
+   "Po"
+  ],
+  [
+   8247,
+   "REVERSED TRIPLE PRIME",
+   "Po"
+  ],
+  [
+   8248,
+   "CARET",
+   "Po"
+  ],
+  [
+   8249,
+   "SINGLE LEFT-POINTING ANGLE QUOTATION MARK",
+   "Pi"
+  ],
+  [
+   8250,
+   "SINGLE RIGHT-POINTING ANGLE QUOTATION MARK",
+   "Pf"
+  ],
+  [
+   8251,
+   "REFERENCE MARK",
+   "Po"
+  ],
+  [
+   8252,
+   "DOUBLE EXCLAMATION MARK",
+   "Po"
+  ],
+  [
+   8253,
+   "INTERROBANG",
+   "Po"
+  ],
+  [
+   8254,
+   "OVERLINE",
+   "Po"
+  ],
+  [
+   8255,
+   "UNDERTIE",
+   "Pc"
+  ],
+  [
+   8256,
+   "CHARACTER TIE",
+   "Pc"
+  ],
+  [
+   8257,
+   "CARET INSERTION POINT",
+   "Po"
+  ],
+  [
+   8258,
+   "ASTERISM",
+   "Po"
+  ],
+  [
+   8259,
+   "HYPHEN BULLET",
+   "Po"
+  ],
+  [
+   8260,
+   "FRACTION SLASH",
+   "Sm"
+  ],
+  [
+   8261,
+   "LEFT SQUARE BRACKET WITH QUILL",
+   "Ps"
+  ],
+  [
+   8262,
+   "RIGHT SQUARE BRACKET WITH QUILL",
+   "Pe"
+  ],
+  [
+   8263,
+   "DOUBLE QUESTION MARK",
+   "Po"
+  ],
+  [
+   8264,
+   "QUESTION EXCLAMATION MARK",
+   "Po"
+  ],
+  [
+   8265,
+   "EXCLAMATION QUESTION MARK",
+   "Po"
+  ],
+  [
+   8266,
+   "TIRONIAN SIGN ET",
+   "Po"
+  ],
+  [
+   8268,
+   "BLACK LEFTWARDS BULLET",
+   "Po"
+  ],
+  [
+   8269,
+   "BLACK RIGHTWARDS BULLET",
+   "Po"
+  ],
+  [
+   8270,
+   "LOW ASTERISK",
+   "Po"
+  ],
+  [
+   8271,
+   "REVERSED SEMICOLON",
+   "Po"
+  ],
+  [
+   8272,
+   "CLOSE UP",
+   "Po"
+  ],
+  [
+   8275,
+   "SWUNG DASH",
+   "Po"
+  ],
+  [
+   8276,
+   "INVERTED UNDERTIE",
+   "Pc"
+  ],
+  [
+   8277,
+   "FLOWER PUNCTUATION MARK",
+   "Po"
+  ],
+  [
+   8287,
+   "MEDIUM MATHEMATICAL SPACE",
+   "Zs"
+  ],
+  [
+   8340,
+   "LATIN SUBSCRIPT SMALL LETTER SCHWA",
+   "Lm"
+  ],
+  [
+   8364,
+   "EURO SIGN",
+   "Sc"
+  ],
+  [
+   8413,
+   "COMBINING ENCLOSING CIRCLE",
+   "Me"
+  ],
+  [
+   8414,
+   "COMBINING ENCLOSING SQUARE",
+   "Me"
+  ],
+  [
+   8451,
+   "DEGREE CELSIUS",
+   "So"
+  ],
+  [
+   8457,
+   "DEGREE FAHRENHEIT",
+   "So"
+  ],
+  [
+   8467,
+   "SCRIPT SMALL L",
+   "Ll"
+  ],
+  [
+   8470,
+   "NUMERO SIGN",
+   "So"
+  ],
+  [
+   8482,
+   "TRADE MARK SIGN",
+   "So"
+  ],
+  [
+   8490,
+   "KELVIN SIGN",
+   "Lu"
+  ],
+  [
+   8498,
+   "TURNED CAPITAL F",
+   "Lu"
+  ],
+  [
+   8572,
+   "SMALL ROMAN NUMERAL FIFTY",
+   "Nl"
+  ],
+  [
+   8573,
+   "SMALL ROMAN NUMERAL ONE HUNDRED",
+   "Nl"
+  ],
+  [
+   8574,
+   "SMALL ROMAN NUMERAL FIVE HUNDRED",
+   "Nl"
+  ],
+  [
+   8575,
+   "SMALL ROMAN NUMERAL ONE THOUSAND",
+   "Nl"
+  ],
+  [
+   8579,
+   "ROMAN NUMERAL REVERSED ONE HUNDRED",
+   "Lu"
+  ],
+  [
+   8581,
+   "ROMAN NUMERAL SIX LATE FORM",
+   "Nl"
+  ],
+  [
+   8582,
+   "ROMAN NUMERAL FIFTY EARLY FORM",
+   "Nl"
+  ],
+  [
+   8592,
+   "LEFTWARDS ARROW",
+   "Sm"
+  ],
+  [
+   8593,
+   "UPWARDS ARROW",
+   "Sm"
+  ],
+  [
+   8594,
+   "RIGHTWARDS ARROW",
+   "Sm"
+  ],
+  [
+   8595,
+   "DOWNWARDS ARROW",
+   "Sm"
+  ],
+  [
+   8596,
+   "LEFT RIGHT ARROW",
+   "Sm"
+  ],
+  [
+   8597,
+   "UP DOWN ARROW",
+   "So"
+  ],
+  [
+   8598,
+   "NORTH WEST ARROW",
+   "So"
+  ],
+  [
+   8599,
+   "NORTH EAST ARROW",
+   "So"
+  ],
+  [
+   8600,
+   "SOUTH EAST ARROW",
+   "So"
+  ],
+  [
+   8601,
+   "SOUTH WEST ARROW",
+   "So"
+  ],
+  [
+   8617,
+   "LEFTWARDS ARROW WITH HOOK",
+   "So"
+  ],
+  [
+   8618,
+   "RIGHTWARDS ARROW WITH HOOK",
+   "So"
+  ],
+  [
+   8627,
+   "DOWNWARDS ARROW WITH TIP RIGHTWARDS",
+   "So"
+  ],
+  [
+   8629,
+   "DOWNWARDS ARROW WITH CORNER LEFTWARDS",
+   "So"
+  ],
+  [
+   8634,
+   "ANTICLOCKWISE OPEN CIRCLE ARROW",
+   "So"
+  ],
+  [
+   8635,
+   "CLOCKWISE OPEN CIRCLE ARROW",
+   "So"
+  ],
+  [
+   8676,
+   "LEFTWARDS ARROW TO BAR",
+   "So"
+  ],
+  [
+   8677,
+   "RIGHTWARDS ARROW TO BAR",
+   "So"
+  ],
+  [
+   8721,
+   "N-ARY SUMMATION",
+   "Sm"
+  ],
+  [
+   8722,
+   "MINUS SIGN",
+   "Sm"
+  ],
+  [
+   8730,
+   "SQUARE ROOT",
+   "Sm"
+  ],
+  [
+   8734,
+   "INFINITY",
+   "Sm"
+  ],
+  [
+   8747,
+   "INTEGRAL",
+   "Sm"
+  ],
+  [
+   8758,
+   "RATIO",
+   "Sm"
+  ],
+  [
+   8776,
+   "ALMOST EQUAL TO",
+   "Sm"
+  ],
+  [
+   8800,
+   "NOT EQUAL TO",
+   "Sm"
+  ],
+  [
+   8804,
+   "LESS-THAN OR EQUAL TO",
+   "Sm"
+  ],
+  [
+   8805,
+   "GREATER-THAN OR EQUAL TO",
+   "Sm"
+  ],
+  [
+   8964,
+   "DOWN ARROWHEAD",
+   "So"
+  ],
+  [
+   9251,
+   "OPEN BOX",
+   "So"
+  ],
+  [
+   9642,
+   "BLACK SMALL SQUARE",
+   "So"
+  ],
+  [
+   9650,
+   "BLACK UP-POINTING TRIANGLE",
+   "So"
+  ],
+  [
+   9654,
+   "BLACK RIGHT-POINTING TRIANGLE",
+   "So"
+  ],
+  [
+   9658,
+   "BLACK RIGHT-POINTING POINTER",
+   "So"
+  ],
+  [
+   9660,
+   "BLACK DOWN-POINTING TRIANGLE",
+   "So"
+  ],
+  [
+   9664,
+   "BLACK LEFT-POINTING TRIANGLE",
+   "So"
+  ],
+  [
+   9668,
+   "BLACK LEFT-POINTING POINTER",
+   "So"
+  ],
+  [
+   9670,
+   "BLACK DIAMOND",
+   "So"
+  ],
+  [
+   9679,
+   "BLACK CIRCLE",
+   "So"
+  ],
+  [
+   9702,
+   "WHITE BULLET",
+   "So"
+  ],
+  [
+   10229,
+   "LONG LEFTWARDS ARROW",
+   "Sm"
+  ],
+  [
+   10230,
+   "LONG RIGHTWARDS ARROW",
+   "Sm"
+  ],
+  [
+   11036,
+   "WHITE LARGE SQUARE",
+   "So"
+  ],
+  [
+   11044,
+   "BLACK LARGE CIRCLE",
+   "So"
+  ],
+  [
+   11391,
+   "LATIN CAPITAL LETTER Z WITH SWASH TAIL",
+   "Lu"
+  ],
+  [
+   11775,
+   "COMBINING CYRILLIC LETTER IOTIFIED BIG YUS",
+   "Mn"
+  ],
+  [
+   11800,
+   "INVERTED INTERROBANG",
+   "Po"
+  ],
+  [
+   43007,
+   "LATIN EPIGRAPHIC LETTER ARCHAIC M",
+   "Lo"
+  ],
+  [
+   65279,
+   "ZERO WIDTH NO-BREAK SPACE",
+   "Cf"
+  ],
+  [
+   129104,
+   "LEFTWARDS SANS-SERIF ARROW",
+   "So"
+  ],
+  [
+   129106,
+   "RIGHTWARDS SANS-SERIF ARROW",
+   "So"
+  ]
+ ],
+ "glyphs": 1064,
+ "character_count": 826,
+ "languages": [
+  {
+   "name": "English",
+   "lang": "en",
+   "text": "The quick brown fox jumps over the lazy dog, twice."
+  },
+  {
+   "name": "Čeština",
+   "lang": "cs",
+   "text": "Příliš žluťoučký kůň úpěl ďábelské ódy."
+  },
+  {
+   "name": "Slovenčina",
+   "lang": "sk",
+   "text": "Kŕdeľ ďatľov učí koňa žrať kôru."
+  },
+  {
+   "name": "Polski",
+   "lang": "pl",
+   "text": "Zażółć gęślą jaźń, pchnąć w tę łódź jeża."
+  },
+  {
+   "name": "Deutsch",
+   "lang": "de",
+   "text": "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg."
+  },
+  {
+   "name": "Français",
+   "lang": "fr",
+   "text": "Dès Noël, où un zéphyr haï me vêt de glaçons würmiens."
+  },
+  {
+   "name": "Español",
+   "lang": "es",
+   "text": "El pingüino Wenceslao hizo kilómetros bajo exhaustiva lluvia."
+  },
+  {
+   "name": "Português",
+   "lang": "pt",
+   "text": "À noite, vovô Kowalsky vê o ímã cair no pé do pinguim."
+  },
+  {
+   "name": "Italiano",
+   "lang": "it",
+   "text": "Quel vituperabile xenofobo zelante assaggia il whisky."
+  },
+  {
+   "name": "Nederlands",
+   "lang": "nl",
+   "text": "Pa’s wijze lynx bezag vroom het fikse aquaduct."
+  },
+  {
+   "name": "Svenska",
+   "lang": "sv",
+   "text": "Flygande bäckasiner söka hwila på mjuka tuvor."
+  },
+  {
+   "name": "Dansk",
+   "lang": "da",
+   "text": "Høj bly gom vandt fræk sexquiz på wc."
+  },
+  {
+   "name": "Suomi",
+   "lang": "fi",
+   "text": "Törkylempijävongahdus on hyvä šakkitermi."
+  },
+  {
+   "name": "Íslenska",
+   "lang": "is",
+   "text": "Kæmi ný öxi hér, ykist þjófum nú bæði víl og ádrepa."
+  },
+  {
+   "name": "Magyar",
+   "lang": "hu",
+   "text": "Árvíztűrő tükörfúrógép."
+  },
+  {
+   "name": "Română",
+   "lang": "ro",
+   "text": "Muzicologă în bej vând whisky și tequila, preț fix."
+  },
+  {
+   "name": "Türkçe",
+   "lang": "tr",
+   "text": "Pijamalı hasta yağız şoföre çabucak güvendi."
+  },
+  {
+   "name": "Hrvatski",
+   "lang": "hr",
+   "text": "Gojazni đačić s biciklom drži hmelj i finu vatu u džepu."
+  },
+  {
+   "name": "Slovenščina",
+   "lang": "sl",
+   "text": "V kožuščku hudobnega fanta stopiclja mizar."
+  },
+  {
+   "name": "Eesti",
+   "lang": "et",
+   "text": "Põdur Zagrebi tšellomängija-följetonist Ciqo külmetas."
+  },
+  {
+   "name": "Latviešu",
+   "lang": "lv",
+   "text": "Glāžšķūņa rūķīši dzērumā čiepj Baha koncertflīģeļu vākus."
+  },
+  {
+   "name": "Lietuvių",
+   "lang": "lt",
+   "text": "Įlinkdama fechtuotojo špaga sublykčiojusi pragręžė apvalų arbūzą."
+  }
+ ],
+ "unsupported": [
+  "Vietnamese"
+ ],
+ "github": "https://github.com/jakubfoglar/raveo",
+ "sizes": {
+  "text": {
+   "stem": 180,
+   "x_height": 1118,
+   "cap_height": 1490,
+   "advance": 1101
+  },
+  "display": {
+   "stem": 170,
+   "x_height": 1056,
+   "cap_height": 1490,
+   "advance": 1006
+  }
+ },
+ "italic": {
+  "angle": 9.4
+ },
+ "font": {
+  "family": "Raveo",
+  "css": "fonts/raveo.css"
+ },
+ "compare": {
+  "family": "Raveo 1.1",
+  "url": "fonts/Raveo-1.1-letters.woff2"
+ },
+ "files": {
+  "variable": {
+   "name": "Raveo-VF.ttf",
+   "kb": 972
+  },
+  "web": {
+   "name": "Raveo-VF.woff2",
+   "kb": 380
+  },
+  "statics": 84,
+  "italic": {
+   "name": "Raveo-Italic-VF.ttf",
+   "kb": 1021
+  },
+  "zip": {
+   "url": "https://github.com/jakubfoglar/raveo/releases/download/v2.0/Raveo-2.0.zip",
+   "name": "Raveo-2.0.zip",
+   "kb": 13347
+  }
+ }
+}

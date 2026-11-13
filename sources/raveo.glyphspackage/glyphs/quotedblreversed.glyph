@@ -1,0 +1,160 @@
+{
+glyphname = quotedblreversed;
+layers = (
+{
+background = {
+shapes = (
+{
+pos = (974,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = "C698F293-3EC0-4A5A-A3A0-0FDB1F5CF265";
+shapes = (
+{
+ref = quotereversed;
+},
+{
+pos = (368,0);
+ref = quotereversed;
+}
+);
+width = 809;
+},
+{
+background = {
+shapes = (
+{
+pos = (1334,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = "5C20EF92-B63D-42A8-8878-93C2863E0093";
+shapes = (
+{
+ref = quotereversed;
+},
+{
+pos = (526,0);
+ref = quotereversed;
+}
+);
+width = 1141;
+},
+{
+background = {
+shapes = (
+{
+pos = (790,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+shapes = (
+{
+alignment = -1;
+ref = quotereversed;
+},
+{
+alignment = -1;
+pos = (280,0);
+ref = quotereversed;
+}
+);
+width = 658;
+},
+{
+background = {
+shapes = (
+{
+pos = (736,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = m007;
+shapes = (
+{
+ref = quotereversed;
+},
+{
+pos = (306,0);
+ref = quotereversed;
+}
+);
+width = 638;
+},
+{
+background = {
+shapes = (
+{
+pos = (1053,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = m009;
+shapes = (
+{
+ref = quotereversed;
+},
+{
+pos = (494,0);
+ref = quotereversed;
+}
+);
+width = 972;
+},
+{
+background = {
+shapes = (
+{
+pos = (568,0);
+ref = quotedblright;
+scale = (-1,1);
+}
+);
+};
+layerId = m011;
+shapes = (
+{
+alignment = -1;
+ref = quotereversed;
+},
+{
+alignment = -1;
+pos = (176,0);
+ref = quotereversed;
+}
+);
+width = 446;
+},
+{
+associatedMasterId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+layerId = "799C5225-4B9E-4B2F-9498-E030C78216AD";
+width = 600;
+},
+{
+associatedMasterId = "B1F27B51-9973-4381-9301-4FE46FE1CA59";
+layerId = "9D684A71-1E90-46ED-B6DF-15917822A44E";
+width = 600;
+}
+);
+metricLeft = "=|quoteleft";
+metricRight = "=|quoteleft";
+unicode = 8223;
+userData = {
+interface.gridadjust.original = "{'width': 1095, 'leftMargin': 110, 'rightMargin': 110}";
+"interface.width-adjustments" = (
+-16
+);
+};
+}
