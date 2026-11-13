@@ -4,4 +4,4 @@ For web use, there are two distributions:
 - *RaveoVF-subsetted.woff2* only covers the weight range of Regular–Bold (400–730) and is about 100 KB.
 
 If you don’t need very thin and very heavy weights, I recommend the subsetted version – it’s smaller.
-The desktop version, *Raveo-VF.ttf*, has the full weight range.
+The desktop version, *RaveoVF.ttf*, has the full weight range.

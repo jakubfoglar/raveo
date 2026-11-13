@@ -1,7 +1,7 @@
 {
  "family": "Raveo",
  "version": "2.0",
- "date": "2026-11-12",
+ "date": "2026-11-13",
  "axes": {
   "opsz": [
    14.0,
@@ -4518,7 +4518,7 @@
   }
  ],
  "unsupported": [
-  "Tiếng Việt"
+  "Vietnamese"
  ],
  "github": "https://github.com/jakubfoglar/raveo",
  "sizes": {

@@ -8,15 +8,16 @@ SIL Open Font License 1.1. This file records what changed in each version and wh
 - A width axis, 60 to 125, with Narrow and Wide as named styles at every weight.
 - An italic for every style: a second variable font and 42 static styles. It is made from Inter's
   italic source (rsms/inter at commit `66647c0`, version 4.1) with Raveo's letters carried into it.
-  The letters a, e and f are Raveo's upright forms, leaned over and corrected by rule.
-- The weight axis runs from 300 to 900 (was 100 to 900). Light and Black join the named weights; Thin
-  and ExtraLight are gone.
+  The letters a, e and f keep their upright forms.
+- The weight axis runs from 300 to 900 (was 100 to 900). Thin and ExtraLight are gone.
 - Curved strokes end in an angled cut; the openings of a, c, e and s are wider.
-- Round dots, commas and quotes. The tick of ď ť ľ sits closer to its letter and the next letter is
+- Round commas and quotes. The tick of ď ť ľ sits closer to its letter and the next letter is
   kept clear of it.
 - A longer arm on the r; a redrawn bowl on the a at the narrow and wide ends.
 - The r and the a take the longer arm and the more open bowl of the wordmark they were first drawn for.
 - Every style is derived from the hand-drawn masters in `sources/` by the settings in `recipe.json`.
+- 51 more characters, among them æ ø ð œ ă ğ ő ű and « »: Danish, Norwegian, Icelandic, Hungarian,
+  Romanian and Turkish can be set.
 - Static fonts are TrueType. Display styles are part of the family "Raveo".
 - Web fonts come in two parts with a stylesheet, upright and italic.
 - Kerning differs from Inter's in one pair: the low quote is no longer pulled toward a.

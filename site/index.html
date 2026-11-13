@@ -778,7 +778,7 @@ const DETAILS = [
   ["r", "The r", "A longer, flatter arm that reaches toward the next letter.", 520, 100],
   ["a", "The a, wide", "At the wide and narrow ends the bowl is redrawn: more open, its stroke meeting the stem at an angle.", 520, "max"],
   ["ces", "Stroke endings", "Curved strokes are cut at an angle and the openings are wider.", 520, 100],
-  ["ij;", "Round dots", "Dots, commas and quotes are round.", 520, 100],
+  [",;", "Round commas", "Commas and semicolons are round.", 520, 100],
   ["„a“", "Quotes", "Round quotes, set as close as Raveo sets its own.", 520, 100],
   ["ďť", "The tick", "The tick of ď ť ľ sits near the stem and the next letter tucks under it.", 520, 100],
   ["R", "The R", "A curled leg, since the first Raveo.", 520, 100],
@@ -812,7 +812,7 @@ function pick(cp) {
   document.querySelectorAll(".cells button").forEach((b) => b.classList.toggle("on", Number(b.dataset.cp) === cp));
 }
 function buildCharacters() {
-  const seen = D.characters.filter((c) => !UNSEEN(c[2])), unseen = D.characters.length - seen.length, groups = [];
+  const seen = D.characters.filter((c) => !UNSEEN(c[2])), unseen = D.character_count - seen.length, groups = [];
   const left = store.allChars ? seen.slice() : seen.filter((c) => EVERYDAY(c[0]));
   for (const [title, test] of SETS) {
     const mine = left.filter((c) => test(c[2]));
@@ -829,9 +829,9 @@ function buildCharacters() {
 
 const FEATURES = [
   ["tnum", "Tabular figures", "Every digit takes the same width, so columns line up.", "1 117 410,10\n9 008 944,98"],
-  ["case", "Capital forms", "Punctuation moves up to sit with capitals.", "(H-H) [A:B] «¿QUÉ?»"],
+  ["case", "Capital forms", "Punctuation moves up to sit with capitals and figures.", "¡HOLA! 7 – 9"],
   ["calt", "Contextual alternates", "A times sign between figures, arrows from hyphens, a raised colon in times.", "1920x1080 -> 12:30"],
-  ["ordn", "Ordinals", "Letters after a figure rise, and No. becomes the numero sign.", "1a 2o, No. 7"],
+  ["ordn", "Ordinals", "No. becomes the numero sign.", "No. 7"],
   ["kern", "Kerning", "On by default.", "Toyota, Vary, LAVA. „Ty“"],
 ];
 function buildFeatures() {
@@ -864,12 +864,13 @@ function buildDownload() {
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("news").innerHTML = [["Width", `An axis from ${wl} to ${wh}, with Narrow and Wide as named styles at every weight.`],
     ...(D.italic ? [["Italic", "An italic for every style, as a second variable font and as static files."]] : []),
-    ["Weights", `The axis now runs from ${gl} to ${gh}; Light and Black join the named weights. Styles lighter than ${gl} are gone.`],
+    ["Weights", `The axis now runs from ${gl} to ${gh}. Styles lighter than ${gl} are gone.`],
     ["Stroke endings", "Curved strokes end in an angled cut and the openings of a, c, e and s are wider."],
-    ["Dots and commas", "Round dots, commas and quotes; the tick of ď ť ľ sits closer to its letter."],
-    ["Letters", "A longer arm on the r, and a redrawn bowl on the a at the narrow and wide ends."]]
+    ["Commas and quotes", "Round commas and quotes; the tick of ď ť ľ sits closer to its letter."],
+    ["Letters", "A longer arm on the r, and a redrawn bowl on the a at the narrow and wide ends."],
+    ["Characters", "51 more, among them æ ø ð œ ă ğ ő ű and « »: Danish, Norwegian, Icelandic, Hungarian, Romanian and Turkish can be set."]]
     .map(([k, v]) => `<li><b>${k}</b><span>${v}</span></li>`).join("");
-  $("versions").innerHTML = [[D.version, `${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}: width axis, ${D.italic ? "italics, " : ""}angled stroke endings, round dots`], ["1.1", "October 2024: the first public release"]]
+  $("versions").innerHTML = [[D.version, `${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}: width axis, ${D.italic ? "italics, " : ""}angled stroke endings, round commas and quotes`], ["1.1", "October 2024: the first public release"]]
     .map(([k, v]) => `<li><span class="num">${k}</span><span>${v}</span></li>`).join("");
   $("lineage").innerHTML = [["Inter", "Rasmus Andersson"], ["Raveo 1.1", "Jakub Foglar, 2024"], [`Raveo ${D.version}`, `Jakub Foglar, ${new Date(D.date).getFullYear()}`], ["Source", `<a href="${D.github}">GitHub</a>`]]
     .map(([k, v]) => `<li><span>${k}</span><span>${v}</span></li>`).join("");

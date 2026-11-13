@@ -229,11 +229,12 @@ installed twice. What changes:
                        versions) are gone; CSS weights below {lightest} show the Light.
   Display styles       They are part of the family "{family}" now ("{family} Display Bold"), no longer a
                        family "Raveo Display". Documents set in a Display style ask for the font again.
-  Quotes and commas    Round by default; they were square.
+  Quotes and commas    Round; they were square.
   File names           Static fonts are TrueType (.ttf) named {slug}-<Style>.ttf; the variable font is
                        {slug}-VF.ttf and {slug}-VF.woff2 (was RaveoVF). Update paths in CSS.
-  Kept                 Every character of 1.1, the variable font's names ("Raveo Variable"), line
-                       height and the spacing of the regular width.
+  Kept                 Every character of 1.1, the variable font's names ("Raveo Variable") and the
+                       line height. At the regular width only r, a, the semicolon, the quotes and
+                       ď ť ľ are spaced differently.
 """ if family == "Raveo" else ""
     single = f"""
         @font-face {{{{ font-family: "{family}"; src: url("{slug}-VF.woff2") format("woff2");
@@ -277,7 +278,6 @@ DESKTOP
 
 Install the variable font{"s" if italic else ""} or the static fonts; one set is enough. The variable font is listed as
 "{family} Variable", the static fonts as "{family}", so they do not answer to each other's names.
-If Raveo 1.1 is installed, remove it first: its files have the same names inside.
 
 desktop/variable/{slug}-VF.ttf
     One file with every {"upright " if italic else ""}style. Use this in Figma, Keynote, Adobe apps and browsers.
@@ -285,7 +285,7 @@ desktop/variable/{slug}-VF.ttf
 desktop/static/
     One file per named style, for apps that do not support variable fonts (PowerPoint, Word).
     The styles{", each also as Italic" if italic else ""}:
-    {(chr(10) + '    ').join(rows)}
+    {(',' + chr(10) + '    ').join(rows)}
 
 
 WEB
@@ -301,7 +301,7 @@ web/{slug}-VF-european.woff2{more}, web/{slug.lower()}.css
     the other the rare letters.
 
         <link rel="stylesheet" href="{slug.lower()}.css">
-        h1 {{ font-family: "{family}", sans-serif; font-weight: 500; font-stretch: {axes['wdth'][1]:g}%; }}
+        h1 {{ font-family: "{family}", sans-serif; font-weight: 520; font-stretch: {axes['wdth'][1]:g}%; }}
 {italic_web}{slim_part}
 web/static/
     Static styles as WOFF2, for the rare case a variable font cannot be used.

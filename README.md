@@ -80,17 +80,17 @@ files without the width axis at about half the size, for pages that never use th
 
 - The weight axis starts at 300. Thin and ExtraLight are gone; weights below 300 show the Light.
 - Display styles belong to the family "Raveo" ("Raveo Display Bold"); there is no family "Raveo Display".
-- Quotes and commas are round by default.
+- Quotes and commas are round.
 - Static fonts are TrueType, named `Raveo-<Style>.ttf`; the variable font is `Raveo-VF`, not `RaveoVF`.
-- Every character of 1.1 is still there, with the same line height and the same spacing at the regular
-  width.
+- Every character of 1.1 is still there, with the same line height. At the regular width only r, a, the
+  semicolon, the quotes and ď ť ľ are spaced differently.
 
 The 1.1 files stay in [`fonts/`](fonts) at their old paths, so pages that link them keep working.
 
 ## Building it
 
-The masters in `sources/` are drawn by hand. A script derives the widths, the italic and the weights in
-between from them; its settings are in `recipe.json`.
+The masters in `sources/` are drawn by hand. `tools/pipeline.py` builds the family from them with the
+settings in `recipe.json`.
 
 ```sh
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt    # Python 3.12
@@ -108,15 +108,7 @@ The sharing image of the page needs `hb-view` (HarfBuzz); everything else comes 
 .venv/bin/python tools/serve.py                # http://localhost:4173/workbench/
 ```
 
-A page for tuning the recipe: every setting is a slider, the letters redraw as it moves, and a draft of
-the font is rebuilt in a few seconds. Settings are kept per width (narrowest, regular, widest) and per
-optical size; single letters can be adjusted on their own. Save writes `recipe.json`, Export writes a
-release.
-
-The Proofs tab sets test strings in the draft: every letter between n and o, capitals that overhang,
-figures, quotes around every letter, running text in five languages, or your own lines. A second font
-can run under each line in blue (the untouched source, Raveo 1.1, or Inter), and a click between two
-letters gives that pair's kerning, gap and nearest distance.
+A local page for adjusting `recipe.json` and proofing the result.
 
 ### Checking the spacing
 

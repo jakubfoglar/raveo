@@ -67,6 +67,9 @@ LANGUAGES = [
 ]
 
 
+ENGLISH = {"Tiếng Việt": "Vietnamese"}      # what a language is called in a sentence of the page
+
+
 def _measure(path, location):
     """Stem, x-height and average letter width of one style, in font units."""
     font = instancer.instantiateVariableFont(TTFont(path), location)
@@ -114,7 +117,7 @@ def describe(path, recipe):
         "character_count": sum(1 for cp in cmap if not 0xE000 <= cp <= 0xF8FF),      # without private-use alternates
         "languages": [{"name": name, "lang": lang, "text": text} for name, lang, text in LANGUAGES
                       if all(ord(ch) in have for ch in text if not ch.isspace())],
-        "unsupported": [name for name, _, text in LANGUAGES if not all(ord(ch) in have for ch in text if not ch.isspace())],
+        "unsupported": [ENGLISH.get(name, name) for name, _, text in LANGUAGES if not all(ord(ch) in have for ch in text if not ch.isspace())],
         "github": GITHUB,
     }
     if "opsz" in axes:
@@ -181,9 +184,16 @@ def _share_image(variable, slanted, out):
         if word.width > width - 2 * margin:
             word = word.resize((width - 2 * margin, round(word.height * (width - 2 * margin) / word.width)), Image.LANCZOS)
         page.paste(word, (margin, 150))
-        parts = [line(variable, "A warm grotesque in seven weights and three widths" + ("," if slanted else ""), 40, "opsz=32,wght=400,wdth=100", QUIET)]
-        if slanted:
-            parts.append(line(slanted, "upright and italic", 40, "opsz=32,wght=400,wdth=100", QUIET))
+        def under(size):
+            parts = [line(variable, "A warm grotesque in seven weights and three widths" + ("," if slanted else ""), size, "opsz=32,wght=400,wdth=100", QUIET)]
+            if slanted:
+                parts.append(line(slanted, "upright and italic", size, "opsz=32,wght=400,wdth=100", QUIET))
+            return parts
+
+        parts, room = under(40), width - 2 * margin
+        taken = sum(part.width for part in parts) + 12 * (len(parts) - 1)
+        if taken > room:                                    # the line must end inside the picture
+            parts = under(int(40 * room / taken))
         x, y = margin, height - margin - max(part.height for part in parts)
         for part in parts:
             page.paste(part, (x, y))

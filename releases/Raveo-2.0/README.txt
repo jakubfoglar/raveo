@@ -37,18 +37,18 @@ installed twice. What changes:
                        versions) are gone; CSS weights below 300 show the Light.
   Display styles       They are part of the family "Raveo" now ("Raveo Display Bold"), no longer a
                        family "Raveo Display". Documents set in a Display style ask for the font again.
-  Quotes and commas    Round by default; they were square.
+  Quotes and commas    Round; they were square.
   File names           Static fonts are TrueType (.ttf) named Raveo-<Style>.ttf; the variable font is
                        Raveo-VF.ttf and Raveo-VF.woff2 (was RaveoVF). Update paths in CSS.
-  Kept                 Every character of 1.1, the variable font's names ("Raveo Variable"), line
-                       height and the spacing of the regular width.
+  Kept                 Every character of 1.1, the variable font's names ("Raveo Variable") and the
+                       line height. At the regular width only r, a, the semicolon, the quotes and
+                       ď ť ľ are spaced differently.
 
 
 DESKTOP
 
 Install the variable fonts or the static fonts; one set is enough. The variable font is listed as
 "Raveo Variable", the static fonts as "Raveo", so they do not answer to each other's names.
-If Raveo 1.1 is installed, remove it first: its files have the same names inside.
 
 desktop/variable/Raveo-VF.ttf
     One file with every upright style. Use this in Figma, Keynote, Adobe apps and browsers.
@@ -59,12 +59,12 @@ desktop/variable/Raveo-Italic-VF.ttf
 desktop/static/
     One file per named style, for apps that do not support variable fonts (PowerPoint, Word).
     The styles, each also as Italic:
-    Narrow Light, Narrow Regular, Narrow Medium, Narrow SemiBold, Narrow Bold, Narrow ExtraBold
-    Narrow Black, Light, Regular, Medium, SemiBold, Bold
-    ExtraBold, Black, Wide Light, Wide Regular, Wide Medium, Wide SemiBold
-    Wide Bold, Wide ExtraBold, Wide Black, Display Narrow Light, Display Narrow Regular, Display Narrow Medium
-    Display Narrow SemiBold, Display Narrow Bold, Display Narrow ExtraBold, Display Narrow Black, Display Light, Display Regular
-    Display Medium, Display SemiBold, Display Bold, Display ExtraBold, Display Black, Display Wide Light
+    Narrow Light, Narrow Regular, Narrow Medium, Narrow SemiBold, Narrow Bold, Narrow ExtraBold,
+    Narrow Black, Light, Regular, Medium, SemiBold, Bold,
+    ExtraBold, Black, Wide Light, Wide Regular, Wide Medium, Wide SemiBold,
+    Wide Bold, Wide ExtraBold, Wide Black, Display Narrow Light, Display Narrow Regular, Display Narrow Medium,
+    Display Narrow SemiBold, Display Narrow Bold, Display Narrow ExtraBold, Display Narrow Black, Display Light, Display Regular,
+    Display Medium, Display SemiBold, Display Bold, Display ExtraBold, Display Black, Display Wide Light,
     Display Wide Regular, Display Wide Medium, Display Wide SemiBold, Display Wide Bold, Display Wide ExtraBold, Display Wide Black
 
 
@@ -85,7 +85,7 @@ web/Raveo-VF-european.woff2, web/Raveo-VF-more.woff2, web/raveo.css
     the other the rare letters.
 
         <link rel="stylesheet" href="raveo.css">
-        h1 { font-family: "Raveo", sans-serif; font-weight: 500; font-stretch: 125%; }
+        h1 { font-family: "Raveo", sans-serif; font-weight: 520; font-stretch: 125%; }
 
 web/Raveo-Italic-VF.woff2 and its parts
     The italic, in the same forms. The stylesheet covers both: <em> and font-style: italic just work.
