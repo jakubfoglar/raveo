@@ -1,41 +1,54 @@
 Raveo 2.0
 
-Weight        300 to 900
-Width         60 to 125
-Optical size  14 to 32
-826 characters, Latin script, upright and italic
+Raveo is a sans in seven weights and three widths, each with an italic. It covers the Latin script
+of European languages, 826 characters in all.
+Specimen and tester: https://raveo.jakubfoglar.com
 
 
-INSTALL
+INSTALLING
 
-One of the two sets, not both. Remove Raveo 1.1 first.
+The folder "desktop" holds the typeface in two forms. Install the one your programs can use:
 
-desktop/variable/   Raveo-VF.ttf and Raveo-Italic-VF.ttf, listed as "Raveo Variable"
-desktop/static/     one file per style, listed as "Raveo", for apps without variable fonts
+variable/   Raveo-VF.ttf and Raveo-Italic-VF.ttf, with every style inside them. For Figma,
+            Keynote, Adobe apps and other programs that support variable fonts. Font menus
+            list them as "Raveo Variable".
+
+static/     One file for each of the 84 styles, for programs that do not support variable
+            fonts, such as Word and PowerPoint. Font menus list them as "Raveo".
+            The styles named Display are drawn for headlines, the others for text.
+
+If Raveo 1.1 is installed, remove it first.
 
 
-WEB
+ON A WEBSITE
 
-web/                Raveo-VF.woff2 and Raveo-Italic-VF.woff2
-web/static/         one file per style
+The folder "web" has the variable fonts as WOFF2. Put them beside your stylesheet and add:
 
     @font-face { font-family: "Raveo"; src: url("Raveo-VF.woff2") format("woff2");
                  font-weight: 300 900; font-stretch: 60% 125%; font-style: normal; }
     @font-face { font-family: "Raveo"; src: url("Raveo-Italic-VF.woff2") format("woff2");
                  font-weight: 300 900; font-stretch: 60% 125%; font-style: italic; }
 
+    body { font-family: "Raveo", sans-serif; }
+    h1   { font-weight: 730; font-stretch: 125%; }
 
-COMING FROM RAVEO 1.1
+Weight runs from 300 to 900 and width from 60% to 125%. The folder web/static has every style as
+a file of its own, for sites that would rather not use a variable font.
 
-The weight axis starts at 300: Thin and ExtraLight are gone.
-Display styles belong to the family "Raveo", not "Raveo Display".
-Files are named Raveo-VF, not RaveoVF.
+
+IF YOU USED RAVEO 1.1
+
+- Thin and ExtraLight are gone. The lightest weight is now Light (300).
+- The Display styles are part of the family "Raveo" now, not a separate "Raveo Display", so
+  documents that use them will ask for the font again.
+- The files have new names (Raveo-VF, not RaveoVF), so links to them in CSS need updating.
 
 
 LICENCE
 
-SIL Open Font License 1.1, in OFL.txt: free to use, embed, modify and redistribute, also commercially.
-It may not be sold on its own, and modified versions must keep the licence.
+Raveo is free to use, also commercially, under the SIL Open Font License 1.1 (OFL.txt). You may
+embed it, change it and pass it on. You may not sell it on its own, and a changed version must keep
+the licence and take another name.
 
 Copyright 2024-2026 Jakub Foglar (https://jakubfoglar.com). Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
 Designer: Jakub Foglar, Rasmus Andersson (Inter)

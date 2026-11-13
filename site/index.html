@@ -865,7 +865,7 @@ function buildDownload() {
   $("zip-big").textContent = `Download Raveo ${D.version}`;
   $("zip-note").textContent = !zip && D.working ? "A working build: export a version to get a download." : "";
   for (const id of ["gh", "gh2", "gh3"]) { $(id).href = D.github; }
-  $("install-note").textContent = `Install the variable font${D.italic ? "s" : ""} or the static files, not both. Remove Raveo 1.1 first.`;
+  $("install-note").textContent = `Install the variable font${D.italic ? "s" : ""}, or the static files for programs that do not support ${D.italic ? "them" : "it"}. If Raveo 1.1 is installed, remove it first.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("news").innerHTML = [["Width", `An axis from ${wl} to ${wh}, with Narrow and Wide as named styles at every weight.`],
     ...(D.italic ? [["Italic", "An italic for every style, as a second variable font and as static files."]] : []),

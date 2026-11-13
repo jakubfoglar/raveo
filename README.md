@@ -53,7 +53,7 @@ from [`releases/Raveo-2.0`](releases/Raveo-2.0).
 - `desktop/static/`: one file per named style, for programs without variable-font support (Word,
   PowerPoint). Programs list them as "Raveo".
 
-One set is enough. Remove Raveo 1.1 first.
+Install the one your programs can use. If Raveo 1.1 is installed, remove it first.
 
 ## On a web page
 

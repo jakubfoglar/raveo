@@ -182,55 +182,77 @@ def releases():
     return sorted(out, key=lambda r: [float(r["version"]) if re.fullmatch(r"[\d.]+", r["version"]) else 0], reverse=True)
 
 
+NUMBERS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+SITE = "https://raveo.jakubfoglar.com"
+
+
 def _readme(recipe, label, font, slug, italic=None):
-    """The text that travels with the fonts: what is in the folder, how to install it, how to put it on a page.
-    Nothing about how the typeface is drawn or built: that is on the page and in the repository."""
+    """The note that travels with the fonts, written for whoever has just downloaded them: what the typeface
+    is, which files to install, how to put it on a website, what is different for those who had 1.1."""
     names, family = font["name"], recipe["family"]
     axes = {a.axisTag: (a.minValue, a.maxValue) for a in font["fvar"].axes}
     count = sum(1 for cp in font.getBestCmap() if not 0xE000 <= cp <= 0xF8FF)        # private-use alternates are not characters
-    ranges = "\n".join(f"{title:<14}{axes[tag][0]:g} to {axes[tag][1]:g}"
-                       for tag, title in (("wght", "Weight"), ("wdth", "Width"), ("opsz", "Optical size")) if tag in axes)
+    spots = [i.coordinates for i in font["fvar"].instances]
+    said = lambda n: NUMBERS[n] if n < len(NUMBERS) else str(n)
+    weights, widths = len({c["wght"] for c in spots}), len({c["wdth"] for c in spots})
+    styles = len(spots) * (2 if italic else 1)
+    desktop = f"{slug}-VF.ttf" + (f" and {slug}-Italic-VF.ttf" if italic else "")
     stems = [(f"{slug}-VF", "normal")] + ([(f"{slug}-Italic-VF", "italic")] if italic else [])
-    both = " and ".join(stem for stem, _ in stems)
     rules = "\n".join(f'    @font-face {{ font-family: "{family}"; src: url("{stem}.woff2") format("woff2");\n'
                       f"                 font-weight: {axes['wght'][0]:g} {axes['wght'][1]:g}; font-stretch: {axes['wdth'][0]:g}% {axes['wdth'][1]:g}%; font-style: {style}; }}"
                       for stem, style in stems)
+    display = "\n            The styles named Display are drawn for headlines, the others for text." if "opsz" in axes else ""
+    raveo = family == "Raveo"
     earlier = f"""
 
-COMING FROM RAVEO 1.1
+IF YOU USED RAVEO 1.1
 
-The weight axis starts at {axes['wght'][0]:g}: Thin and ExtraLight are gone.
-Display styles belong to the family "{family}", not "Raveo Display".
-Files are named {slug}-VF, not RaveoVF.
-""" if family == "Raveo" else ""
+- Thin and ExtraLight are gone. The lightest weight is now Light ({axes['wght'][0]:g}).
+- The Display styles are part of the family "{family}" now, not a separate "Raveo Display", so
+  documents that use them will ask for the font again.
+- The files have new names ({slug}-VF, not RaveoVF), so links to them in CSS need updating.
+""" if raveo else ""
     credit = "\n".join(line for line in (names.getDebugName(0), names.getDebugName(9) and f"Designer: {names.getDebugName(9)}",
                                          names.getDebugName(11)) if line)
     return f"""{family} {label}
 
-{ranges}
-{count} characters, Latin script{", upright and italic" if italic else ""}
+{family} is a sans in {said(weights)} weights and {said(widths)} widths{", each with an italic" if italic else ""}. It covers the Latin script
+of European languages, {count} characters in all.{f"""
+Specimen and tester: {SITE}""" if raveo else ""}
 
 
-INSTALL
+INSTALLING
 
-One of the two sets, not both.{" Remove Raveo 1.1 first." if family == "Raveo" else ""}
+The folder "desktop" holds the typeface in two forms. Install the one your programs can use:
 
-desktop/variable/   {both.replace(" and ", ".ttf and ")}.ttf, listed as "{family} Variable"
-desktop/static/     one file per style, listed as "{family}", for apps without variable fonts
+variable/   {desktop}, with every style inside{" them" if italic else ""}. For Figma,
+            Keynote, Adobe apps and other programs that support variable fonts. Font menus
+            list {"them" if italic else "it"} as "{family} Variable".
 
+static/     One file for each of the {styles} styles, for programs that do not support variable
+            fonts, such as Word and PowerPoint. Font menus list them as "{family}".{display}
+{"""
+If Raveo 1.1 is installed, remove it first.
+""" if raveo else ""}
 
-WEB
+ON A WEBSITE
 
-web/                {both.replace(" and ", ".woff2 and ")}.woff2
-web/static/         one file per style
+The folder "web" has the variable font{"s" if italic else ""} as WOFF2. Put {"them" if italic else "it"} beside your stylesheet and add:
 
 {rules}
+
+    body {{ font-family: "{family}", sans-serif; }}
+    h1   {{ font-weight: 730; font-stretch: {axes['wdth'][1]:g}%; }}
+
+Weight runs from {axes['wght'][0]:g} to {axes['wght'][1]:g} and width from {axes['wdth'][0]:g}% to {axes['wdth'][1]:g}%. The folder web/static has every style as
+a file of its own, for sites that would rather not use a variable font.
 {earlier}
 
 LICENCE
 
-SIL Open Font License 1.1, in OFL.txt: free to use, embed, modify and redistribute, also commercially.
-It may not be sold on its own, and modified versions must keep the licence.
+{family} is free to use, also commercially, under the SIL Open Font License 1.1 (OFL.txt). You may
+embed it, change it and pass it on. You may not sell it on its own, and a changed version must keep
+the licence and take another name.
 
 {credit}
 """
