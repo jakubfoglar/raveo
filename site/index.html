@@ -863,7 +863,7 @@ function buildDownload() {
   for (const id of ["zip", "zip-big"]) { $(id).href = href; if (zip) { $(id).setAttribute("download", zip.name); } }
   $("zip").textContent = `Download Raveo ${D.version}`;
   $("zip-big").textContent = `Download Raveo ${D.version}`;
-  $("zip-note").textContent = zip ? `Zip, ${(zip.kb / 1024).toFixed(1)} MB` : D.working ? "A working build: export a version to get a download." : "";
+  $("zip-note").textContent = !zip && D.working ? "A working build: export a version to get a download." : "";
   for (const id of ["gh", "gh2", "gh3"]) { $(id).href = D.github; }
   $("install-note").textContent = `Install the variable font${D.italic ? "s" : ""} or the static files, not both. Remove Raveo 1.1 first.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
