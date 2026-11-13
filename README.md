@@ -34,18 +34,14 @@ and sharper stroke endings.
 | Optical size `opsz` | 14 to 32 | the text drawing at 14, the Display drawing at 32 |
 
 - **Two variable fonts**, upright and italic, and 84 static styles.
-- **Width.** Stems keep their weight while a letter is squeezed or stretched, so the wide Medium is as dark
-  as the regular one.
-- **Italic.** It leans 9.4 degrees and is Inter's drawn italic with Raveo's letters carried into it; a, e and
-  f keep their upright forms. It is a second font file, so `font-style: italic` and the Italic button in
-  apps find it.
-- **Optical size.** Every letter is drawn twice. Browsers and design apps use the text drawing up to 14
-  pixels and the Display drawing from 32 pixels, with a blend in between.
+- **Italic.** Every style, leaned 9.4 degrees.
+- **Optical size.** Every letter is drawn twice, for text and for display. Browsers and design apps choose
+  by size.
 - **Against Inter.** An a with a tail, an R with a curled leg, a longer arm on the r, stroke endings cut at
   an angle, round commas and quotes. The G with a spur and the 1 with a flag are Inter's alternates, made
   the default.
 - **Languages.** 826 characters: Latin script for Western, Central and Northern Europe, the Baltics,
-  Romanian and Turkish. No Cyrillic, Greek or Vietnamese; for those, use Inter.
+  Romanian and Turkish. No Cyrillic, Greek or Vietnamese.
 
 ## Install
 
@@ -57,7 +53,7 @@ from [`releases/Raveo-2.0`](releases/Raveo-2.0).
 - `desktop/static/`: one file per named style, for programs without variable-font support (Word,
   PowerPoint). Programs list them as "Raveo".
 
-One set is enough. Remove Raveo 1.1 first: several of its files carry the same names inside.
+One set is enough. Remove Raveo 1.1 first.
 
 ## On a web page
 
@@ -77,8 +73,8 @@ em   { font-style: italic; }
 
 ## Upgrading from 1.1
 
-- The weight axis starts at 300. Thin and ExtraLight are gone; weights below 300 show the Light.
-- Display styles belong to the family "Raveo" ("Raveo Display Bold"); there is no family "Raveo Display".
+- The weight axis starts at 300. Thin and ExtraLight are gone.
+- Display styles belong to the family "Raveo"; there is no family "Raveo Display".
 - Quotes and commas are round.
 - Static fonts are TrueType, named `Raveo-<Style>.ttf`; the variable font is `Raveo-VF`, not `RaveoVF`.
 - Every character of 1.1 is still there, with the same line height. At the regular width only r, a, the
@@ -115,9 +111,6 @@ A local page for adjusting `recipe.json` and proofing the result.
 .venv/bin/python tools/kerning_review.py measure   # every pair of 209 characters in 48 styles
 .venv/bin/python tools/kerning_review.py           # the report: build/kerning/report.md
 ```
-
-The review measures the release against the same source built with every design operation off, and
-lists the pairs the recipe moved and the pairs that stand closest.
 
 ### Layout
 

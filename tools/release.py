@@ -183,117 +183,54 @@ def releases():
 
 
 def _readme(recipe, label, font, slug, italic=None):
-    names = font["name"]
+    """The text that travels with the fonts: what is in the folder, how to install it, how to put it on a page.
+    Nothing about how the typeface is drawn or built: that is on the page and in the repository."""
+    names, family = font["name"], recipe["family"]
     axes = {a.axisTag: (a.minValue, a.maxValue) for a in font["fvar"].axes}
-    styles = [names.getDebugName(i.subfamilyNameID) for i in font["fvar"].instances]
-    slanted = italic and f"{-italic['post'].italicAngle:.1f}".rstrip("0").rstrip(".")
-    rows = [", ".join(styles[i:i + 6]) for i in range(0, len(styles), 6)]
+    count = sum(1 for cp in font.getBestCmap() if not 0xE000 <= cp <= 0xF8FF)        # private-use alternates are not characters
+    ranges = "\n".join(f"{title:<14}{axes[tag][0]:g} to {axes[tag][1]:g}"
+                       for tag, title in (("wght", "Weight"), ("wdth", "Width"), ("opsz", "Optical size")) if tag in axes)
+    stems = [(f"{slug}-VF", "normal")] + ([(f"{slug}-Italic-VF", "italic")] if italic else [])
+    both = " and ".join(stem for stem, _ in stems)
+    rules = "\n".join(f'    @font-face {{ font-family: "{family}"; src: url("{stem}.woff2") format("woff2");\n'
+                      f"                 font-weight: {axes['wght'][0]:g} {axes['wght'][1]:g}; font-stretch: {axes['wdth'][0]:g}% {axes['wdth'][1]:g}%; font-style: {style}; }}"
+                      for stem, style in stems)
+    earlier = f"""
+
+COMING FROM RAVEO 1.1
+
+The weight axis starts at {axes['wght'][0]:g}: Thin and ExtraLight are gone.
+Display styles belong to the family "{family}", not "Raveo Display".
+Files are named {slug}-VF, not RaveoVF.
+""" if family == "Raveo" else ""
     credit = "\n".join(line for line in (names.getDebugName(0), names.getDebugName(9) and f"Designer: {names.getDebugName(9)}",
                                          names.getDebugName(11)) if line)
-    family = recipe["family"]
-    full = SUBSETS[recipe["subset"]] is None
-    sized = "opsz" in axes
-    about = (f"A typeface for text and headlines with three axes: optical size ({axes['opsz'][0]:g} to {axes['opsz'][1]:g}), weight\n"
-             f"({axes['wght'][0]:g} to {axes['wght'][1]:g}) and width ({axes['wdth'][0]:g} to {axes['wdth'][1]:g}; 100 is the regular width)."
-             if sized else
-             f"A headline typeface with a weight axis ({axes['wght'][0]:g} to {axes['wght'][1]:g}) and a width axis\n"
-             f"({axes['wdth'][0]:g} to {axes['wdth'][1]:g}; 100 is the regular width).")
-    covers = ("Latin script for Western, Central and Northern European languages,\nthe Baltics, Romanian and Turkish, "
-              "with symbols and arrows. No\nCyrillic, Greek or Vietnamese; for those, use Inter." if full else
-              "English, Czech, Slovak,\nPolish, Baltic, Hungarian, Romanian, Turkish, Nordic and the Western European languages.")
-    count = sum(1 for cp in font.getBestCmap() if not 0xE000 <= cp <= 0xF8FF)        # private-use alternates are not characters
-    optical = f"""
-
-OPTICAL SIZE
-
-The font holds two drawings of every letter: one for text (optical size {axes['opsz'][0]:g}: taller small
-letters, looser spacing) and one for headlines (optical size {axes['opsz'][1]:g}: tighter, with finer details).
-Browsers, Figma and Adobe apps pick between them by type size on their own: the text drawing up to
-{axes['opsz'][0]:g} px, the headline drawing from {axes['opsz'][1]:g} px, a blend in between. Styles named "Display" are the
-headline drawing. To choose yourself in CSS:
-
-    font-variation-settings: "opsz" {axes['opsz'][1]:g};      /* headline drawing at any size */
-    font-optical-sizing: none;                  /* text drawing at any size */
-""" if sized else ""
-    lightest = f"{axes['wght'][0]:g}"
-    upgrade = f"""
-
-UPGRADING FROM RAVEO 1.1
-
-Remove Raveo 1.1 before installing: several files have the same names inside and would sit
-installed twice. What changes:
-
-  Lightest weights     The weight axis now starts at {lightest}. Thin and ExtraLight (and their Display
-                       versions) are gone; CSS weights below {lightest} show the Light.
-  Display styles       They are part of the family "{family}" now ("{family} Display Bold"), no longer a
-                       family "Raveo Display". Documents set in a Display style ask for the font again.
-  Quotes and commas    Round; they were square.
-  File names           Static fonts are TrueType (.ttf) named {slug}-<Style>.ttf; the variable font is
-                       {slug}-VF.ttf and {slug}-VF.woff2 (was RaveoVF). Update paths in CSS.
-  Kept                 Every character of 1.1, the variable font's names ("Raveo Variable") and the
-                       line height. At the regular width only r, a, the semicolon, the quotes and
-                       ď ť ľ are spaced differently.
-""" if family == "Raveo" else ""
-    single = f"""
-        @font-face {{{{ font-family: "{family}"; src: url("{slug}-VF.woff2") format("woff2");
-                     font-weight: {axes['wght'][0]:g} {axes['wght'][1]:g}; font-stretch: {axes['wdth'][0]:g}% {axes['wdth'][1]:g}%; font-style: normal; }}}}"""
-    if italic:
-        single += f"""
-        @font-face {{{{ font-family: "{family}"; src: url("{slug}-Italic-VF.woff2") format("woff2");
-                     font-weight: {axes['wght'][0]:g} {axes['wght'][1]:g}; font-stretch: {axes['wdth'][0]:g}% {axes['wdth'][1]:g}%; font-style: italic; }}}}"""
-    single = single.replace("{{", "{").replace("}}", "}")
-    italics = f"""
-
-ITALIC
-
-Every style has an italic, leaned {slanted} degrees. It is a second font file, not an axis: programs find it
-with the I button, CSS with font-style: italic. It is drawn, not slanted by the program: Inter's italic
-with Raveo's letters carried into it. The italic styles are named like the upright ones with "Italic"
-added: Italic, Bold Italic, Narrow Medium Italic, Display Wide Black Italic.
-""" if italic else ""
-    italic_file = f"""
-desktop/variable/{slug}-Italic-VF.ttf
-    The italic of every style. Install it together with the file above.
-""" if italic else ""
     return f"""{family} {label}
-{time.strftime("%Y-%m-%d")}
 
-{about}
-{count} characters: {covers}
-{optical}{italics}{upgrade}
+{ranges}
+{count} characters, Latin script{", upright and italic" if italic else ""}
 
-DESKTOP
 
-Install the variable font{"s" if italic else ""} or the static fonts; one set is enough. The variable font is listed as
-"{family} Variable", the static fonts as "{family}", so they do not answer to each other's names.
+INSTALL
 
-desktop/variable/{slug}-VF.ttf
-    One file with every {"upright " if italic else ""}style. Use this in Figma, Keynote, Adobe apps and browsers.
-{italic_file}
-desktop/static/
-    One file per named style, for apps that do not support variable fonts (PowerPoint, Word).
-    The styles{", each also as Italic" if italic else ""}:
-    {(',' + chr(10) + '    ').join(rows)}
+One of the two sets, not both.{" Remove Raveo 1.1 first." if family == "Raveo" else ""}
+
+desktop/variable/   {both.replace(" and ", ".ttf and ")}.ttf, listed as "{family} Variable"
+desktop/static/     one file per style, listed as "{family}", for apps without variable fonts
 
 
 WEB
 
-web/{slug}-VF.woff2{f" and web/{slug}-Italic-VF.woff2" if italic else ""}
-    The variable font{"s" if italic else ""}. A page names {"their" if italic else "its"} ranges itself, or browsers fake the bold{" and the italic" if italic else ""}:
-{single}
+web/                {both.replace(" and ", ".woff2 and ")}.woff2
+web/static/         one file per style
 
-        h1 {{ font-family: "{family}", sans-serif; font-weight: 520; font-stretch: {axes['wdth'][1]:g}%; }}
+{rules}
+{earlier}
 
-web/static/
-    One file per named style, as WOFF2.
+LICENCE
 
-
-
-LICENCE AND CREDITS
-
-{family} is derived from {"Raveo 1.1" if family == "Raveo" else "Raveo"}, which is derived from Inter. It is licensed under the
-SIL Open Font License 1.1 (OFL.txt): free to use, embed, modify and redistribute, also
-commercially; it may not be sold on its own, and modified versions must keep this licence.
+SIL Open Font License 1.1, in OFL.txt: free to use, embed, modify and redistribute, also commercially.
+It may not be sold on its own, and modified versions must keep the licence.
 
 {credit}
 """

@@ -1,20 +1,19 @@
 # Raveo: font log
 
 Raveo is a sans-serif family for interfaces and headlines, derived from Inter and released under the
-SIL Open Font License 1.1. This file records what changed in each version and who made it.
+SIL Open Font License 1.1.
 
 ## 2.0 (November 2026)
 
 - A width axis, 60 to 125, with Narrow and Wide as named styles at every weight.
-- An italic for every style: a second variable font and 42 static styles. It is made from Inter's
-  italic source (rsms/inter at commit `66647c0`, version 4.1) with Raveo's letters carried into it.
-  The letters a, e and f keep their upright forms.
+- An italic for every style, from Inter's italic source (rsms/inter at commit `66647c0`, version 4.1)
+  with Raveo's letters.
 - The weight axis runs from 300 to 900 (was 100 to 900). Thin and ExtraLight are gone.
 - Curved strokes end in an angled cut; the openings of a, c, e and s are wider.
 - Round commas and quotes. The tick of ď ť ľ sits closer to its letter and the next letter is
   kept clear of it.
-- A longer arm on the r; a redrawn bowl on the a at the narrow and wide ends.
-- The r and the a take the longer arm and the more open bowl of the wordmark they were first drawn for.
+- A longer arm on the r and a more open bowl on the a, as in the wordmark they were first drawn for. The
+  a's bowl is redrawn at the narrow and wide ends.
 - Every style is derived from the hand-drawn masters in `sources/` by the settings in `recipe.json`.
 - 51 more characters, among them æ ø ð œ ă ğ ő ű and « »: Danish, Norwegian, Icelandic, Hungarian,
   Romanian and Turkish can be set.
