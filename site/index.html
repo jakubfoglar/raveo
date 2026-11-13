@@ -341,7 +341,7 @@
   </section>
 
   <section class="block" id="space">
-    <header class="sh grid"><h2>Axes</h2><p>Weight and width are continuous. Drag anywhere in the square; the dots are the named styles, the ones font menus list and the ones that come as separate files.</p></header>
+    <header class="sh grid"><h2>Axes</h2></header>
     <div class="grid space">
       <div class="pad"><svg id="pad" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Weight and width"></svg></div>
       <div class="show">
@@ -358,17 +358,17 @@
   </section>
 
   <section class="block" id="details">
-    <header class="sh grid"><h2>Details</h2><p>What sets Raveo apart from Inter. The first six are new in 2.0; switch to the comparison to see what moved.</p><div class="tools"><div class="seg" id="details-cmp"><button data-cmp="0" aria-pressed="true">Raveo 2.0</button><button data-cmp="1" title="Raveo 1.1 underneath in a lighter tone: where the two agree the ink is darkest">Compare with 1.1</button></div></div></header>
+    <header class="sh grid"><h2>Details</h2><div class="tools"><div class="seg" id="details-cmp"><button data-cmp="0" aria-pressed="true">Raveo 2.0</button><button data-cmp="1">Compare with 1.1</button></div></div></header>
     <div class="details" id="details-grid"></div>
   </section>
 
   <section class="block" id="optical">
-    <header class="sh grid"><h2>Optical size</h2><p>Every letter is drawn twice. The text drawing has taller small letters and more room around them, so it stays clear at 12 or 14 pixels. The display drawing is tighter and finer. Browsers and design apps choose by type size on their own.</p></header>
+    <header class="sh grid"><h2>Optical size</h2><p>Every letter is drawn twice, for text and for display. Browsers and design apps choose by size.</p></header>
     <div class="grid optical">
       <div class="half"><div class="word" id="opt-text" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-text-h"></h3><ul id="opt-text-f"></ul></div>
       <div class="half"><div class="word" id="opt-disp" contenteditable spellcheck="false">Hamburg</div><h3 id="opt-disp-h"></h3><ul id="opt-disp-f"></ul></div>
-      <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The text drawing at 12 pixels, where it belongs</h3></div>
-      <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The display drawing at 12 pixels: tighter, smaller, harder to read</h3></div>
+      <div class="half small"><p id="opt-small-text" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The text drawing at 12 pixels</h3></div>
+      <div class="half small"><p id="opt-small-disp" contenteditable spellcheck="false">Platform 3. The 07:42 to Wien Hbf calls at Pardubice, Brno and Břeclav. Seat reservations are compulsory in first class; bicycles travel in coach 259. Fares from 489 Kč.</p><h3>The display drawing at 12 pixels</h3></div>
       <div class="sweep">
         <div class="line s" id="sweep" contenteditable spellcheck="false">Praha hl. n. to Wien Hbf</div>
         <div class="ctl"><span>Text</span><input id="sweep-in" type="range" step="0.5" aria-label="Optical size"><span>Display</span><output class="num" id="sweep-out"></output></div>
@@ -386,7 +386,7 @@
   </section>
 
   <div class="band" id="use">
-    <header class="sh grid"><h2>In use</h2><p>Wide for statements and figures, narrow where a headline has to fit, the text drawing for everything small.</p></header>
+    <header class="sh grid"><h2>In use</h2></header>
     <div class="grid use">
       <p class="short" contenteditable spellcheck="false">The 07:42 to Vienna leaves from platform three. Four hours, one dining car, and a river that keeps turning up on the left.</p>
       <p class="short" lang="cs" contenteditable spellcheck="false">Příliš žluťoučký kůň úpěl ďábelské ódy. Rychlík do Vídně odjíždí v 7.42 ze třetího nástupiště: čtyři hodiny, jeden jídelní vůz a řeka, která se pořád vrací po levé straně.</p>
@@ -405,10 +405,10 @@
       <div class="chart">
         <div class="card">
           <p class="h">Nine trains in ten arrived on time</p>
-          <p class="d">Arrivals within five minutes, fourth quarter of 2026</p>
+          <p class="d">Arrivals within five minutes, third quarter of 2026</p>
           <p class="big">On time</p>
           <div class="bars">
-            <div><span>Praha – Wien</span><b>94,8 %</b><i style="--v:100%"></i></div>
+            <div><span>Praha – Wien</span><b>94.8 %</b><i style="--v:100%"></i></div>
             <div><span>Praha – Berlin</span><b>91,2 %</b><i style="--v:96%"></i></div>
             <div><span>Praha – Kraków</span><b>89,7 %</b><i style="--v:94%"></i></div>
             <div><span>Praha – Ostrava</span><b>86,3 %</b><i style="--v:91%"></i></div>
@@ -428,7 +428,7 @@
               <tr><td><b style="font-weight:520">Ex 143 Ostrava hl. n.</b><small>Express · via Olomouc</small></td><td>On time</td><td class="n">08:31</td><td class="n">5</td></tr>
               <tr><td><b style="font-weight:730">Next</b></td><td></td><td class="n" style="font-weight:730">07:42</td><td class="n" style="font-weight:730">3</td></tr>
             </table>
-            <p class="cap">An interface at 14 and 12 pixels, in the text drawing: Regular, Medium, SemiBold and Bold with tabular figures.</p>
+            <p class="cap">The text drawing at 14 and 12 pixels.</p>
           </div>
         </div>
       </div>
@@ -444,12 +444,12 @@
   </div>
 
   <section class="block" id="tester">
-    <header class="sh grid"><h2>Tester</h2><p>Click any line and type. Each block has its own settings.</p></header>
+    <header class="sh grid"><h2>Tester</h2></header>
     <div id="testers"></div>
   </section>
 
   <section class="block" id="features">
-    <header class="sh grid"><h2>Features</h2><p>OpenType features, switched per line.</p></header>
+    <header class="sh grid"><h2>Features</h2></header>
     <div id="feats"></div>
   </section>
 
@@ -476,7 +476,7 @@
   </section>
 
   <section class="block" id="about">
-    <header class="sh grid"><h2>About</h2><p>Where it comes from.</p></header>
+    <header class="sh grid"><h2>About</h2></header>
     <div class="grid about">
       <p class="say">Raveo was originally built on Inter by Rasmus Andersson. It keeps Inter's proportions and its legibility on screens, with warmer letterforms, darker weights and a width axis of its own, from narrow to wide. It is a variable family meant for interfaces, running text and headlines.</p>
       <ul class="list line" id="lineage"></ul>
@@ -490,8 +490,8 @@
   <select id="d-style" aria-label="Named style"></select>
   <label>Weight <input id="d-wght" type="range" step="1"><output id="o-wght"></output></label>
   <label>Width <input id="d-wdth" type="range" step="1"><output id="o-wdth"></output></label>
-  <div class="seg opt" id="d-ital" title="Upright or italic"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div>
-  <div class="seg opt" id="d-opsz" title="Which drawing is used. Automatic picks by type size, as browsers do."><button data-opsz="auto" aria-pressed="true">Auto</button><button data-opsz="14">Text</button><button data-opsz="32">Display</button></div>
+  <div class="seg opt" id="d-ital"><button data-ital="0" aria-pressed="true">Roman</button><button data-ital="1">Italic</button></div>
+  <div class="seg opt" id="d-opsz"><button data-opsz="auto" aria-pressed="true">Auto</button><button data-opsz="14">Text</button><button data-opsz="32">Display</button></div>
   <span class="push" id="d-note">Page style</span>
 </div>
 
@@ -637,10 +637,10 @@ function padPoint(e) {
 function buildFacts() {
   const a = D.axes, sizes = a.opsz ? 2 : 1, widths = new Set(D.styles.map((s) => s.wdth)).size, weights = new Set(D.styles.map((s) => s.wght)).size;
   const rows = [["Version", `${D.version}, ${new Date(D.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}`],
-    ["Weight", `${a.wght[0]} to ${a.wght[2]}`], ["Width", `${a.wdth[0]} to ${a.wdth[2]}, where 100 is the regular width`],
+    ["Weight", `${a.wght[0]} to ${a.wght[2]}`], ["Width", `${a.wdth[0]} to ${a.wdth[2]}`],
     ...(a.opsz ? [["Optical size", `${a.opsz[0]} to ${a.opsz[2]}`]] : []),
     ["Named styles", `${D.styles.length * (D.italic ? 2 : 1)}: ${weights} weights at ${widths} widths${sizes > 1 ? ", for text and display" : ""}${D.italic ? ", upright and italic" : ""}`],
-    ["Characters", `${fmt(D.character_count)}, Latin script, ${D.italic ? "roman and italic" : "upright only"}`],
+    ["Characters", `${fmt(D.character_count)}, Latin script`],
     ["Licence", "SIL Open Font License 1.1"],
     ["Designer", 'Jakub Foglar, <a href="https://x.com/jakubfoglar" data-track="designer_clicked" data-track-place="hero">@jakubfoglar</a>'], ["Lineage", "Inter by Rasmus Andersson"]];
   $("facts").innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
@@ -659,7 +659,7 @@ function buildStyles() {
   document.querySelectorAll("#styles-size button").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.opsz) === opsz));
   $("styles-size").hidden = !D.axes.opsz;
   $("styles-slant").hidden = !D.italic;
-  $("styles-note").textContent = `${D.styles.length * (D.italic ? 2 : 1)} named styles: ${new Set(list.map((s) => s.wght)).size} weights at ${widths.length} widths` + (D.axes.opsz ? ", each as a text and a display drawing" : "") + (D.italic ? ", upright and italic. " : ". ") + "Click one to set the page in it.";
+  $("styles-note").textContent = `${D.styles.length * (D.italic ? 2 : 1)} named styles: ${new Set(list.map((s) => s.wght)).size} weights at ${widths.length} widths` + (D.axes.opsz ? ", text and display" : "") + (D.italic ? ", upright and italic." : ".");
   $("d-style").innerHTML = `<option value="">Custom</option>` + list.map((s) => `<option value="${s.name}">${s.name}</option>`).join("");
 }
 
@@ -714,7 +714,7 @@ function buildOptical() {
   const [lo, , hi] = D.axes.opsz, t = D.sizes.text, d = D.sizes.display, pct = (a, b) => `${Math.round(a / b * 100)} %`;
   $("opt-text-h").textContent = `Text drawing, optical size ${lo}`;
   $("opt-disp-h").textContent = `Display drawing, optical size ${hi}`;
-  const rows = (m) => [["Height of small letters", `${pct(m.x_height, m.cap_height)} of the capitals`], ["Stem, Regular", `${m.stem} of ${fmt(2048)} units`], ["Average letter width, Regular", `${fmt(m.advance)} units on average`]]
+  const rows = (m) => [["Height of small letters", `${pct(m.x_height, m.cap_height)} of the capitals`], ["Stem, Regular", `${m.stem} of ${fmt(2048)} units`], ["Average letter width, Regular", `${fmt(m.advance)} units`]]
     .map(([k, v]) => `<li><span>${k}</span><span class="num">${v}</span></li>`).join("");
   $("opt-text-f").innerHTML = rows(t);
   $("opt-disp-f").innerHTML = rows(d);
@@ -749,7 +749,7 @@ function paintOptical() {
 function buildItalic() {
   if (!D.italic) { $("italic").hidden = true; document.querySelector('#bar nav a[href="#italic"]').hidden = true; $("d-ital").hidden = true; return; }
   const angle = String(D.italic.angle).replace(/\.0$/, "");
-  $("italic-says").textContent = `Every style has an italic, leaned ${angle} degrees: Inter’s italic with Raveo’s own letters carried into it, the a with both storeys and its tail, the R with its curled leg. It is a second font file, so font-style: italic in CSS and the Italic button in apps both find it.`;
+  $("italic-says").textContent = `Every style has an italic, leaned ${angle} degrees. It is a second font file.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("ital-stack").innerHTML = [[730, wl], [400, 100], [520, wh]].map(([wght, wdth]) => {
     const style = named(clamp(wght, gl, gh), wdth);
@@ -775,14 +775,14 @@ function paintItalic() {
 }
 
 const DETAILS = [
-  ["r", "The r", "A longer, flatter arm that reaches toward the next letter.", 520, 100],
-  ["a", "The a, wide", "At the wide and narrow ends the bowl is redrawn: more open, its stroke meeting the stem at an angle.", 520, "max"],
-  ["ces", "Stroke endings", "Curved strokes are cut at an angle and the openings are wider.", 520, 100],
-  [",;", "Round commas", "Commas and semicolons are round.", 520, 100],
-  ["„a“", "Quotes", "Round quotes, set as close as Raveo sets its own.", 520, 100],
-  ["ďť", "The tick", "The tick of ď ť ľ sits near the stem and the next letter tucks under it.", 520, 100],
-  ["R", "The R", "A curled leg, since the first Raveo.", 520, 100],
-  ["G1", "Alternates as defaults", "The G with a spur and the 1 with a flag are Inter’s alternates, made the default.", 520, 100],
+  ["r", "The r", "A longer, flatter arm.", 520, 100],
+  ["a", "The a, wide", "A redrawn bowl at the wide and narrow ends.", 520, "max"],
+  ["ces", "Stroke endings", "Cut at an angle, with wider openings.", 520, 100],
+  [",;", "Round commas", "", 520, 100],
+  ["„a“", "Round quotes", "", 520, 100],
+  ["ďť", "The tick", "Closer to the stem.", 520, 100],
+  ["R", "The R", "A curled leg.", 520, 100],
+  ["G1", "G and 1", "A spur and a flag: Inter’s alternates, as defaults.", 520, 100],
 ];
 function buildDetails() {
   const wide = D.axes.wdth[2];
@@ -796,7 +796,7 @@ function buildDetails() {
 function buildLanguages() {
   $("langs").innerHTML = D.languages.map((l) => `<div class="row"><span>${l.name}</span><span class="s" lang="${l.lang}" contenteditable spellcheck="false">${esc(l.text)}</span></div>`).join("");
   $("lang-note").textContent = `Latin script for Western, Central and Northern Europe, the Baltics, Romanian and Turkish.` +
-    ` Not covered: ${D.unsupported.length ? D.unsupported.join(", ") + ", " : ""}Cyrillic and Greek${D.italic ? "" : ". There are no italics"}. For those, use Inter.`;
+    ` No ${D.unsupported.length ? D.unsupported.join(", ") + ", " : ""}Cyrillic or Greek${D.italic ? "" : ", and no italics"}.`;
 }
 
 const SETS = [["Capitals", (c) => c === "Lu"], ["Small letters", (c) => c === "Ll"], ["Figures", (c) => c === "Nd" || c === "No"], ["Punctuation", (c) => c[0] === "P"],
@@ -812,7 +812,7 @@ function pick(cp) {
   document.querySelectorAll(".cells button").forEach((b) => b.classList.toggle("on", Number(b.dataset.cp) === cp));
 }
 function buildCharacters() {
-  const seen = D.characters.filter((c) => !UNSEEN(c[2])), unseen = D.character_count - seen.length, groups = [];
+  const seen = D.characters.filter((c) => !UNSEEN(c[2])), groups = [];
   const left = store.allChars ? seen.slice() : seen.filter((c) => EVERYDAY(c[0]));
   for (const [title, test] of SETS) {
     const mine = left.filter((c) => test(c[2]));
@@ -821,18 +821,18 @@ function buildCharacters() {
   }
   $("sets").innerHTML = groups.map(([title, list]) => `<div class="set"><h3><span>${title}</span><span class="num">${list.length}</span></h3><div class="cells s">` +
     list.map(([cp]) => `<button data-cp="${cp}">${esc(String.fromCodePoint(cp))}</button>`).join("") + `</div></div>`).join("");
-  $("chars-note").textContent = `${fmt(D.character_count)} characters, drawn with ${fmt(D.glyphs)} glyphs. Click one to enlarge it.` + (unseen ? ` Not shown: ${unseen} spaces and combining accents.` : "");
+  $("chars-note").textContent = `${fmt(D.character_count)} characters, ${fmt(D.glyphs)} glyphs.`;
   $("chars-all").hidden = left.length === seen.length && !store.allChars;
   $("chars-all").textContent = store.allChars ? "Show the everyday characters only" : `Show all ${fmt(seen.length)}`;
   pick(picked);
 }
 
 const FEATURES = [
-  ["tnum", "Tabular figures", "Every digit takes the same width, so columns line up.", "1 117 410,10\n9 008 944,98"],
+  ["tnum", "Tabular figures", "Every digit takes the same width.", "1 117 410,10\n9 008 944,98"],
   ["case", "Capital forms", "Punctuation moves up to sit with capitals and figures.", "¡HOLA! 7 – 9"],
   ["calt", "Contextual alternates", "A times sign between figures, arrows from hyphens, a raised colon in times.", "1920x1080 -> 12:30"],
   ["ordn", "Ordinals", "No. becomes the numero sign.", "No. 7"],
-  ["kern", "Kerning", "On by default.", "Toyota, Vary, LAVA. „Ty“"],
+  ["kern", "Kerning", "", "Toyota, Vary, LAVA. „Ty“"],
 ];
 function buildFeatures() {
   const on = store.features || { kern: true, calt: true };
@@ -860,7 +860,7 @@ function buildDownload() {
   $("zip-big").textContent = `Download Raveo ${D.version}`;
   $("zip-note").textContent = zip ? `Zip, ${(zip.kb / 1024).toFixed(1)} MB` : D.working ? "A working build: export a version to get a download." : "";
   for (const id of ["gh", "gh2", "gh3"]) { $(id).href = D.github; }
-  $("install-note").textContent = `Install the variable font${D.italic ? "s, upright and italic," : ""} or the static files; one set is enough. Programs list the variable font as “Raveo Variable” and the static files as “Raveo”. Remove Raveo 1.1 first.`;
+  $("install-note").textContent = `Install the variable font${D.italic ? "s" : ""} or the static files, not both. Remove Raveo 1.1 first.`;
   const { wght: [gl, , gh], wdth: [wl, , wh] } = D.axes;
   $("news").innerHTML = [["Width", `An axis from ${wl} to ${wh}, with Narrow and Wide as named styles at every weight.`],
     ...(D.italic ? [["Italic", "An italic for every style, as a second variable font and as static files."]] : []),
@@ -924,7 +924,7 @@ async function start() {
   $("chars-all").addEventListener("click", () => { store.allChars = !store.allChars; save(); buildCharacters(); track("characters_expanded", { all: !!store.allChars }); });
   let down = false;
   $("pad").addEventListener("pointerdown", (e) => { down = true; try { $("pad").setPointerCapture(e.pointerId); } catch (err) { /* nothing to capture */ } padPoint(e); });
-  $("pad").addEventListener("pointermove", (e) => { if (down) { padPoint(e); } });
+  $("pad").addEventListener("pointermove", (e) => { if (down || e.pointerType === "mouse") { padPoint(e); } });
   for (const type of ["pointerup", "pointercancel"]) { $("pad").addEventListener(type, () => { down = false; }); }
   $("stage").addEventListener("pointermove", heroPoint);
   $("hero").addEventListener("input", heroFit);
