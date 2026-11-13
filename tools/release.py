@@ -182,70 +182,38 @@ def releases():
     return sorted(out, key=lambda r: [float(r["version"]) if re.fullmatch(r"[\d.]+", r["version"]) else 0], reverse=True)
 
 
-NUMBERS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
-SITE = "https://raveo.jakubfoglar.com"
+# What the specimen page says about Raveo, for the note in the download.
+ABOUT = """Raveo is a warm grotesque: a variable sans in seven weights and three widths, upright and italic,
+free and open source. Version 2.0 adds the width axis, the italics and sharper stroke endings.
+
+Raveo was originally built on Inter by Rasmus Andersson. It keeps Inter's proportions and its
+legibility on screens, with warmer letterforms, darker weights and a width axis of its own, from
+narrow to wide. It is a variable family meant for interfaces, running text and headlines.
+
+Designed by Jakub Foglar (https://jakubfoglar.com, @jakubfoglar).
+https://raveo.jakubfoglar.com"""
 
 
 def _readme(recipe, label, font, slug, italic=None):
-    """The note that travels with the fonts, written for whoever has just downloaded them: what the typeface
-    is, which files to install, how to put it on a website, what is different for those who had 1.1."""
+    """The note that travels with the fonts: what the typeface is and who made it, in the page's own words,
+    what is different for those who had 1.1, and the licence."""
     names, family = font["name"], recipe["family"]
     axes = {a.axisTag: (a.minValue, a.maxValue) for a in font["fvar"].axes}
-    count = sum(1 for cp in font.getBestCmap() if not 0xE000 <= cp <= 0xF8FF)        # private-use alternates are not characters
-    spots = [i.coordinates for i in font["fvar"].instances]
-    said = lambda n: NUMBERS[n] if n < len(NUMBERS) else str(n)
-    weights, widths = len({c["wght"] for c in spots}), len({c["wdth"] for c in spots})
-    styles = len(spots) * (2 if italic else 1)
-    desktop = f"{slug}-VF.ttf" + (f" and {slug}-Italic-VF.ttf" if italic else "")
-    stems = [(f"{slug}-VF", "normal")] + ([(f"{slug}-Italic-VF", "italic")] if italic else [])
-    rules = "\n".join(f'    @font-face {{ font-family: "{family}"; src: url("{stem}.woff2") format("woff2");\n'
-                      f"                 font-weight: {axes['wght'][0]:g} {axes['wght'][1]:g}; font-stretch: {axes['wdth'][0]:g}% {axes['wdth'][1]:g}%; font-style: {style}; }}"
-                      for stem, style in stems)
-    display = "\n            The styles named Display are drawn for headlines, the others for text." if "opsz" in axes else ""
     raveo = family == "Raveo"
+    about = ABOUT if raveo else f"{family} is derived from Raveo, which is derived from Inter."
     earlier = f"""
 
 IF YOU USED RAVEO 1.1
 
+- Remove Raveo 1.1 before installing {label}.
 - Thin and ExtraLight are gone. The lightest weight is now Light ({axes['wght'][0]:g}).
 - The Display styles are part of the family "{family}" now, not a separate "Raveo Display", so
   documents that use them will ask for the font again.
 - The files have new names ({slug}-VF, not RaveoVF), so links to them in CSS need updating.
 """ if raveo else ""
-    credit = "\n".join(line for line in (names.getDebugName(0), names.getDebugName(9) and f"Designer: {names.getDebugName(9)}",
-                                         names.getDebugName(11)) if line)
     return f"""{family} {label}
 
-{family} is a sans in {said(weights)} weights and {said(widths)} widths{", each with an italic" if italic else ""}. It covers the Latin script
-of European languages, {count} characters in all.{f"""
-Specimen and tester: {SITE}""" if raveo else ""}
-
-
-INSTALLING
-
-The folder "desktop" holds the typeface in two forms. Install the one your programs can use:
-
-variable/   {desktop}, with every style inside{" them" if italic else ""}. For Figma,
-            Keynote, Adobe apps and other programs that support variable fonts. Font menus
-            list {"them" if italic else "it"} as "{family} Variable".
-
-static/     One file for each of the {styles} styles, for programs that do not support variable
-            fonts, such as Word and PowerPoint. Font menus list them as "{family}".{display}
-{"""
-If Raveo 1.1 is installed, remove it first.
-""" if raveo else ""}
-
-ON A WEBSITE
-
-The folder "web" has the variable font{"s" if italic else ""} as WOFF2. Put {"them" if italic else "it"} beside your stylesheet and add:
-
-{rules}
-
-    body {{ font-family: "{family}", sans-serif; }}
-    h1   {{ font-weight: 730; font-stretch: {axes['wdth'][1]:g}%; }}
-
-Weight runs from {axes['wght'][0]:g} to {axes['wght'][1]:g} and width from {axes['wdth'][0]:g}% to {axes['wdth'][1]:g}%. The folder web/static has every style as
-a file of its own, for sites that would rather not use a variable font.
+{about}
 {earlier}
 
 LICENCE
@@ -254,7 +222,7 @@ LICENCE
 embed it, change it and pass it on. You may not sell it on its own, and a changed version must keep
 the licence and take another name.
 
-{credit}
+{names.getDebugName(0)}
 """
 
 
